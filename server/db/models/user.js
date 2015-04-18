@@ -3,8 +3,17 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
+    name: String,
+    username: String,
+    pastOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
+    billingAddress: ['Address'],
+    deliveryAddress: ['Address'],
+    admin: Boolean,
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     email: {
-        type: String
+        type: String,
+        unique: true
     },
     password: {
         type: String
@@ -57,4 +66,4 @@ schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
-mongoose.model('User', schema);
+mongoose.model('User', schema)
