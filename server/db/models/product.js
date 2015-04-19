@@ -11,7 +11,7 @@ var schema = new mongoose.Schema({
 	stock: Number,
 	cost: Number,
 	sale: Boolean,
-	discount: {type: Number, get: getDiscount, set: setDiscount},
+	discount: {type: Number, get: getDiscount, set: setDiscount}
 });
 
 function getPrice () {
