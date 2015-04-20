@@ -206,7 +206,7 @@ connectToDb.then(function () {
     });
 
 
-
+    // When this promise chain is active, it hangs mongo and prevents Product data from getting loaded.
     getCurrentReviewData().then(function (reviews) {
         if (reviews.length === 0) {
             return seedReviews();
@@ -243,7 +243,7 @@ connectToDb.then(function () {
     //     if (stores.length === 0) {
     //         return seedStores();
     //     } else {
-    //         console.log(chalk.magenta('Seems to already be store data, exiting!'));
+    //         console.log(chalk.magenta('Store data already exists, exiting!'));
     //         // process.kill(0);
     //     }
     // }).then(function () {
