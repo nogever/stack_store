@@ -1,29 +1,18 @@
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-	title: String, //required
-	price: {type: Number, get: getPrice, set: setPrice}, //required
-	description: String, //requred
+	title: {type: String, required: true},
+	price: {type: Number, required: true},
+	description: {type: String, required: true},
 	category: [String],
 	photo: [String],
-	reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}], // take out, replace with method
-	stock: Number, //requied
-	cost: Number, //required
-	sale: Boolean, //probably take out and replace with discount system
-	discount: {type: Number, get: getDiscount, set: setDiscount} //probably take out
+	stock: {type: Number, required: true},
+	cost: {type: Number, required: true},
 });
 
-function getPrice () {
 
-}
-function setPrice () {
-
-}
-function getDiscount () {
-
-}
-function setDiscount () {
-
+schema.methods.getReviews = function() {
+    return mongoose.model('Review').find({ product: this._id }).exec()
 }
 
 mongoose.model('Product', schema);

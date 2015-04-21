@@ -3,16 +3,13 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 var addressSchema = require('./address');
 
-// Update wishlist to be referencing Products or create a wishlist model
-// Consier an array of roles instead of admin boolean. Each role would be a string.
 var schema = new mongoose.Schema({
     name: {type: String, required: true},
     username: {type: String, required: true},
     pastOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
-    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Wishlist'}],
     billingAddress: [addressSchema],
     deliveryAddress: [addressSchema],
-    admin: Boolean,
     roles: [String],
     email: {
         type: String,

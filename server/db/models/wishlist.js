@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var optionsSchema = require('./options');
 
 var schema = new mongoose.Schema({
-	id: {type: Number, unique: true},
 	product: [{
 		productId: { 
 			type: mongoose.Schema.Types.ObjectId, 
@@ -10,13 +9,8 @@ var schema = new mongoose.Schema({
 		}, 
 		options: optionsSchema
 	}],
-	date: Date,
-	orderStatus: { type: String, enum: ['ordered', 'paid', 'shipped', 'rejected', 'canceled', 'delivered', 'picked-up'] }
+	date: Date
 });
-
-schema.methods.populateOrders = function() {
-	//return mongoose.model('Products').find(...).exec()
-}
 
 schema.pre('save', function(next) {
 	var currentDate = new Date();
@@ -24,4 +18,5 @@ schema.pre('save', function(next) {
 	next();
 })
 
-mongoose.model('Order', schema);
+mongoose.model('Wishlist', schema);
+// module.exports = schema;

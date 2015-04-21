@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-	whiteList: [{ type: objectid, ref: 'Product'}],
-	blacklist: [{ type: objectid, ref: 'Product'}],
+	whiteList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
+	blacklist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
 	discountAmount: Number,
 	expires: Date,
 	revenueGenerated: Number

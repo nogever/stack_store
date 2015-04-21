@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-	address: String,
-	city: String,
-	state: String,
-	phone: String,
-	zip: String
+	sweets: String,
+	milk: String,
+	flavors: String, 
+	size: String,
+	toppings: String,
+	price: Number
 });
 
 module.exports = schema;

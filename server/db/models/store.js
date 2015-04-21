@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var addressSchema = require('./address');
 
 var schema = new mongoose.Schema({
-	storeName: String, //required
-	storeLocation: ['Address'], //change
+	storeName: {type: String, required: true},
+	storeLocation: [addressSchema],
 	storeHours: {
 		monday: { type: String, default: "6am - 10pm"},
 		tuesday: { type: String, default: "7am - 10pm"},
