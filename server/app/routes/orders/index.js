@@ -17,7 +17,7 @@ module.exports = router;
 // uri: api/orders
 router.get('/', function (req, res, next) {
 	OrderModel.find()
-				.populate('products')
+				// .populate('products') //won't work because its not just an array of refs, there's more there
 				.exec(function(err, orders) {
 					// if an error happened, pass the error to 'next'
 					if (err) return next(err);
@@ -39,7 +39,7 @@ router.post('/submit', function (req, res, next) {
 
 // edit an exsiting order
 // uri: api/orders/order/id/edit
-router.get('/order/:id/edit', function (req, res, next) {
+router.get('/:id/edit', function (req, res, next) {
 	OrderModel.findById(req.params.id, function(err, order) {
 		if (err) return next(err);
 		res.json(order);
@@ -48,17 +48,19 @@ router.get('/order/:id/edit', function (req, res, next) {
 
 // update an existing order
 // uri: api/orders/order/id
-router.post('/order/:id', function (req, res, next) {
+router.put('/:id', function (req, res, next) {
 	OrderModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, order) {
 		if (err) return next(err);
 		//res.redirect();
+		res.json(order)
 	});
 });
 
 
 // delete a order
 // uri: api/orders/order/id/delete
-router.post('/order/:id/delete', function (req, res, next) {
-	OrderModel.findOneAndRemove({_id: req.params.id});
-	res.redirect('/');
+router.delete('/:id', function (req, res, next) {
+	OrderModel.findOneByIdAndRemove(req.params.id);
+	// res.redirect('/');
+	res.status(200).end()
 });

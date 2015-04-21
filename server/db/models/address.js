@@ -8,4 +8,6 @@ var schema = new mongoose.Schema({
 	zip: String
 });
 
-mongoose.model('Address', schema);
+// mongoose.model('Address', schema);
+
+module.exports = schema;

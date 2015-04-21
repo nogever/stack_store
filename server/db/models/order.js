@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
 	id: {type: Number, unique: true},
-	product: [{
+	product: [{ //might want to make this a schema
 		productId: { 
 			type: mongoose.Schema.Types.ObjectId, 
 			ref: 'Product'
@@ -16,9 +16,12 @@ var schema = new mongoose.Schema({
 			price: Number
 		}
 	}],
-	date: Date,
-	orderStatus: String,
-	delivery: Boolean
+	date: Date, //presave hook to fill in
+	orderStatus: String //take a look an enum { type: String, enum: ['ordered', 'paid', 'shipped'] }
 });
+
+schema.methods.populateOrders = function() {
+	//return mongoose.model('Products').find(...).exec()
+}
 
 mongoose.model('Order', schema);

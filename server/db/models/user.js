@@ -1,19 +1,23 @@
 'use strict';
 var crypto = require('crypto');
 var mongoose = require('mongoose');
+var addressSchema = require('./address');
 
+// Update wishlist to be referencing Products or create a wishlist model
+// Consier an array of roles instead of admin boolean. Each role would be a string.
 var schema = new mongoose.Schema({
-    name: String,
-    username: String,
+    name: {type: String, required: true},
+    username: {type: String, required: true},
     pastOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
-    billingAddress: ['Address'],
-    deliveryAddress: ['Address'],
+    billingAddress: [addressSchema],
+    deliveryAddress: [addressSchema],
     admin: Boolean,
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
+    roles: [String],
     email: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     password: {
         type: String
@@ -34,6 +38,10 @@ var schema = new mongoose.Schema({
         id: String
     }
 });
+
+schema.methods.getReviews = function() {
+    return mongoose.model('Review').find({ user: this._id }).exec()
+}
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
 // are all used for local authentication security.
