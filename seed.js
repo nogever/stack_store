@@ -26,6 +26,7 @@ var User = mongoose.model('User');
 var Product = mongoose.model('Product');
 var Store = mongoose.model('Store');
 var Address = mongoose.model('Address');
+var Review = mongoose.model('Review');
 
 var q = require('q');
 var chalk = require('chalk');
