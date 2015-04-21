@@ -26,6 +26,7 @@ var User = mongoose.model('User');
 var Product = mongoose.model('Product');
 var Store = mongoose.model('Store');
 var Address = mongoose.model('Address');
+var Review = mongoose.model('Review');
 
 var q = require('q');
 var chalk = require('chalk');
@@ -61,17 +62,6 @@ var seedUsers = function () {
         {name:"Joe", username:"jalves", admin:"false", email:"jalves@fullstack.com"},
         {name:"Charlotte", username:"char", admin:"false", email:"char@fullstack.com"}
     ]
-
-    // var users = [
-    //     {
-    //         email: 'testing@fsa.com',
-    //         password: 'password'
-    //     },
-    //     {
-    //         email: 'obama@gmail.com',
-    //         password: 'potus'
-    //     }
-    // ];
 
     return q.invoke(User, 'create', users);
 
@@ -252,5 +242,5 @@ connectToDb.then(function () {
     // }).catch(function (err) {
     //     console.error(err);
     //     // process.kill(1);
-    // });
+    });
 });
