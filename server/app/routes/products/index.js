@@ -8,7 +8,6 @@ var OrderModel = mongoose.model('Order');
 var ProductModel = mongoose.model('Product');
 var ReviewModel = mongoose.model('Review');
 var StoreModel = mongoose.model('Store');
-var AddressModel = mongoose.model('Address');
 
 module.exports = router;
 
@@ -41,6 +40,7 @@ router.get('/:id/reviews', function (req, res, next) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
 			ProductModel.getReviews().then(function() {
+				console.log("made it into review method");
 				res.json(product.reviews);
 			});
 		});

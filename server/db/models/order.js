@@ -8,7 +8,7 @@ var schema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId, 
 			ref: 'Product'
 		}, 
-		options: optionsSchema
+		options: [optionsSchema]
 	}],
 	date: Date,
 	orderStatus: { type: String, enum: ['ordered', 'paid', 'shipped', 'rejected', 'canceled', 'delivered', 'picked-up'] }

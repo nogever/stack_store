@@ -8,8 +8,6 @@ var OrderModel = mongoose.model('Order');
 var ProductModel = mongoose.model('Product');
 var ReviewModel = mongoose.model('Review');
 var StoreModel = mongoose.model('Store');
-var AddressModel = mongoose.model('Address');
-
 
 module.exports = router;
 
