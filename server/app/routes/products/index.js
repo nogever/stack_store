@@ -16,16 +16,15 @@ module.exports = router;
 // uri: api/products
 router.get('/', function (req, res, next) {
 	ProductModel.find()
-				// .populate('reviews')
-				.exec(function(err, products) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					res.json(products);
-				});
+		.exec(function(err, products) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			res.json(products);
+		});
 });
 
 // get one product
-// uri: api/product/id
+// uri: api/products/id
 router.get('/:id', function (req, res, next) {
 	ProductModel.findById(req.params.id, function(err, product) {
 		if (err) return next(err);
@@ -34,21 +33,21 @@ router.get('/:id', function (req, res, next) {
 });
 
 // get all reviews for one product - defined in product model already??
-// uri: api/product/id/reviews
+// uri: api/products/id/reviews
 router.get('/:id/reviews', function (req, res, next) {
 
-	ProductModel.find({_id: req.params.id})
-				// .populate('reviews') //needs to call method instead
-				.exec(function(err, product) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					console.log(product.reviews);
-					res.json(product.reviews);
-				});
+	ProductModel.findById(req.params.id)
+		.exec(function(err, product) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			ProductModel.getReviews().then(function() {
+				res.json(product.reviews);
+			});
+		});
 });
 
 // post a new product
-// uri: api/products/submit
+// uri: api/products
 router.post('/', function (req, res, next) {
 	ProductModel.create(req.body, function(err, product) {
 		if (err) return next(err);
@@ -58,19 +57,18 @@ router.post('/', function (req, res, next) {
 });
 
 
-
 // update an existing order
-// uri: api/product/id
+// uri: api/products/id
 router.put('/:id', function (req, res, next) {
-	ProductModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, order) {
+	ProductModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, product) {
 		if (err) return next(err);
-		//res.redirect();
+		res.json(product);
 	});
 });
 
 // delete a product
-// uri: api/product/id/delete
+// uri: api/products/id
 router.delete('/:id', function (req, res, next) {
-	ProductModel.findOneAndRemove({_id: req.params.id});
-	//send 200
+	ProductModel.findByIdAndRemove(req.params.id);
+	res.status(200).end();
 });

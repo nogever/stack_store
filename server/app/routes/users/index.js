@@ -13,17 +13,16 @@ module.exports = router;
 // get all users
 router.get('/', function (req, res, next) {
 	UserModel.find()
-				.populate('pastOrders wishlist reviews')
-				.exec(function(err, users) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					res.json(users);
-				});
+		.exec(function(err, users) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			res.json(users);
+		});
 });
 
 // get one user
-// uri: api/users/user/id
-router.get('/user/:id', function (req, res, next) {
+// uri: api/users/id
+router.get('/:id', function (req, res, next) {
 	UserModel.findById(req.params.id, function(err, user) {
 		if (err) return next(err);
 		res.json(user);
@@ -31,19 +30,20 @@ router.get('/user/:id', function (req, res, next) {
 });
 
 // update one user
-// uri: api/users/user/id
-router.post('/user/:id', function (req, res, next) {
-	UserModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, user) {
+// uri: api/users/id
+router.put('/:id', function (req, res, next) {
+	UserModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, user) {
 		if (err) return next(err);
 		//res.redirect();
+		res.json(user);
 	});
 });
 
 // update multiple users
 
 // create one user
-// uri: api/users/submit
-router.post('/submit', function (req, res, next) {
+// uri: api/users
+router.post('/', function (req, res, next) {
 	UserModel.create(req.body, function(err, user) {
 		if (err) return next(err);
 		console.log('saved user to db', user);
@@ -51,54 +51,52 @@ router.post('/submit', function (req, res, next) {
 	});
 });
 
-// edit an exsiting user
-// uri: api/users/user/id/edit
-router.get('/user/:id/edit', function (req, res, next) {
-	UserModel.findById(req.params.id, function(err, user) {
-		if (err) return next(err);
-		res.json(user);
-	});
-});
-
-
 // delete one user
-// uri: api/users/user/id/delete
-router.post('/user/:id/delete', function (req, res, next) {
-	OrderModel.findOneAndRemove({_id: req.params.id});
-	res.redirect('/');
+// uri: api/users/id
+router.delete('/:id', function (req, res, next) {
+	OrderModel.findByIdAndRemove(req.params.id);
+	res.status(200).end();
 });
-
-// delete multiple users
 
 // get all reviews for one user
-router.get('/:userId/reviews', function (req, res, next) {
-	UserModel.find({_id: req.params.userId})
-				.populate('reviews')
-				.exec(function(err, user) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					res.json(user.reviews);
-				});
+router.get('/:id/reviews', function (req, res, next) {
+	UserModel.findById(req.params.id)
+		.exec(function(err, user) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			UserModel.getReviews().then(function() {
+				res.json(user.reviews);
+			});
+		});
 });
 
 // get all past orders for one user
-router.get('/:userId/orders', function (req, res, next) {
-	UserModel.find({_id: req.params.userId})
-				.populate('pastOrders')
-				.exec(function(err, user) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					res.json(user.pastOrders);
-				});
+router.get('/:id/orders', function (req, res, next) {
+	UserModel.findById(req.params.id)
+		.exec(function(err, user) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			res.json(user.pastOrders);
+		});
 });
 
 // get wishlist for one user
-router.get('/:userId/orders', function (req, res, next) {
-	UserModel.find({_id: req.params.userId})
-				.populate('wishlist')
-				.exec(function(err, user) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					res.json(user.wishlist);
-				});
+router.get('/:id/wishlists', function (req, res, next) {
+	UserModel.findById(req.params.id)
+		.exec(function(err, user) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			res.json(user.wishlist);
+		});
 });
+
+
+
+
+
+
+
+
+
+
+

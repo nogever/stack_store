@@ -17,19 +17,16 @@ module.exports = router;
 // uri: api/orders
 router.get('/', function (req, res, next) {
 	OrderModel.find()
-				// .populate('products') //won't work because its not just an array of refs, there's more there
-				.exec(function(err, orders) {
-					// if an error happened, pass the error to 'next'
-					if (err) return next(err);
-					res.json(products);
-				});
+		.exec(function(err, orders) {
+			// if an error happened, pass the error to 'next'
+			if (err) return next(err);
+			res.json(orders);
+		});
 });
 
-// get one order by user??
-
 // post a new order
-// uri: api/orders/submit
-router.post('/submit', function (req, res, next) {
+// uri: api/orders
+router.post('/', function (req, res, next) {
 	OrderModel.create(req.body, function(err, order) {
 		if (err) return next(err);
 		console.log('saved order to db', order);
@@ -37,9 +34,9 @@ router.post('/submit', function (req, res, next) {
 	});
 });
 
-// edit an exsiting order
-// uri: api/orders/order/id/edit
-router.get('/:id/edit', function (req, res, next) {
+// retrieve a single order
+// uri: api/orders/id
+router.get('/:id', function (req, res, next) {
 	OrderModel.findById(req.params.id, function(err, order) {
 		if (err) return next(err);
 		res.json(order);
@@ -47,20 +44,18 @@ router.get('/:id/edit', function (req, res, next) {
 });
 
 // update an existing order
-// uri: api/orders/order/id
+// uri: api/orders/id
 router.put('/:id', function (req, res, next) {
 	OrderModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, order) {
 		if (err) return next(err);
-		//res.redirect();
 		res.json(order)
 	});
 });
 
 
 // delete a order
-// uri: api/orders/order/id/delete
+// uri: api/orders/id
 router.delete('/:id', function (req, res, next) {
-	OrderModel.findOneByIdAndRemove(req.params.id);
-	// res.redirect('/');
+	OrderModel.findByIdAndRemove(req.params.id);
 	res.status(200).end()
 });
