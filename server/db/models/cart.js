@@ -7,12 +7,23 @@ var schema = new mongoose.Schema({
 	products: [{
 		productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
 		options: [optionsSchema],
-		quantity: Number
+		quantity: Number,
+		price: Number
 	}],
 	subTotal: Number,
 	tax: Number,
 	total: Number
 });
+
+schema.methods.getPrice = function() {
+	if (this.products.length) {
+		this.products.forEach(function(product) {
+			ProductModel.findById(product.productId, function(err, p) {
+				product.price = p.price;
+			})
+		})
+	}
+}
 
 schema.methods.getSubTotal = function() {
 	var productsTotal = 0;
