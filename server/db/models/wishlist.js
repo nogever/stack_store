@@ -7,7 +7,8 @@ var schema = new mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId, 
 			ref: 'Product'
 		}, 
-		options: optionsSchema
+		options: optionsSchema,
+		quantity: Number
 	}],
 	date: Date
 });

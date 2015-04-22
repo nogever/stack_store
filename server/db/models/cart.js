@@ -6,9 +6,9 @@ var schema = new mongoose.Schema({
 	session: String,
 	products: [{
 		productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
-		options: optionsSchema,
+		options: [optionsSchema],
 		quantity: Number
-	}]
+	}],
 	subTotal: Number,
 	tax: Number,
 	total: Number
