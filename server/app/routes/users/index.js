@@ -64,8 +64,8 @@ router.get('/:id/reviews', function (req, res, next) {
 		.exec(function(err, user) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
-			UserModel.getReviews().then(function() {
-				res.json(user.reviews);
+			user.getReviews().then(function(reviews) {
+				res.json(reviews);
 			});
 		});
 });
