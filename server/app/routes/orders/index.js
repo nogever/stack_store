@@ -44,7 +44,7 @@ router.get('/:id', function (req, res, next) {
 // update an existing order
 // uri: api/orders/id
 router.put('/:id', function (req, res, next) {
-	OrderModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, order) {
+	OrderModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, order) {
 		if (err) return next(err);
 		res.json(order)
 	});

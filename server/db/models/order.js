@@ -27,7 +27,20 @@ schema.methods.getPrice = function() {
 }
 
 schema.methods.populateOrders = function() {
-	//return mongoose.model('Products').find(...).exec()
+	//return mongoose.model('Products').find(...).exec()   ????
+}
+
+schema.methods.populateProducts = function(order) {
+	var thisOrder = this;
+	if (this.products.length) {
+		this.products.forEach(function(product, index) {
+			ProductModel.findById(product.productId, function(err, p) {
+				thisOrder.products[index].title = p.title;
+				thisOrder.products[index].description = p.description;
+				thisOrder.products[index].photo = p.photo;
+			})
+		})
+	}
 }
 
 schema.pre('save', function(next) {

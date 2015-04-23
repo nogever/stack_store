@@ -60,7 +60,7 @@ router.post('/', function (req, res, next) {
 // update an existing order
 // uri: api/products/id
 router.put('/:id', function (req, res, next) {
-	ProductModel.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, function(err, product) {
+	ProductModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, product) {
 		if (err) return next(err);
 		res.json(product);
 	});
