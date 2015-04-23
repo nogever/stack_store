@@ -26,23 +26,33 @@ describe('Review Model:' function (){
 		});
 
 		it('should validate review rating', function (done) {
-			user.validate(function(err) {
+			review.validate(function(err) {
 				console.log('product title validation err:', err);
 				expect(err.errors).to.have.property('title');
+				done();
+			});
+		});
+
+		it('should validate review rating min/max out of bounds', function (done) {
+			review.rating = 6;
+
+			review.validate(function(err) {
+				console.log('product price integer validation err:', err);
+				expect(err.name).to.equal('ValidationError'));
 				done();
 			});
 		});
 
 		it('should validate review body text', function (done) {
-			user.validate(function(err) {
-				console.log('product title validation err:', err);
-				expect(err.errors).to.have.property('title');
+			review.validate(function(err) {
+				console.log('product text validation err:', err);
+				expect(err.errors).to.have.property('text');
 				done();
 			});
 		});
 
 		it('should validate review title', function (done) {
-			user.validate(function(err) {
+			review.validate(function(err) {
 				console.log('product title validation err:', err);
 				expect(err.errors).to.have.property('title');
 				done();
@@ -56,6 +66,10 @@ describe('Review Model:' function (){
 	});
 
 	describe('Pre & Post Hooks'), function () {
+
+		it('should validate addition of date to review', function (done) {
+			
+		});
 
 	});
 
