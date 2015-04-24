@@ -14,7 +14,10 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	ProductModel.find()
+
+	var modelParams = req.query.category ? { category: req.query.category } : {};
+	
+	ProductModel.find(modelParams)
 		.exec(function(err, products) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
