@@ -26,6 +26,7 @@ var User = mongoose.model('User');
 var Product = mongoose.model('Product');
 var Store = mongoose.model('Store');
 var Review = mongoose.model('Review');
+var Cart = mongoose.model('Cart');
 var Address = require('./server/db/models/address');
 
 var q = require('q');
@@ -42,6 +43,10 @@ var getCurrentReviewData = function () {
 
 var getCurrentProductData = function () {
     return q.ninvoke(Product, 'find', {});
+};
+
+var getCurrentCartData = function () {
+    return q.ninvoke(Cart, 'find', {});
 };
 
 var getCurrentStoreData = function () {
@@ -144,6 +149,40 @@ var seedProducts = function () {
     return q.invoke(Product, 'create', products);
 }
 
+var seedCart = function () {
+
+    var carts = [
+        { 
+            products: [
+                {  
+                    productId: 01234567,  
+                    options: { sweets: "honey", size: "fullstack"}, 
+                    quantity: 1,
+                    price: 500
+                },
+                {  
+                    productId: 98765432,  
+                    options: { sweets: "raw sugar", milk: "soy", size: "smallstack"}, 
+                    quantity: 1,
+                    price: 250
+                },
+                {  
+                    productId: 99992221,  
+                    options: { sweets: "splenda", toppings: "cocoa powder", size: "mediumstack"}, 
+                    quantity: 1,
+                    price: 475
+                },
+            ],
+            subTotal:1000,
+            tax:825, 
+            total:1083
+        }
+    ]
+
+    return q.invoke(Cart, 'create', carts);
+
+};
+
 var seedStores = function () {
 
     var stores = [
@@ -221,7 +260,7 @@ connectToDb.then(function () {
         return User.find().exec(function(err, users) {
             console.log(chalk.green('seed users to reviews'));
             reviews.forEach(function(review, index) {
-                console.log(chalk.green('user id', users[index]));
+                // console.log(chalk.green('user id', users[index]));
                 var user = users[index];
                 review.user = user._id;
             })
@@ -234,6 +273,14 @@ connectToDb.then(function () {
         } else {
             console.log(chalk.magenta('Review data already exists, exiting!'));
             // process.kill(0);
+        }
+    })
+    .then(getCurrentCartData)
+    .then(function(carts) {
+        if(carts.length === 0) {
+            return seedCart();
+        } else {
+            console.log(chalk.magenta('Cart data already exists, exiting!'));
         }
     })
     .then(function () {
