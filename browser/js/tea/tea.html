@@ -1,6 +1,35 @@
-<h1>I love tea!!!</h1>
-<h1>I love tea!!!</h1>
-<h1>I love tea!!!</h1>
-<h1>I love tea!!!</h1>
-<h1>I love tea!!!</h1>
-<h1>I love tea!!!</h1>
+
+<div class="container-fluid">
+	<h1>The Teas</h1>
+	<!-- <pre>
+		{{ teas | json }}
+	</pre> -->
+	<div class="row">
+		<div class="col-md-3">
+			<div style="height: 800px; background: #ccc">
+			</div>
+		</div>
+
+		<div class="col-md-9">
+			<div class="row">
+				<!-- tea items -->
+				<div class="col-md-4"
+					ng-repeat="tea in teas">
+					<div class="thumbnail" >
+						<img src="{{tea.photo[0]}}" alt="">
+						<div class="caption text-center">
+							<h3>{{ tea.title }}</h3>
+							<h5>
+								<span class="label label-danger"
+									  ng-repeat="category in tea.category">{{ category }}</span>
+							</h5>
+							<h5>{{ tea.description }}</h5>
+							<a href="#" class="btn btn-info" role="button">More Info</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
