@@ -7,31 +7,32 @@ app.config(function ($stateProvider) {
     $stateProvider.state('admin', {
         url: '/admin',
         controller: 'AdminController',
-        templateUrl: 'js/admin/admin.html',
-        resolve: {
-            userAccount: function (UserFactory) {
-                return UserFactory.getUser();
-            }
-        }
+        templateUrl: 'js/admin/admin.html'
+        // ,
+        // resolve: {
+        //     userAccount: function (UserFactory) {
+        //         return UserFactory.getUser();
+        //     }
+        // }
     });
 
 });
 
-app.factory('UserFactory', function ($http) {
-    return {
-        getUser: function() {
-            var userId = Session.user; // get logged-in user's id
-            return $http.get('/api/users/:id', {
-                        params: userId })
-                     .then(function(response) {
-                return response.data;
-            });
-        }
-    };
-});
+// app.factory('UserFactory', function ($http) {
+//     return {
+//         getUser: function() {
+//             var userId = Session.user; // get logged-in user's id
+//             return $http.get('/api/users/:id', {
+//                         params: userId })
+//                      .then(function(response) {
+//                 return response.data;
+//             });
+//         }
+//     };
+// });
 
-app.controller('AccountController', function ($scope, userAccount) {
+app.controller('AdminController', function ($scope) {
 
-    $scope.userAccount = userAccount;
+    // $scope.userAccount = userAccount;
 
 });
