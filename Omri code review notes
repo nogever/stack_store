@@ -1,0 +1,33 @@
+______________
+
+Stack Store: Code Review - Omri
+______________
+
+	models: consider some more validations
+
+	tax seems awkward to be stored in the cart model
+
+	rename getPrice to fix price
+
+	Change subtotal to a virtual instead of storing.
+
+	ON the product model, you might want to add a method that checks a product against a whitelist.
+
+		expires may be a mongoose keyword. (createdAt)
+
+		Mongo will delete a document based on that keyword/time comparison.
+
+	On the order Model, may need a method for applying the promotions and calculations afterwards...
+
+	Store methods:
+
+		isOpen?
+		storeLocation?
+		distance?
+
+	User method:
+
+		hasRole:
+
+	Model saving
+		.findByIdAndUpdate will not hit the pre/post save hooks
