@@ -26,7 +26,9 @@ var User = mongoose.model('User');
 var Product = mongoose.model('Product');
 var Store = mongoose.model('Store');
 var Review = mongoose.model('Review');
+var Cart = mongoose.model('Cart');
 var Address = require('./server/db/models/address');
+var Options = require('./server/db/models/options');
 
 var q = require('q');
 var chalk = require('chalk');
@@ -42,6 +44,10 @@ var getCurrentReviewData = function () {
 
 var getCurrentProductData = function () {
     return q.ninvoke(Product, 'find', {});
+};
+
+var getCurrentCartData = function () {
+    return q.ninvoke(Cart, 'find', {});
 };
 
 var getCurrentStoreData = function () {
@@ -144,53 +150,87 @@ var seedProducts = function () {
     return q.invoke(Product, 'create', products);
 }
 
+var seedCart = function () {
+
+    var carts = [
+        { 
+            products: [
+                {  
+                    productId: 01234567,  
+                    options: [{ sweets: "honey", size: "fullstack"}], 
+                    quantity: 1,
+                    price: 500
+                },
+                {  
+                    productId: 98765432,  
+                    options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
+                    quantity: 1,
+                    price: 250
+                },
+                {  
+                    productId: 99992221,  
+                    options: [{ sweets: "splenda", size: "mediumstack", toppings: "cocoa powder"}], 
+                    quantity: 1,
+                    price: 475
+                },
+            ],
+            subTotal:1000,
+            tax:825, 
+            total:1083
+        }
+    ]
+
+    return q.invoke(Cart, 'create', carts);
+
+};
+
 var seedStores = function () {
 
     var stores = [
         {
             storeName: "Chelsea",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "270 W. 17th Street",
                 city: "New York",
                 state: "NY",
                 phone: "201.555.5555",
-                zip: "10011"})]
+                zip: "10011"}]
         },
         {
             storeName: "Lower East Side",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "111 1st Ave.",
                 city: "New York",
                 state: "NY",
                 phone: "201.555.1234",
-                zip: "10009"})]
+                zip: "10009"}]
         },
         {
             storeName: "Hell's Kitchen",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "32nd St. and 8th Ave.",
                 city: "New York",
                 state: "NY",
                 phone: "201.444.3214",
-                zip: "10019"})]
+                zip: "10019"}]
         },
         {
             storeName: "Financial District",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "5 Hanover Sq.",
                 city: "New York",
                 state: "NY",
                 phone: "201.555.5555",
-                zip: "10004"})]
+                zip: "10004"}]
         },
         {
             storeName: "West Village",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "270 W. 17th Street",
                 city: "New York",
                 state: "NY",
                 phone: "201.333.3215",
-                zip: "10014"})]
+                zip: "10014"}]
         }
     ];
 
@@ -221,7 +261,7 @@ connectToDb.then(function () {
         return User.find().exec(function(err, users) {
             console.log(chalk.green('seed users to reviews'));
             reviews.forEach(function(review, index) {
-                console.log(chalk.green('user id', users[index]));
+                // console.log(chalk.green('user id', users[index]));
                 var user = users[index];
                 review.user = user._id;
             })
@@ -236,11 +276,30 @@ connectToDb.then(function () {
             // process.kill(0);
         }
     })
+    .then(getCurrentCartData)
+    .then(function(carts) {
+        if(carts.length === 0) {
+            return seedCart();
+        } else {
+            console.log(chalk.magenta('Cart data already exists, exiting!'));
+        }
+    })
+    .then(getCurrentStoreData)
+    .then(function(stores) {
+        // console.log(stores);
+        // console.log(Address);
+        if(stores.length === 0) {
+            return seedStores();
+        } else {
+            console.log(chalk.magenta('Store data already exists, exiting!'));
+        }
+    })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
     }).catch(function (err) {
         console.error(err);
+        console.log(err.stack);
         // process.kill(1);
     });
 

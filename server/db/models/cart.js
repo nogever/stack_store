@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
-var optionsSchema = require('./options');
 var ProductModel = mongoose.model('Product');
+var optionsSchema = require('./options');
 
+//MAKE SURE TO FIX THE PRODUCTID FIELD BACK TO OBJECTID, SWITCHED FOR TESTING AND SEEDING...
 var schema = new mongoose.Schema({
 	session: String,
 	products: [{
-		productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
+		productId: { type: mongoose.Schema.Types.String, ref: 'Product'},
 		options: [optionsSchema],
 		quantity: Number,
 		price: Number
@@ -46,8 +47,9 @@ schema.methods.calculateTotal = function() {
 	this.total = cartTotal;
 }
 
-module.exports = schema;
+// module.exports = schema;
 
+mongoose.model('Cart', schema);
 
 
 
