@@ -12,13 +12,42 @@ module.exports = router;
 //uri: api/cart
 router.get('/', function (req, res, next) {
 
-	var cartId = req.query.cart ? { cart: req.query.cart } : {};
+	req.session.cartContents = {
+		    products: [
+		        {  
+		            productId: "01234567",  
+		            options: [{ sweets: "honey", size: "fullstack"}], 
+		            quantity: 1,
+		            price: 500
+		        },
+		        {  
+		            productId: "98765432",  
+		            options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
+		            quantity: 1,
+		            price: 250
+		        },
+		        {  
+		            productId: "99992221",  
+		            options: [{ sweets: "splenda", size: "mediumstack", toppings: "cocoa powder"}], 
+		            quantity: 1,
+		            price: 475
+		        },
+		    ],
+		    subTotal:1000,
+		    tax:825, 
+		    total:1083
+	};
+	console.log('cart session: ', req.session.id);
+
+	res.send(req.session.cartContents);
+
+	// var cartId = req.query.cart ? { cart: req.query.cart } : {};
 	
-	CartModel.find(cartId)
-		.exec(function(err, carts) {
-			// if an error happened, pass the error to 'next'
-			if (err) return next(err);
-			res.json(carts);
-		});
+	// CartModel.find(cartId)
+	// 	.exec(function(err, carts) {
+	// 		// if an error happened, pass the error to 'next'
+	// 		if (err) return next(err);
+	// 		res.json(carts);
+	// 	});
 
 });
