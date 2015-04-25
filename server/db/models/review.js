@@ -13,6 +13,6 @@ schema.pre('save', function(next) {
 	var currentDate = new Date();
 	this.date = currentDate;
 	next();
-})
+});
 
 mongoose.model('Review', schema);

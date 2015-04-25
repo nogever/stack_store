@@ -25,7 +25,7 @@ app.factory('DrinkFactory', function ($http) {
 			return $http.get('/api/products', {
 				params: queryParams
 			}).then(function(response) {
-				return response.data
+				return response.data;
 			});
 		}
 	};
