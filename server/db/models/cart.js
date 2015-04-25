@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var optionsSchema = require('./options');
 var ProductModel = mongoose.model('Product');
+var optionsSchema = require('./options');
 
 //MAKE SURE TO FIX THE PRODUCTID FIELD BACK TO OBJECTID, SWITCHED FOR TESTING AND SEEDING...
 var schema = new mongoose.Schema({

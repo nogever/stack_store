@@ -28,6 +28,7 @@ var Store = mongoose.model('Store');
 var Review = mongoose.model('Review');
 var Cart = mongoose.model('Cart');
 var Address = require('./server/db/models/address');
+var Options = require('./server/db/models/options');
 
 var q = require('q');
 var chalk = require('chalk');
@@ -156,19 +157,19 @@ var seedCart = function () {
             products: [
                 {  
                     productId: 01234567,  
-                    options: { sweets: "honey", size: "fullstack"}, 
+                    options: [{ sweets: "honey", size: "fullstack"}], 
                     quantity: 1,
                     price: 500
                 },
                 {  
                     productId: 98765432,  
-                    options: { sweets: "raw sugar", milk: "soy", size: "smallstack"}, 
+                    options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
                     quantity: 1,
                     price: 250
                 },
                 {  
                     productId: 99992221,  
-                    options: { sweets: "splenda", toppings: "cocoa powder", size: "mediumstack"}, 
+                    options: [{ sweets: "splenda", size: "mediumstack", toppings: "cocoa powder"}], 
                     quantity: 1,
                     price: 475
                 },
@@ -188,48 +189,48 @@ var seedStores = function () {
     var stores = [
         {
             storeName: "Chelsea",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "270 W. 17th Street",
                 city: "New York",
                 state: "NY",
                 phone: "201.555.5555",
-                zip: "10011"})]
+                zip: "10011"}]
         },
         {
             storeName: "Lower East Side",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "111 1st Ave.",
                 city: "New York",
                 state: "NY",
                 phone: "201.555.1234",
-                zip: "10009"})]
+                zip: "10009"}]
         },
         {
             storeName: "Hell's Kitchen",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "32nd St. and 8th Ave.",
                 city: "New York",
                 state: "NY",
                 phone: "201.444.3214",
-                zip: "10019"})]
+                zip: "10019"}]
         },
         {
             storeName: "Financial District",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "5 Hanover Sq.",
                 city: "New York",
                 state: "NY",
                 phone: "201.555.5555",
-                zip: "10004"})]
+                zip: "10004"}]
         },
         {
             storeName: "West Village",
-            storeLocation: [new Address({
+            storeLocation: [{
                 address: "270 W. 17th Street",
                 city: "New York",
                 state: "NY",
                 phone: "201.333.3215",
-                zip: "10014"})]
+                zip: "10014"}]
         }
     ];
 
@@ -285,6 +286,8 @@ connectToDb.then(function () {
     })
     .then(getCurrentStoreData)
     .then(function(stores) {
+        // console.log(stores);
+        // console.log(Address);
         if(stores.length === 0) {
             return seedStores();
         } else {
@@ -296,6 +299,7 @@ connectToDb.then(function () {
         process.kill(0);
     }).catch(function (err) {
         console.error(err);
+        console.log(err.stack);
         // process.kill(1);
     });
 
