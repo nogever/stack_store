@@ -283,6 +283,14 @@ connectToDb.then(function () {
             console.log(chalk.magenta('Cart data already exists, exiting!'));
         }
     })
+    .then(getCurrentStoreData)
+    .then(function(stores) {
+        if(stores.length === 0) {
+            return seedStores();
+        } else {
+            console.log(chalk.magenta('Store data already exists, exiting!'));
+        }
+    })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
