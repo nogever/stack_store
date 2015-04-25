@@ -37,8 +37,8 @@ var schema = new mongoose.Schema({
 });
 
 schema.methods.getReviews = function() {
-    return mongoose.model('Review').find({ user: this._id }).exec()
-}
+    return mongoose.model('Review').find({ user: this._id }).exec();
+};
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
 // are all used for local authentication security.
@@ -71,4 +71,4 @@ schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
-mongoose.model('User', schema)
+mongoose.model('User', schema);

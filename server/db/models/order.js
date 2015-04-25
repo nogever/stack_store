@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var optionsSchema = require('./options');
 var _ = require('underscore');
 
+var ProductModel = mongoose.model('Product');
+
 var schema = new mongoose.Schema({
 	id: {type: Number, unique: true},
 	products: [{
@@ -22,14 +24,14 @@ schema.methods.getPrice = function() {
 		this.products.forEach(function(product) {
 			ProductModel.findById(product.productId, function(err, p) {
 				product.price = p.price;
-			})
-		})
+			});
+		});
 	}
-}
+};
 
 schema.methods.populateOrders = function() {
 	//return mongoose.model('Products').find(...).exec()   ????
-}
+};
 
 schema.methods.populateProducts = function(order) {
 	var thisOrder = this;
@@ -56,10 +58,22 @@ schema.methods.populateProducts = function(order) {
 	// }
 }
 
+
 schema.pre('save', function(next) {
 	var currentDate = new Date();
 	this.date = currentDate;
 	next();
-})
+});
 
 mongoose.model('Order', schema);
+
+
+
+
+
+
+
+
+
+
+

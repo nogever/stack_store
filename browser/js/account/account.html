@@ -1,0 +1,27 @@
+<h1>My Account</h1>
+
+<h3>Profile</h3>
+<dl>
+	<dt>Name</dt><dd>{{ userAccount.name }}</dd>
+	<dt>Username</dt><dd>{{ userAccount.username }}</dd>
+	<dt>Email</dt><dd>{{ userAccount.email }}</dd>
+	<dt>Password</dt><dd>{{ userAccount.password }}</dd>
+	<dt>User Type</dt><dd>{{ userAccount.role }}</dd>
+	<dt>Billing Address</dt><dd>{{ userAccount.billingAddress }}</dd>
+	<dt>Delivery Address</dt><dd>{{ userAccount.deliveryAddress }}</dd>
+	<dt>Twitter</dt><dd>{{ userAccount.twitter }}</dd>
+	<dt>Facebook</dt><dd>{{ userAccount.facebook }}</dd>
+	<dt>Google</dt><dd>{{ userAccount.google }}</dd>
+</dl>
+
+<h3>Order History</h3>
+<orderHistory ng-repeat></orderHistory>
+
+<h3>Wishlist</h3>
+<wishlist ng-repeat></wishlist>
+
+
+
+
+
+

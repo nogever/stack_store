@@ -21,10 +21,10 @@ schema.methods.getPrice = function() {
 		this.products.forEach(function(product) {
 			ProductModel.findById(product.productId, function(err, p) {
 				product.price = p.price;
-			})
-		})
+			});
+		});
 	}
-}
+};
 
 schema.methods.getSubTotal = function() {
 	var productsTotal = 0;
@@ -32,20 +32,20 @@ schema.methods.getSubTotal = function() {
 		this.products.forEach(function(product) {
 			ProductModel.findById(product.productId, function(err, p) {
 				productsTotal += p.price;
-			})
-		})
+			});
+		});
 	}
 	this.subTotal = productsTotal;
-}
+};
 
 schema.methods.calculateTax = function() {
 // calculate tax based on tax table
-}
+};
 
 schema.methods.calculateTotal = function() {
-	var cartTotal = subTotal + tax;
+	var cartTotal = this.subTotal + this.tax;
 	this.total = cartTotal;
-}
+};
 
 // module.exports = schema;
 
