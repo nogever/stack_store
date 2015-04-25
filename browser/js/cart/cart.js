@@ -6,7 +6,9 @@ app.config(function($stateProvider) {
 			templateUrl: 'js/cart/cart.html',
 			controller: 'CartCtrl',
 			resolve: {
-				return CartFactory.getCartInfo();
+				cartInfo: function (CartFactory) {
+					return CartFactory.getCartInfo();	
+				}
 			}
 		});
 
@@ -14,21 +16,28 @@ app.config(function($stateProvider) {
 
 app.factory('CartFactory', function ($http) {
 	return {
-		getCartInfo: function () {
-			return $http.get('/api/carts', {
+		getCartInfo: function (cartId) {
+			
+			var queryParams = {};
 
+			if (cartId) {
+				queryParams.cartId = cartId;
+			}
+
+			return $http.get('/api/cart', {
+				params: queryParams
 			}).then(function(response) {
 				return response.data;
-			})
+			});
 		}
-	}
-}
+	};
+});
 
-app.controller('CartCtrl', function ($scope) {
+app.controller('CartCtrl', function ($scope, cartInfo) {
 	$scope.myTestCart = {
 		cartName: 'my cart!',
 		cartQty: 10
 	};
 
-	$scope.cartInfo = getCartInfo;
+	$scope.cartInfo = cartInfo;
 });
