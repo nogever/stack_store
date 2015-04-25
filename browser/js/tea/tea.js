@@ -33,5 +33,7 @@ app.factory('DrinkFactory', function ($http) {
 });
 
 app.controller('TeaCtrl', function ($scope, teaProductsInfo) {
-	$scope.teaProductsInfo = teaProductsInfo;
+	$scope.teas = teaProductsInfo;
+	console.log('TeaCtrl', $scope.teas);
+	console.log('teaProductsInfo', teaProductsInfo);
 });
