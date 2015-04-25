@@ -12,7 +12,7 @@ var schema = new mongoose.Schema({
 
 
 schema.methods.getReviews = function() {
-    return mongoose.model('Review').find({ product: this._id }).exec()
-}
+    return mongoose.model('Review').find({ product: this._id }).exec();
+};
 
 mongoose.model('Product', schema);

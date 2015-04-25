@@ -26,7 +26,7 @@ router.get('/:id', function (req, res, next) {
 	UserModel.findById(req.params.id, function(err, user) {
 		if (err) return next(err);
 		res.json(user);
-	})
+	});
 });
 
 // update one user

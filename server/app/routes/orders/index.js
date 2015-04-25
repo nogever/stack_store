@@ -46,7 +46,7 @@ router.get('/:id', function (req, res, next) {
 router.put('/:id', function (req, res, next) {
 	OrderModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, order) {
 		if (err) return next(err);
-		res.json(order)
+		res.json(order);
 	});
 });
 
@@ -55,5 +55,5 @@ router.put('/:id', function (req, res, next) {
 // uri: api/orders/id
 router.delete('/:id', function (req, res, next) {
 	OrderModel.findByIdAndRemove(req.params.id);
-	res.status(200).end()
+	res.status(200).end();
 });
