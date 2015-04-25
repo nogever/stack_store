@@ -71,4 +71,14 @@ schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
+// var user = new User({name: "Sean Kim", username: 'srockk', email: 'nogever@gmail.com', roles: ['admin'], password: 'password'});
+
+// user.save(function(err) {
+//   if(err) {
+//     console.log(err);
+//   } else {
+//     console.log('user: ' + user.username + " saved.");
+//   }
+// });
+
 mongoose.model('User', schema);
