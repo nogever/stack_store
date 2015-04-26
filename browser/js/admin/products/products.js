@@ -22,7 +22,6 @@ app.factory('ProductsFactory', function ($http) {
         getProducts: function() {
             return $http.get('/api/products')
                      .then(function(response) {
-                        console.log(response);
                 return response.data;
             });
         }

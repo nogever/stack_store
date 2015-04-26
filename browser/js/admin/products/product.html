@@ -1,35 +1,43 @@
 <h3>{{ product.title || 'Add New Product'}}</h3>
-
-<form>
+<form ng-submit="newProduct.submitTheForm()">
+	<img src="{{ product.photo }}" width="300" ng-show="product.photo"/>
   <div class="form-group form-group-sm">
     <label for="adminProductTitle">Title</label>
-    <input type="text" class="form-control" id="adminProductTitle" placeholder="Enter Title">
+    <input type="text" class="form-control" id="adminProductTitle" placeholder="Enter Title" value="{{ product.title }}">
   </div>
-  <div class="form-group form-group-sm">
+  <div class="form-group">
     <label for="adminProductDescription">Description</label>
-    <textarea rows="3" class="form-control" id="adminProductDescription" placeholder="Enter description"></textarea>
-  </div>
-  <div class="form-group form-group-sm">
-    <label for="adminProductPhoto">Image</label>
-    <input type="file" id="adminProductPhoto">
-    <p class="help-block">Upload photo of the product here.</p>
+    <textarea rows="3" class="form-control" id="adminProductDescription" placeholder="Enter description">{{ product.description }}</textarea>
   </div>
   <div class="form-group form-group-sm">
     <label for="adminProductPrice">Price</label>
   	<div class="input-group">
       <div class="input-group-addon">&cent;</div>
-	    <input type="number" class="form-control" id="adminProductPrice" placeholder="Enter Price">
+	    <input type="number" class="form-control" id="adminProductPrice" placeholder="Enter Price"  value="{{ product.price }}">
     </div>
     <span class="help-block">Enter price in cents. (e.g. enter 100 for $1.00)</span>
   </div>
   <div class="form-group form-group-sm">
+    <label for="adminProductCost">Cost</label>
+  	<div class="input-group">
+      <div class="input-group-addon">&cent;</div>
+	    <input type="number" class="form-control" id="adminProductCost" placeholder="Enter Cost" value="{{ product.cost }}">
+    </div>
+    <span class="help-block">Enter original cost in cents. (e.g. enter 100 for $1.00)</span>
+  </div>
+  <div class="form-group form-group-sm">
     <label for="adminProductStock">Quantity</label>
-    <input type="number" class="form-control" id="adminProductStock" placeholder="Enter Quantity">
+    <input type="number" class="form-control" id="adminProductStock" placeholder="Enter Quantity" value="{{ product.stock }}">
   </div>
   <div class="form-group form-group-sm">
     <label for="adminProductCategory">Category</label>
-    <input type="text" id="adminProductCategory">
+    <input type="text" id="adminProductCategory" value="{{ product.category }}">
     <p class="help-block">Can enter more than one.</p>
+  </div>
+  <div class="form-group form-group-sm">
+    <label for="adminProductPhoto">Image</label>
+    <input type="file" id="adminProductPhoto">
+    <p class="help-block">Upload photo of the product here.</p>
   </div>
 
   <button type="submit" class="btn btn-default">Submit</button>
