@@ -4,7 +4,7 @@ var Session = {};
 app.config(function ($stateProvider) {
 
     // Register our *product* state.
-    $stateProvider.state('admin.product', {
+    $stateProvider.state('administrator.product', {
         url: '/product',
         controller: 'ProductController',
         templateUrl: 'js/admin/products/product.html',

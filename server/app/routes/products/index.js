@@ -14,7 +14,6 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	console.log('session: ', req.session.id);
 	var modelParams = req.query.category ? { category: req.query.category } : {};
 	
 	ProductModel.find(modelParams)

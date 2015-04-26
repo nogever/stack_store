@@ -1,3 +1,4 @@
+<div class="col-lg-2">
 <ul id="admin-menu">
 	<li>Pages</li>
 	<li>Users
@@ -7,11 +8,11 @@
 			<li>User Roles</li>
 		</ul></li>
 	<li>Products
-		<ul><li>All Products</li>
-			<li>Add New</li>
+		<ul><li><a ui-sref="administrator.products">All Products</a></li>
+			<li><a ui-sref="administrator.product">Add New</a></li>
 			<li>Product Category</li>
 		</ul></li>
 	<li>Orders</li>
 </ul>
-
-<div ui-view></div>
+</div>
+<div ui-view class="col-lg-10"></div>

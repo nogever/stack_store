@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var optionsSchema = require('./options');
-var _ = require('underscore');
+// var _ = require('underscore');
 
 var ProductModel = mongoose.model('Product');
 
