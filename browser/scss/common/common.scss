@@ -1,0 +1,92 @@
+.heading-bar {
+	padding:15px 0;
+
+	h1 {
+		font-weight:300;
+	}
+}
+.sub-banner-tea{
+	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(http://t.wallpaperweb.org/wallpaper/development/1920x1200/Coffee_Tea_79.jpg) no-repeat bottom fixed;
+}
+
+.sub-banner-coffee{
+	height:300px;
+	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(http://www.teacoffee.gov.np/images/gallery/ca538c343179bf0fbdfab6cd10469afd_1415619482.jpg) no-repeat bottom fixed;
+}
+.sub-banner-tea,
+.sub-banner-coffee{
+	margin-bottom:30px;
+	.header{
+  		font-weight: 300;
+  		color: #fff;
+  		padding:60px 0;
+
+  		h1{
+  			font-size:80px;
+  			font-weight: 300;
+  		}
+  		p{
+  			font-size:40px;
+  		}
+  	}
+}
+.navbar-default{
+	background-color:#fff;
+	border-color:#fff;
+}
+.navbar-default .navbar-nav > li > a {
+	background-color:#fff;
+	border-bottom: 1px solid #333;
+}
+.navbar-default .navbar-nav > li > a:hover, 
+.navbar-default .navbar-nav > li > a:focus{
+	background-color:#fff;
+	border-bottom: 1px solid #333;
+}
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > .active > a:hover, 
+.navbar-default .navbar-nav > .active > a:focus {
+	background-color:#fff;
+	border-bottom: 1px solid #333;
+}
+
+
+.sidebar-nav .navbar {
+
+	/* make sidebar nav vertical */ 
+	@media (min-width: 768px) {
+	  	.navbar-collapse {
+			padding: 0;
+			max-height: none;
+	  	}
+	  	ul {
+			float: none;
+			&:not {
+			display: block;
+
+	  		}
+	  	}
+	  	li {
+			float: none;
+			display: block;
+
+			a {
+				padding-top: 12px;
+				padding-bottom: 12px;
+			}
+	  	}
+ 
+	}
+
+	@media (min-width: 992px) {
+
+	}
+
+	@media (min-width: 1200px) {
+
+	}
+}
+
+
+
+

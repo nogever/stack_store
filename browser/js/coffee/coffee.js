@@ -33,5 +33,5 @@ app.factory('CoffeeFactory', function ($http) {
 });
 
 app.controller('CoffeeCtrl', function ($scope, coffeeProductsInfo) {
-	$scope.coffeeProductsInfo = coffeeProductsInfo;
+	$scope.coffees = coffeeProductsInfo;
 });
