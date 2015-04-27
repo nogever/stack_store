@@ -37,7 +37,7 @@ app.controller('AddProductController', function($scope, $http) {
         price: 0,
         description: null,
         category: [null],
-        photo: null,
+        photo: 'http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg',
         stock: 0,
         cost: 0
     };

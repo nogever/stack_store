@@ -36,8 +36,8 @@
   </div>
   <div class="form-group form-group-sm">
     <label for="adminProductPhoto">Image</label>
-    <input ng-model="newProduct.photo" type="file" id="adminProductPhoto">
-    <p class="help-block">Upload photo of the product here.</p>
+    <input ng-model="newProduct.photo" type="text" class="form-control" id="adminProductPhoto">
+    <p class="help-block">Enter the url of the photo of the product here.</p>
   </div>
   <button type="submit" class="btn btn-default" ng-disabled="addProduct.$invalid">Submit</button>
   </div>
