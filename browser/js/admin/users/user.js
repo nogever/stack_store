@@ -1,6 +1,4 @@
 'use strict';
-var Session = {};
-
 app.config(function ($stateProvider) {
 
     // Register our *user* state.
@@ -52,8 +50,15 @@ app.controller('AddUserController', function($scope, $http) {
 app.factory('UserFactory', function ($http, $stateParams) {
     return {
         getUser: function() {
-            // var userId = Session.user; // get logged-in user's id
             return $http.get('/api/users/' + $stateParams.id)
+                     .then(function(response) {
+                return response.data;
+            });
+        },
+        getUserMe: function() {
+            // var userId = Session.user; // get logged-in user's id
+            var userId = $stateParams.id;
+            return $http.get('/api/users/' + userId)
                      .then(function(response) {
                 return response.data;
             });
