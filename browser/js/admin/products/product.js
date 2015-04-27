@@ -6,14 +6,9 @@ app.config(function ($stateProvider) {
     // Register our *product* state.
     $stateProvider
     .state('administrator.newProduct', {
-        url: '/newproduct',
-        controller: 'ProductController',
+        url: '/product',
+        controller: 'AddProductController',
         templateUrl: 'js/admin/products/product.html'
-    })
-    .
-    state('administrator.productSubmit', {
-        url: '/newproduct/submit',
-        controller: 'ProductController'
     })
     .state('administrator.product', {
         url: '/product/:id',
@@ -23,38 +18,74 @@ app.config(function ($stateProvider) {
 });
 
 app.factory('ProductFactory', function ($http, $stateParams) {
+
     return {
         getProduct: function() {
-            var productId = $stateParams.id;
-            return $http.get('/api/products/' + productId)
+            return $http.get('/api/products/' + $stateParams.id)
                      .then(function(response) {
-                        console.log(response.data);
                 return response.data;
             });
         }
     };
+
 });
 
-app.controller('ProductController', function ($scope, ProductFactory) {
+app.controller('AddProductController', function($scope, $http) {
+
+    $scope.newProduct = {
+        title: null,
+        price: 0,
+        description: null,
+        category: [null],
+        photo: null,
+        stock: 0,
+        cost: 0
+    };
+
+    $scope.submit = function() {
+        console.log('new product: ', $scope.newProduct);
+
+        $http.post("/products", $scope.newProduct)
+        .then(function(response) {
+            console.log('hi');
+        }).catch(function(err) {
+            console.log('err');
+        });
+
+    }
+
+});
+
+app.controller('ProductController', function ($scope, $http, ProductFactory) {
 
     ProductFactory.getProduct().then(function(data) {
+
         $scope.product = data;
+
+        $scope.newProduct = {
+            title: data.title,
+            price: data.price,
+            description: data.description,
+            category: [data.category],
+            photo: data.photo,
+            stock: data.stock,
+            cost: data.cost,
+        };
+
+        $scope.submit = function() {
+            console.log('new product: ', $scope.newProduct);
+
+            $http.put("/products/" + data.id, $scope.newProduct)
+            .then (function(response) {
+                console.log('hi');
+            }).catch(function(err) {
+                console.log('err');
+            });
+
+        }
+
     });
     
-    // $scope.newProduct = {};
-
-    // $scope.newProduct.submitTheForm = function(item, event) {
-    //     var dataObject = {
-    //         name : $scope.myForm.name,
-    //         car  : $scope.myForm.car
-    //     };
-
-    //     $http.post("/products", dataObject)
-    //         .then (function(response) {
-    //             console.log('hi');
-    //     });
-    // }
-
 });
 
 
