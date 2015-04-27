@@ -8,6 +8,7 @@
 	  	<th>Size</th>
 	  	<th>Quantity</th>
 	  	<th>Price</th>
+	  	<th></th>
 	  </tr>
 
 	  <!-- Repeat rows all products in the cart -->
@@ -17,6 +18,11 @@
 	  	<td>{{ product.options[0].size }}</td>
 	  	<td>{{ product.quantity }}</td>
 	  	<td>{{ product.price / 100 | currency }}</td>
+	  	<td>
+	  		<button type="button" class="btn btn-default btn-xs">
+	  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	  		</button>
+	  	</td>
 	  </tr>
 
 	</table>
