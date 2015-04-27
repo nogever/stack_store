@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 		    products: [
 		        {  
 		            productId: "01234567",  
-		            options: [{ sweets: "honey", size: "fullstack"}], 
+		            options: [{ sweets: "honey", milk: "fat free", size: "fullstack"}], 
 		            quantity: 1,
 		            price: 500
 		        },
@@ -28,7 +28,7 @@ router.get('/', function (req, res, next) {
 		        },
 		        {  
 		            productId: "99992221",  
-		            options: [{ sweets: "splenda", size: "mediumstack", toppings: "cocoa powder"}], 
+		            options: [{ sweets: "sweet & low", size: "mediumstack", toppings: "cocoa powder"}], 
 		            quantity: 1,
 		            price: 475
 		        },
@@ -38,6 +38,7 @@ router.get('/', function (req, res, next) {
 		    total:1083
 	};
 	console.log('cart session: ', req.session.id);
+	console.log('session: ', req.session);
 
 	res.send(req.session.cartContents);
 
