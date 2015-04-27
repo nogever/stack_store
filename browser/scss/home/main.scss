@@ -8,5 +8,63 @@
     margin-top: 40px;
     text-align: center;
   }
+  .fullwidth-banner {
+  	height: 650px;
+  	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('http://t.wallpaperweb.org/wallpaper/development/1920x1200/Coffee_Tea_80.jpg') no-repeat top fixed;
+
+  	.banner-info {
+  		position:absolute;
+  		top:10%;
+  		left:20%;
+  		color: #333;
+  		font-weight:300;
+
+  		.heading{
+  			font-size: 100px;
+  			line-height: 110px;
+  		}
+  		.sub-heading{
+  			font-size: 40px;
+  			line-height:50px;
+  		}
+
+  	}
+  }
+
+  .promo {
+  	height:300px;
+  	background: #333;
+
+  	h1{
+  		color:#fff;
+  	}
+  	p{
+  		color:#fff;
+
+  	}
+  }
+  .featured-product {
+
+	padding:70px 0;
+
+	&.light-gray-bg{
+		background: #eee;
+	}
+
+  	.product-info,
+  	.product-info h1,
+  	.product-info h2{
+  		text-align: left;
+  	}
+
+  	.img-holder{
+
+  	}
+  }
+
+  footer{
+  	height: 300px;
+  	background: #333;
+  }
 }
 
