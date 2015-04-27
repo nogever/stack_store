@@ -45,7 +45,7 @@ app.controller('AddProductController', function($scope, $http) {
     $scope.submit = function() {
         console.log('new product: ', $scope.newProduct);
 
-        $http.post("/products", $scope.newProduct)
+        $http.post("api/products", $scope.newProduct)
         .then(function(response) {
             console.log('hi');
         }).catch(function(err) {
@@ -75,7 +75,7 @@ app.controller('ProductController', function ($scope, $http, ProductFactory) {
         $scope.submit = function() {
             console.log('new product: ', $scope.newProduct);
 
-            $http.put("/products/" + data.id, $scope.newProduct)
+            $http.put("api/products/" + data.id, $scope.newProduct)
             .then (function(response) {
                 console.log('hi');
             }).catch(function(err) {
