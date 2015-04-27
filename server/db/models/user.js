@@ -10,7 +10,7 @@ var schema = new mongoose.Schema({
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Wishlist'}],
     billingAddress: [addressSchema],
     deliveryAddress: [addressSchema],
-    roles: [{type: String, enum: ['admin', 'shop manager', 'subscriber']}],
+    roles: {type: String, enum: ['admin', 'shop manager', 'subscriber']},
     email: {
         type: String,
         unique: true,

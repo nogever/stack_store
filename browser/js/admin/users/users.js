@@ -4,23 +4,23 @@ var Session = {};
 app.config(function ($stateProvider) {
 
     // Register our *users* state.
-    $stateProvider.state('admin.users', {
-        url: '/admin/users',
+    $stateProvider.state('administrator.users', {
+        url: '/users',
         controller: 'UsersController',
         templateUrl: 'js/admin/users/users.html',
         resolve: {
-            userAccount: function (UserFactory) {
-                return UserFactory.getUser();
+            allUsers: function (UsersFactory) {
+                return UsersFactory.getUser();
             }
         }
     });
 
 });
 
-app.factory('UserFactory', function ($http) {
+app.factory('UsersFactory', function ($http) {
     return {
         getUser: function() {
-            var userId = Session.user; // get logged-in user's id
+            // var userId = Session.user; // get logged-in user's id
             return $http.get('/api/users')
                      .then(function(response) {
                 return response.data;
@@ -29,8 +29,8 @@ app.factory('UserFactory', function ($http) {
     };
 });
 
-app.controller('UsersController', function ($scope, userAccount) {
+app.controller('UsersController', function ($scope, allUsers) {
 
-    $scope.userAccount = userAccount;
+    $scope.users = allUsers;
 
 });

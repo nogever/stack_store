@@ -1,1 +1,36 @@
-<h1>List of All Users</h1>
+<h3>All Users</h3>
+<div class="admin-u-heading">
+	<span class="admin-u-name"></span>
+	<span class="admin-u-username"></span>
+	<span class="admin-u-email"></span>
+	<span class="admin-u-role"></span>
+	<span class="admin-u-twitter"></span>
+	<span class="admin-u-facebook"></span>
+	<span class="admin-u-google"></span>
+</div>
+<div class="admin-u-rows row" ng-repeat="user in users">
+	<div class="admin-u-info">
+		<span class="admin-u-name">{{ user.name }}</span>
+		<span class="admin-u-username">{{ user.username | currency }}</span>
+		<span class="admin-u-email">{{ user.email }}</span>
+		<span class="admin-u-role">{{ user.roles }}</span>
+		<span class="admin-u-twitter">{{ user.twitter }}</span>
+		<span class="admin-u-facebook">{{ user.facebook }}</span>
+		<span class="admin-u-google">{{ user.google }}</span>
+	</div>
+	<div class="admin-u-menu">
+		<a ui-sref="administrator.user({id: user._id})">Edit</a>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
