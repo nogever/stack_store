@@ -31,12 +31,25 @@
 </div>
 
 <div class="btn-group" role="group" aria-label="...">
-  <button type="button" class="btn btn-default">Keep Shopping</button>
+	<div class="btn-group" role="group">
+	    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+	      Keep Shopping
+	      <span class="caret"></span>
+	    </button>
+	    <ul class="dropdown-menu" role="menu">
+	      <li><a ui-sref="coffee">Coffee</a></li>
+	      <li><a ui-sref="tea">Tea</a></li>
+	    </ul>
+	  </div>
   <button type="button" class="btn btn-default">Save to Wishlist</button>
   <button type="button" class="btn btn-success">Checkout!</button>
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 
