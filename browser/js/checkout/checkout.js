@@ -12,9 +12,11 @@ app.config(function ($stateProvider) {
 
 app.controller('CheckoutController', function ($scope) {
 
-	$scope.testObj = {
-		name: "Peter",
-		title: "Awesome person"
-	};
+	$scope.month = 12;
+	$scope.day = 31;
+
+	$scope.getNumber = function(num) {
+	    return new Array(num);   
+	}
 
 });

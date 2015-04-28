@@ -38,3 +38,14 @@ app.controller('CartCtrl', function ($scope, cartInfo) {
 
 	$scope.cartInfo = cartInfo;
 });
+
+app.directive('borderOnHover', function(){
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.on('mouseenter', function () {
+                element.css('border','2px solid red');
+            });
+        }
+    };
+});
