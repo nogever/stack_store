@@ -1,0 +1,52 @@
+<h2> Purchase your Cart! </h2>
+<br>
+<form name="checkoutForm" ng-submit="checkoutForm.$valid && submitCard(card)" novalidate>
+    <span class="error" ng-show="checkoutForm.question.$invalid && checkoutForm.$submitted">Question is not valid.</span>
+    <label>Credit Cart Number:</label>
+    <input 
+    	name="ccNum" 
+    	ng-minlength="15" 
+    	ng-maxlength="19"
+    	data-ng-pattern="/^[0-9]+$/" 
+    	required 
+    	type="number" 
+    	ng-model="card.ccNum"
+    	placeholder="Card Number..."/>
+    <br>
+    <label>CC Provider:</label>
+    <select required ng-model="card.ccProvider">
+        <option value="">...</option>
+            <option value="visa">Visa</option>
+            <option value="discover">Discover</option>
+            <option value="mastercard">MasterCard</option>
+            <option value="maestro">Maestro</option>
+            <option value="amex">American Express</option>
+            <option value="dinersclub">Diners Club</option>
+    </select>
+    <br><br>
+    <label>Expiration:</label><br>
+    <label>Month</label>
+    <select 
+    	required 
+    	ng-model="card.ccExpMonth"
+    	placeholder="00">
+        <option ng-repeat="i in getNumber(month) track by $index">{{ $index + 1 }}</option>
+    </select>
+    <label>Day</label>
+    <select 
+    	required 
+    	ng-model="card.ccExpDay"
+    	placeholder="00">
+        <option ng-repeat="i in getNumber(day) track by $index">{{ $index + 1 }}</option>
+    </select>
+    <br><br>
+    <div class="btn-group" role="group" aria-label="...">
+      <a class="btn btn-success" ng-disabled="checkoutForm.$invalid" role="button">Purchase Cart</a>
+    </div>
+</form>
+<br>
+<h4>Credit Card object displayed for testing here...</h4>
+<br>
+<pre>
+{{ card | json }}
+</pre>

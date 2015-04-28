@@ -19,7 +19,7 @@
 	  	<td>{{ product.quantity }}</td>
 	  	<td>{{ product.price / 100 | currency }}</td>
 	  	<td>
-	  		<button type="button" class="btn btn-default btn-xs">
+	  		<button type="button" class="btn btn-default btn-xs borderOnHover">
 	  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 	  		</button>
 	  	</td>
@@ -48,13 +48,12 @@
 	    </ul>
 	  </div>
   <button type="button" class="btn btn-default">Save to Wishlist</button>
-  <button type="button" class="btn btn-success">Checkout!</button>
+  <a class="btn btn-primary" ui-sref=".checkout" role="button">Checkout!</a>
 </div>
 
+<!-- Checkout View Inserted Here-->
+<div ui-view></div>
 
-<br>
-<br>
-<br>
 <br>
 <br>
 <br>
