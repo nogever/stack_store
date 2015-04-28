@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+	<div class="panel-heading"><h3 class="panel-title">All Orders</h3>
+	<div class="panel-body">
+		<div class="admin-os-heading">
+			<span class="admin-o-order">Number</span>
+			<span class="admin-o-name">Name</span>
+			<span class="admin-o-date">Date</span>
+			<span class="admin-o-status">Status</span>
+		</div>
+		<div class="admin-o-rows" ng-repeat="order in orders">
+			<div class="admin-o-info">
+				<span class="admin-o-order">{{ order.orderNumber }}</span>
+				<span class="admin-o-name">{{ order._user.name }}</span>
+				<span class="admin-o-date">{{ order.date }}</span>
+				<span class="admin-o-status">{{ order.orderStatus }}</span>
+			</div>
+			<div class="admin-o-menu">
+				<a ui-sref="administrator.order({id: order._id})">Edit</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

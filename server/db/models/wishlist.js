@@ -12,7 +12,8 @@ var schema = new mongoose.Schema({
 		quantity: Number,
 		price: Number
 	}],
-	date: Date
+	date: Date,
+	_user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 schema.methods.getPrice = function() {

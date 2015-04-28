@@ -1,37 +1,46 @@
 'use strict';
-var Session = {};
 
 app.config(function ($stateProvider) {
 
     // Register our *products* state.
-    $stateProvider.state('admin.products', {
+    $stateProvider.state('administrator.products', {
         url: '/products',
         controller: 'ProductsController',
-        templateUrl: 'js/admin/products/products.html'
-        // ,
-        // resolve: {
-        //     userAccount: function (UserFactory) {
-        //         return UserFactory.getUser();
-        //     }
-        // }
+        templateUrl: 'js/admin/products/products.html',
+        resolve: {
+            allProducts: function (ProductsFactory) {
+                return ProductsFactory.getProducts();
+            }
+        }
     });
 
 });
 
-// app.factory('ProductsFactory', function ($http) {
-//     return {
-//         getUser: function() {
-//             var userId = Session.user; // get logged-in user's id
-//             return $http.get('/api/products')
-//                      .then(function(response) {
-//                 return response.data;
-//             });
-//         }
-//     };
-// });
+app.factory('ProductsFactory', function ($http) {
+    return {
+        getProducts: function() {
+            return $http.get('/api/products')
+                     .then(function(response) {
+                return response.data;
+            });
+        }
+    };
+});
 
-app.controller('ProductsController', function ($scope) {
+app.controller('ProductsController', function ($scope, allProducts) {
 
-    // $scope.userAccount = userAccount;
+    $scope.products = allProducts;
 
 });
+
+
+
+
+
+
+
+
+
+
+
+

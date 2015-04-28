@@ -5,7 +5,7 @@ var schema = new mongoose.Schema({
 	price: {type: Number, required: true},
 	description: {type: String, required: true},
 	category: [String],
-	photo: [String],
+	photo: String,
 	stock: {type: Number, required: true},
 	cost: {type: Number, required: true},
 });

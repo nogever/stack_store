@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var optionsSchema = require('./options');
-var _ = require('underscore');
+// var _ = require('underscore');
 
 var ProductModel = mongoose.model('Product');
 
 var schema = new mongoose.Schema({
-	id: {type: Number, unique: true},
+	orderNumber: {type: Number, unique: true},
 	products: [{
 		productId: { 
 			type: mongoose.Schema.Types.ObjectId, 
@@ -16,7 +16,17 @@ var schema = new mongoose.Schema({
 		price: Number
 	}],
 	date: Date,
-	orderStatus: { type: String, enum: ['ordered', 'paid', 'shipped', 'rejected', 'canceled', 'delivered', 'picked-up'] }
+	orderStatus: { type: String, enum: [
+		'ordered', 
+		'paid', 
+		'shipped', 
+		'rejected', 
+		'canceled', 
+		'delivered', 
+		'picked-up'
+		]
+	},
+	_user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 schema.methods.getPrice = function() {
