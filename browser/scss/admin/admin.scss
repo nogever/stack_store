@@ -9,3 +9,15 @@
 textarea {
 	min-height: 66px;
 }
+.admin-u-rows,
+.admin-p-rows {
+	padding: 6px 0;
+	margin: 6px 0;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	&:after {
+		display: table;
+		content: "";
+		clear: both;
+	}
+}

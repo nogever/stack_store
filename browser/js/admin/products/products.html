@@ -1,21 +1,25 @@
-<h3>All Products</h3>
-<div class="admin-ps-heading">
-	<span class="admin-thumb-list"></span>
-	<span class="admin-p-title"></span>
-	<span class="admin-p-price"></span>
-	<span class="admin-p-category"></span>
-	<span class="admin-p-stock"></span>
-</div>
-<div class="product row" ng-repeat="product in products">
-	<img src="{{ product.photo }}" class="admin-thumb-list" />
-	<div class="admin-p-info">
-		<span class="admin-p-title">{{ product.title }}</span>
-		<span class="admin-p-price">{{ product.price | currency }}</span>
-		<span class="admin-p-category">{{ product.category }}</span>
-		<span class="admin-p-stock">{{ product.stock }}</span>
-	</div>
-	<div class="admin-p-menu">
-		<a ui-sref="administrator.product({id: product._id})">Edit</a>
+<div class="panel panel-default">
+	<div class="panel-heading"><h3 class="panel-title">All Products</h3>
+	<div class="panel-body">
+		<div class="admin-ps-heading">
+			<span class="admin-thumb-list">Picture</span>
+			<span class="admin-p-title">Title</span>
+			<span class="admin-p-price">Price</span>
+			<span class="admin-p-category">Category</span>
+			<span class="admin-p-stock">Quantity</span>
+		</div>
+		<div class="admin-p-rows" ng-repeat="product in products">
+			<img src="{{ product.photo }}" class="admin-thumb-list" />
+			<div class="admin-p-info">
+				<span class="admin-p-title">{{ product.title }}</span>
+				<span class="admin-p-price">{{ product.price | currency }}</span>
+				<span class="admin-p-category">{{ product.category }}</span>
+				<span class="admin-p-stock">{{ product.stock }}</span>
+			</div>
+			<div class="admin-p-menu">
+				<a ui-sref="administrator.product({id: product._id})">Edit</a>
+			</div>
+		</div>
 	</div>
 </div>
 

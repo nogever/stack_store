@@ -1,18 +1,22 @@
 <div class="col-lg-2">
-<ul id="admin-menu">
-	<li>Pages</li>
-	<li>Users
-		<ul><li><a ui-sref="administrator.users">All Users</a></li>
-			<li><a ui-sref="administrator.newUser">Add New</a></li>
-			<li><a ui-sref="administrator.meUser">My Profile</a></li>
-			<li>User Roles</li>
+<ul id="admin-menu" class="list-group">
+	<li class="list-group-item">Pages</li>
+	<li class="list-group-item">Users
+		<ul class="list-group-sub"><li class="list-group-item"><a ui-sref="administrator.users">All Users</a></li>
+			<li class="list-group-item"><a ui-sref="administrator.newUser">Add New</a></li>
+			<li class="list-group-item"><a ui-sref="administrator.meUser">My Profile</a></li>
+			<li class="list-group-item">User Roles</li>
 		</ul></li>
-	<li>Products
-		<ul><li><a ui-sref="administrator.products">All Products</a></li>
-			<li><a ui-sref="administrator.newProduct">Add New</a></li>
-			<li>Product Category</li>
+	<li class="list-group-item">Products
+		<ul class="list-group-sub"><li class="list-group-item"><a ui-sref="administrator.products">All Products</a></li>
+			<li class="list-group-item"><a ui-sref="administrator.newProduct">Add New</a></li>
+			<li class="list-group-item">Product Category</li>
 		</ul></li>
-	<li>Orders</li>
+	<li class="list-group-item">Orders</a>
+		<ul class="list-group-sub">
+			<li class="list-group-item"><a ui-sref="administrator.orders">All Orders</a></li>
+			<li class="list-group-item">Add New</li>
+		</ul></li>
 </ul>
 </div>
 <div ui-view class="col-lg-10"></div>

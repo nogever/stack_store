@@ -1,5 +1,4 @@
 'use strict';
-var Session = {};
 
 app.config(function ($stateProvider) {
 
