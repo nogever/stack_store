@@ -1,0 +1,18 @@
+<!-- <grid ng-repeat="tea in teas" width="200px" margin="20px">
+ -->
+<div resize ng-style='computePositions()'>
+	<div ng-repeat='tea in teas' ng-transclude>loutre</div>
+		<div class="thumbnail" >
+			<img src="{{tea.photo[0]}}" alt="">
+			<div class="caption text-center">
+				<h3>{{ tea.title }}</h3>
+				<h5>
+					<span class="label label-danger"
+						  ng-repeat="category in tea.category">{{ category }}</span>
+				</h5>
+				<h5>{{ tea.description }}</h5>
+				<a href="#" class="btn btn-info" role="button">More Info</a>
+			</div>
+		</div>
+	</div>
+</div>

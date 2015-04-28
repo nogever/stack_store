@@ -1,11 +1,64 @@
-<h1>My Cart</h1>
-<p>
-<h2>Dummy Cart Object<h2>
-<pre>
-{{ myTestCart | json }}
-</pre>
-<p>
-<h2>Actual Cart from DB<h2>
+<h3>My Cart</h3>
+<div id="cart" class="table-responsive">
+	<table class="table table-hover">
+	  <!-- table header -->
+	  <tr>
+	  	<th>Product</th>
+	  	<th>Options</th>
+	  	<th>Size</th>
+	  	<th>Quantity</th>
+	  	<th>Price</th>
+	  	<th></th>
+	  </tr>
+
+	  <!-- Repeat rows all products in the cart -->
+	  <tr ng-repeat="product in cartInfo.products">
+	  	<td>{{ product.productId }}</td>
+	  	<td>{{ product.options }}</td>
+	  	<td>{{ product.options[0].size }}</td>
+	  	<td>{{ product.quantity }}</td>
+	  	<td>{{ product.price / 100 | currency }}</td>
+	  	<td>
+	  		<button type="button" class="btn btn-default btn-xs borderOnHover">
+	  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	  		</button>
+	  	</td>
+	  </tr>
+
+	</table>
+</div>
+
+<div id="cart-subtotal" class="table-responsive">
+	<table class="table table-hover">
+	  <!-- table header -->
+	  <td>Subtotal</td>
+	  <td>{{ cartInfo.subTotal / 100 | currency }}</td>
+	</table>
+</div>
+
+<div class="btn-group" role="group" aria-label="...">
+	<div class="btn-group" role="group">
+	    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+	      Keep Shopping
+	      <span class="caret"></span>
+	    </button>
+	    <ul class="dropdown-menu" role="menu">
+	      <li><a ui-sref="coffee">Coffee</a></li>
+	      <li><a ui-sref="tea">Tea</a></li>
+	    </ul>
+	  </div>
+  <button type="button" class="btn btn-default">Save to Wishlist</button>
+  <a class="btn btn-primary" ui-sref=".checkout" role="button">Checkout!</a>
+</div>
+
+<!-- Checkout View Inserted Here-->
+<div ui-view></div>
+
+<br>
+<br>
+<br>
+
+<h4>Cart Data Object for reference: Remove Later</h4>
 <pre>
 {{ cartInfo | json }}
 </pre>

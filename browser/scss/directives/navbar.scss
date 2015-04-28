@@ -1,7 +1,7 @@
 navbar {
 
   display: block;
-  background: #a1a1a1;
+  background: #333;
 
   fullstack-logo {
     padding-top: 10px;
@@ -14,6 +14,9 @@ navbar {
     &:hover {
       color: white;
     }
+  }
+  .navbar {
+    margin-bottom: 0;
   }
 
   .nav > li > a {
