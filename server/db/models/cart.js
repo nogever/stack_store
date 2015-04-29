@@ -2,11 +2,10 @@ var mongoose = require('mongoose');
 var ProductModel = mongoose.model('Product');
 var optionsSchema = require('./options');
 
-//MAKE SURE TO FIX THE PRODUCTID FIELD BACK TO OBJECTID, SWITCHED FOR TESTING AND SEEDING...
 var schema = new mongoose.Schema({
 	session: String,
 	products: [{
-		productId: { type: mongoose.Schema.Types.String, ref: 'Product'},
+		productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
 		options: [optionsSchema],
 		quantity: Number,
 		price: Number

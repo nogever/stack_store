@@ -3,7 +3,7 @@
 	</div>
 </div>
 <pre>
-	{{ reviews | json }}
+	{{ newProduct | json }}
 </pre>
 
 <div class="row">
@@ -22,11 +22,11 @@
 			</h5>
 			<h5>{{ product.description }}</h5>
 			<h3>Add Options</h3>
-			<form name="addToCart" ng-submit="addToCart.$valid && submit()" novalidate>
+			<form name="buildDrink" ng-submit="buildDrink.$valid && addToCart()" novalidate>
 			  <div class="form-group form-group-sm">
 			    <label for="sweets">Sweets</label>
 			    <select class="form-control">
-				  	<option>1</option>
+			
 				</select>
 			    <input ng-model="newOptions.sweets" type="text" class="form-control" id="sweets" placeholder="Enter Sweets">
 			  </div>
@@ -36,7 +36,7 @@
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="flavors">Flavors</label>
-				<input ng-model="newOptionss.flabors" type="number" class="form-control" id="flavors" placeholder="Enter Price">
+				<input ng-model="newOptionss.flavors" type="number" class="form-control" id="flavors" placeholder="Enter Price">
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="size">Size</label>
@@ -46,7 +46,11 @@
 			    <label for="sweets">Toppings</label>
 			    <input ng-model="newOptions.toppings" type="text" class="form-control" id="toppings" placeholder="Enter Toppings">
 			  </div>
-			  <button type="submit" class="btn btn-default" ng-disabled="addToCart.$invalid">Add to Cart</button>
+			  <div class="form-group form-group-sm">
+			    <label for="quantity">Quantity</label>
+			    <input ng-model="newProduct.quantity" type="number" class="form-control" id="toppings" placeholder="Number of Drinks">
+			  </div>
+			  <button type="submit" class="btn btn-default" ng-disabled="buildDrink.$invalid">Add to Cart</button>
 			  </div>
 			</form>
 	</div>

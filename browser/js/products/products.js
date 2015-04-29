@@ -72,6 +72,16 @@ app.factory('ProductReviewsFactory', function ($http, $stateParams) {
 
 });
 
+app.service('OptionsDropdowns', function ($http) {
+
+  $http.get('/api/cart/options')
+    .then(function(response) {
+      console.log("dropdown data", response.data);
+      return response.data;
+    });
+
+});
+
 app.controller('ProductsCtrl', function ($scope) {
     var categories = ['tea', 'coffee', 'decaf', 'hot', 'ice', 'green tea', 'black tea'];
     $scope.categories = categories;
@@ -93,7 +103,7 @@ app.controller('ProductsHomeCtrl', function ($scope) {
 
 });
 
-app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, $stateParams, $http) {
+app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, OptionsDropdowns, $stateParams, $http) {
 
   $scope.reviews = {};
 
@@ -123,7 +133,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
     );
     
   }
-                
+
 
   $scope.addReview = function() {
     // console.log('new review: ', $scope.newReview);
@@ -139,6 +149,8 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   DrinkProductFactory.getProduct()
     .then(function(data) {
         $scope.product = data;
+        $scope.newProduct.productId = data._id;
+        $scope.newProduct.price = data.price;
     });
 
   ProductReviewsFactory.getReviews().then(function(data) {
@@ -217,14 +229,19 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
     toppings: null,
   };
 
+  $scope.newProduct = {
+    options: $scope.newOptions,
+    quantity: 1
+  }
+
   $scope.addToCart = function() {
       // console.log('new options: ', $scope.newOptions);
 
-      $http.put("api/products/" + data.id, $scope.newProduct)
+      $http.post("api/cart", $scope.newProduct)
       .then (function(response) {
-          console.log('hi');
+          console.log("new product response", response.data);
       }).catch(function(err) {
-          console.log('err');
+          console.log('new product post err');
       });
 
   }

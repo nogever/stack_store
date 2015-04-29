@@ -65,12 +65,19 @@ var schema = new mongoose.Schema({
 // 	// next();
 // });
 
-module.exports = schema;
+// module.exports = schema;
 
+mongoose.model('Options', schema);
 
+// var options = new Options({name: "Sean Kim", username: 'srockk', email: 'nogever@ggmail.com', roles: ['admin'], password: 'password'});
 
-
-
+// options.save(function(err) {
+//   if(err) {
+//     console.log(err);
+//   } else {
+//     console.log('user: ' + user.username + " saved.");
+//   }
+// });
 
 
 

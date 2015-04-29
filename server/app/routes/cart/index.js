@@ -6,6 +6,7 @@ var _ = require('lodash');
 
 var ProductModel = mongoose.model('Product');
 var CartModel = mongoose.model('Cart');
+var OptionsModel = mongoose.model('Options');
 
 module.exports = router;
 
@@ -14,18 +15,41 @@ module.exports = router;
 
 router.get('/', function (req, res, next) {
 
-	if (!req.session.cartContents) {
-		req.session.cartContents = buildTestCart();
-	};
+	// if (!req.session.cart) {
+		req.session.cart = buildTestCart();
+	// };
 
 	console.log('cart session: ', req.session.id);
 	console.log('session: ', req.session);
 
-	res.send(req.session.cartContents);
+	res.send(req.session.cart);
+
+});
+
+//get options
+//uri: api/cart/options
+
+router.get('/options', function (req, res, next) {
+
+	var dropdowns = {
+		sweets: OptionsModel.schema.path('sweets').enumValues,
+		milk: OptionsModel.schema.path('milk').enumValues,
+		flavors: OptionsModel.schema.path('flavors').enumValues,
+		size: OptionsModel.schema.path('size').enumValues,
+		toppings: OptionsModel.schema.path('toppings').enumValues
+	}
+
+	res.json(dropdowns);
 
 });
 
 router.post('/', function(req, res, next) {
+
+	productDetails = req.body;
+
+	// req.body.productFromPage
+
+	req.session.cart.products.push(productDetails);
 
 });
 
