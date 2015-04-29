@@ -4,6 +4,11 @@ var schema = new mongoose.Schema({
 	title: {type: String, required: true},
 	price: {type: Number, required: true},
 	description: {type: String, required: true},
+	type: { type: String, enum: [
+		'coffee', 
+		'tea'
+		]
+	},
 	category: [String],
 	photo: String,
 	stock: {type: Number, required: true},
