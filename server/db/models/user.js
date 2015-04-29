@@ -74,7 +74,7 @@ schema.method('correctPassword', function (candidatePassword) {
 mongoose.model('User', schema);
 
 // var User = mongoose.model('User', schema);
-// var user = new User({name: "Sean Kim", username: 'srockk', email: 'nogever@gmail.com', roles: ['admin'], password: 'password'});
+// var user = new User({name: "Sean Kim", username: 'srockk', email: 'nogever@ggmail.com', roles: ['admin'], password: 'password'});
 
 // user.save(function(err) {
 //   if(err) {

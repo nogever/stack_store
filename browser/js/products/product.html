@@ -1,0 +1,91 @@
+<div class="row">
+	<div class="featured-tea">
+	</div>
+</div>
+<pre>
+	{{ reviews | json }}
+</pre>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="thumbnail" >
+			<img src="{{product.photo}}" alt="">
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div>
+			<h3>{{ product.title }}</h3>
+			<h5>
+				<span class="label label-danger"
+					  ng-repeat="category in product.category">{{ category }}</span>
+			</h5>
+			<h5>{{ product.description }}</h5>
+			<h3>Add Options</h3>
+			<form name="addToCart" ng-submit="addToCart.$valid && submit()" novalidate>
+			  <div class="form-group form-group-sm">
+			    <label for="sweets">Sweets</label>
+			    <select class="form-control">
+				  	<option>1</option>
+				</select>
+			    <input ng-model="newOptions.sweets" type="text" class="form-control" id="sweets" placeholder="Enter Sweets">
+			  </div>
+			  <div class="form-group form-group-sm">
+			    <label for="milk">Milk</label>
+			    <input ng-model="newOptions.milk" type="text" class="form-control" id="milk" placeholder="Enter Milk">
+			  </div>
+			  <div class="form-group form-group-sm">
+			    <label for="flavors">Flavors</label>
+				<input ng-model="newOptionss.flabors" type="number" class="form-control" id="flavors" placeholder="Enter Price">
+			  </div>
+			  <div class="form-group form-group-sm">
+			    <label for="size">Size</label>
+			    <input ng-model="newOptions.size" type="text" class="form-control" id="size" placeholder="Enter Size">
+			  </div>
+			  <div class="form-group form-group-sm">
+			    <label for="sweets">Toppings</label>
+			    <input ng-model="newOptions.toppings" type="text" class="form-control" id="toppings" placeholder="Enter Toppings">
+			  </div>
+			  <button type="submit" class="btn btn-default" ng-disabled="addToCart.$invalid">Add to Cart</button>
+			  </div>
+			</form>
+	</div>
+</div>
+
+<pre>
+{{ newReview | json }}
+</pre>
+
+<div class="row">
+	<h3>Add Review</h3>
+		<form name="addNewReview" ng-submit="addReview()" novalidate>
+		  <div class="form-group form-group-sm">
+		    <label for="title">Title</label>
+		    <input ng-model="newReview.title" type="text" class="form-control" id="title" placeholder="Enter Title">
+		  </div>
+		  <div class="form-group form-group-sm">
+		    <label for="rating">Rating</label>
+		    <input ng-model="newReview.rating" type="text" class="form-control" id="size" placeholder="Enter Rating 1 to 5">
+		  </div>
+		  <div class="form-group form-group-sm">
+		    <label for="text">Review</label>
+		    <textarea ng-model="newReview.text" class="form-control" rows="3" id="text" placeholder="Enter Comments"></textarea>
+		   <!--  <input ng-model="newReview.text" type="text" class="form-control" id="text" placeholder="Enter Comments"> -->
+		  </div>
+		  <button type="submit" class="btn btn-default">Add New Review</button>
+		  </div>
+		</form>
+	<h3>Reviews</h3>
+	<div class="col-md-12">
+		<div 
+			ng-repeat="review in reviews" 
+			class="product-review">
+			<h4>{{ review.title }}</h4>
+			<span>{{review.date}}</span>
+			<span>{{review.user.name}}</span>
+			<span>{{review.rating}}</span>
+			<p>{{ review.text }}</p>
+
+		</div>
+	</div>
+</div>

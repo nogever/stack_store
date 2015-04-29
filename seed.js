@@ -133,18 +133,138 @@ var seedReviews = function () {
 var seedProducts = function () {
 
     var products = [
-        {title:"Caffè Americano", price:500, description:"Caffè Americano or simply Americano (the name is also spelled with varying capitalization and use of diacritics: e.g. Café Americano, Cafe Americano, etc.) is a style of coffee prepared by adding hot water to espresso, giving a similar strength to but different flavor from regular drip coffee. ", category: "coffee", photo:"http://upload.wikimedia.org/wikipedia/commons/0/09/Hokitika_Cheese_and_Deli%2C_Hokitika_%283526706594%29.jpg", reviews:null, stock:2, cost:98},
-        {title:"Café Cubano", price:700, description:"Espresso which originated in Cuba after espresso machines were first imported there from Italy. Specifically, it refers to an espresso shot which is sweetened with demerara sugar as it is being brewed.", category: "coffee", photo:"http://upload.wikimedia.org/wikipedia/commons/f/f7/Linea_doubleespresso.jpg", reviews:null, stock:12, cost:78},
-        {title:"Caffè crema", price:700, description:"A long espresso drink primarily served in Switzerland and Austria and northern Italy", category: "coffee", photo:"http://www.blogto.com/listings/cafes/upload/2010/10/201011015-crema_04.jpg", reviews:null, stock:1, cost:88},
-        {title:"Ristretto", price:700, description:"Short shot of espresso made with the normal amount of ground coffee but extracted with about half the amount of water.", category: "coffee", photo:"http://ineedcoffee.com/wp-content/uploads/2007/09/IMG_9259.jpg", reviews:null, stock:36, cost:88},
-        {title:"Mocha ", price:700, description:"Typically one third espresso and two thirds steamed milk, but a portion of chocolate is added, typically in the form of a chocolate syrup, although other vending systems use instant chocolate powder.", category: "coffee", photo:"http://upload.wikimedia.org/wikipedia/commons/5/58/Mocha_Latte_Costa_Rica.JPG", reviews:null, stock:6, cost:98},
-        {title:"Frappé", price:500, description:"Foam-covered iced coffee drink made from spray-dried instant coffee. It is very popular in Greece especially during summer, but has now spread on to other countries.", category: "coffee", photo:"http://upload.wikimedia.org/wikipedia/commons/7/73/Cafe-frape-glas-holztisch-unscharf.jpg", reviews:null, stock:12, cost:98},
-        {title:"Green Tea", price:500, description:"Green tea is made from the leaves from Camellia sinensis that have undergone minimal oxidation during processing.", category: "tea", photo:"http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg", reviews:null, stock:32, cost:38},
-        {title:"Black Tea", price:300, description:"Tea that is more oxidized than oolong, green and white teas. All four types are made from leaves of the shrub Camellia sinensis. Black tea is generally stronger in flavor than the less oxidized teas.", category: "tea", photo:"http://www.motherearthliving.com/~/media/Images/MEL/Editorial/Articles/Magazine%20Articles/2011/12-01/Winter%20Drinks%20Turmeric-Black%20Tea%20Brew/black-tea.jpg", reviews:null, stock:20, cost:88},
-        {title:"Lotus Tea", price:300, description:"High-quality green tea leaves are placed within lotus flowers for a day to acquire the scent, then the tea leaves are removed and packaged.", category: "tea", photo:"http://upload.wikimedia.org/wikipedia/commons/3/35/Vietnameselotustea.jpg", reviews:null, stock:16, cost:48},
-        {title:"Darjeeling Tea", price:300, description:"Yields a thin-bodied, light-coloured infusion with a floral aroma. The flavour can include a tinge of astringent tannic characteristics, and a musky spiciness sometimes described as ", category: "tea", photo:"http://upload.wikimedia.org/wikipedia/commons/1/14/Darjeeling-tea-first-flush-in-cup.jpg", reviews:null, stock:38, cost:78},
-        {title:"Flowering Tea", price:300, description:"Consist each of a bundle of dried tea leaves wrapped around one or more dried flowers. These are made by binding tea leaves and flowers together into a bulb and are then set to dry.", category: "tea", photo:"http://upload.wikimedia.org/wikipedia/commons/e/ea/ExoticFlame.JPG", reviews:null, stock:37, cost:68},
-        {title:"Morroccan Menthe Tea", price:300, description:"A green tea prepared with spearmint leaves and sugar, traditional to the Maghreb region (Northwest Africa: Morocco, Algeria, and Tunisia).", category: "tea", photo:"http://upload.wikimedia.org/wikipedia/commons/6/6c/The_menthe.jpg", reviews:null, stock:23, cost:88}
+        {
+            title:"Caffè Americano", 
+            price:500, 
+            description:"Caffè Americano or simply Americano (the name is also spelled with varying capitalization and use of diacritics: e.g. Café Americano, Cafe Americano, etc.) is a style of coffee prepared by adding hot water to espresso, giving a similar strength to but different flavor from regular drip coffee. ", 
+            type: "coffee", 
+            category: ["americano", "ice coffee", "decaf", "freshly brewed coffee"], 
+            photo:"http://upload.wikimedia.org/wikipedia/commons/0/09/Hokitika_Cheese_and_Deli%2C_Hokitika_%283526706594%29.jpg", 
+            reviews:null, 
+            stock:2, 
+            cost:98
+        },
+        {
+            title:"Café Cubano", 
+            price:700, 
+            description:"Espresso which originated in Cuba after espresso machines were first imported there from Italy. Specifically, it refers to an espresso shot which is sweetened with demerara sugar as it is being brewed.", 
+            type: "coffee", 
+            category: ["espresso", "decaf", "ice", "freshly brewed coffee"], 
+            photo:"http://upload.wikimedia.org/wikipedia/commons/f/f7/Linea_doubleespresso.jpg", 
+            reviews:null, 
+            stock:12, 
+            cost:78
+        },
+        {
+            title:"Caffè crema", 
+            price:700, 
+            description:"A long espresso drink primarily served in Switzerland and Austria and northern Italy", 
+            type: "coffee", 
+            category: ["espresso", "ice", "freshly brewed coffee"], 
+            photo:"http://www.blogto.com/listings/cafes/upload/2010/10/201011015-crema_04.jpg", 
+            reviews:null, 
+            stock:1, 
+            cost:88
+        },
+        {
+            title:"Ristretto", 
+            price:700, 
+            description:"Short shot of espresso made with the normal amount of ground coffee but extracted with about half the amount of water.", 
+            type: "coffee", 
+            category: ["espresso", "decaf", "freshly brewed coffee"], 
+            photo:"http://ineedcoffee.com/wp-content/uploads/2007/09/IMG_9259.jpg", 
+            reviews:null, 
+            stock:36, 
+            cost:88
+        },
+        {
+            title:"Mocha", 
+            price:700, 
+            description:"Typically one third espresso and two thirds steamed milk, but a portion of chocolate is added, typically in the form of a chocolate syrup, although other vending systems use instant chocolate powder.", 
+            type: "coffee", 
+            category: ["Mocha", "decaf", "ice", "freshly brewed coffee"], 
+            photo:"http://upload.wikimedia.org/wikipedia/commons/5/58/Mocha_Latte_Costa_Rica.JPG", 
+            reviews:null, 
+            stock:6, 
+            cost:98
+        },
+        {
+            title:"Frappé", 
+            price:500, 
+            description:"Foam-covered iced coffee drink made from spray-dried instant coffee. It is very popular in Greece especially during summer, but has now spread on to other countries.", 
+            type: "coffee", 
+            category: ["Frappé", "freshly brewed coffee"], 
+            photo:"http://upload.wikimedia.org/wikipedia/commons/7/73/Cafe-frape-glas-holztisch-unscharf.jpg", 
+            reviews:null, 
+            stock:12, 
+            cost:98
+        },
+        {
+            title:"Green Tea", 
+            price:500, 
+            description:"Green tea is made from the leaves from Camellia sinensis that have undergone minimal oxidation during processing.", 
+            type: "tea", 
+            category: ["green tea", "decaf", "ice"],
+            photo:"http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg", 
+            reviews:null, 
+            stock:32, 
+            cost:38
+        },
+        {
+            title:"Black Tea", 
+            price:300, 
+            description:"Tea that is more oxidized than oolong, green and white teas. All four types are made from leaves of the shrub Camellia sinensis. Black tea is generally stronger in flavor than the less oxidized teas.", 
+            type: "tea", 
+            category: ["black tea", "decaf", "ice"],
+            photo:"http://www.motherearthliving.com/~/media/Images/MEL/Editorial/Articles/Magazine%20Articles/2011/12-01/Winter%20Drinks%20Turmeric-Black%20Tea%20Brew/black-tea.jpg", 
+            reviews:null, 
+            stock:20, 
+            cost:88
+        },
+        {
+            title:"Lotus Tea", 
+            price:300, 
+            description:"High-quality green tea leaves are placed within lotus flowers for a day to acquire the scent, then the tea leaves are removed and packaged.", 
+            type: "tea", 
+            category: ["Lotus Tea"],
+            photo:"http://upload.wikimedia.org/wikipedia/commons/3/35/Vietnameselotustea.jpg", 
+            reviews:null, 
+            stock:16, 
+            cost:48
+        },
+        {
+            title:"Darjeeling Tea", 
+            price:300, 
+            description:"Yields a thin-bodied, light-coloured infusion with a floral aroma. The flavour can include a tinge of astringent tannic characteristics, and a musky spiciness sometimes described as ", 
+            type: "tea", 
+            category: ["Darjeeling Tea"],
+            photo:"http://upload.wikimedia.org/wikipedia/commons/1/14/Darjeeling-tea-first-flush-in-cup.jpg", 
+            reviews:null, 
+            stock:38, 
+            cost:78
+        },
+        {
+            title:"Flowering Tea", 
+            price:300, 
+            description:"Consist each of a bundle of dried tea leaves wrapped around one or more dried flowers. These are made by binding tea leaves and flowers together into a bulb and are then set to dry.", 
+            type: "tea", 
+            category: ["Flowering Tea", "decaf"],
+            photo:"http://upload.wikimedia.org/wikipedia/commons/e/ea/ExoticFlame.JPG", 
+            reviews:null, 
+            stock:37, 
+            cost:68
+        },
+        {
+            title:"Morroccan Menthe Tea", 
+            price:300, 
+            description:"A green tea prepared with spearmint leaves and sugar, traditional to the Maghreb region (Northwest Africa: Morocco, Algeria, and Tunisia).", 
+            type: "tea", 
+            category: ["Morroccan Menthe Tea"],
+            photo:"http://upload.wikimedia.org/wikipedia/commons/6/6c/The_menthe.jpg", 
+            reviews:null, 
+            stock:23, 
+            cost:88
+        }
     ];
 
     return q.invoke(Product, 'create', products);

@@ -14,9 +14,12 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	var modelParams = req.query.category ? { category: req.query.category } : {};
-	
-	ProductModel.find(modelParams)
+	var categoryModelParams = req.query.category ? { category: req.query.category } : {};
+	var typeModelParams = req.query.typeName ? { type: req.query.typeName } : {};
+	var typeName = req.query.typeName;
+
+	ProductModel.find(categoryModelParams)
+		.where({ type: typeName })
 		.exec(function(err, products) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
@@ -37,14 +40,16 @@ router.get('/:id', function (req, res, next) {
 // uri: api/products/id/reviews
 router.get('/:id/reviews', function (req, res, next) {
 
-	ProductModel.findById(req.params.id)
-		.exec(function(err, product) {
+	ReviewModel.find({product: req.params.id})
+		.exec(function(err, reviews) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
-			ProductModel.getReviews().then(function() {
-				console.log("made it into review method");
-				res.json(product.reviews);
-			});
+			// console.log(product);
+			// reviews.getReviews().then(function() {
+				// console.log("made it into review method");
+				console.log(reviews);
+				res.json(reviews);
+			// });
 		});
 });
 
