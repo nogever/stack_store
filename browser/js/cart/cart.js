@@ -31,12 +31,13 @@ app.factory('CartFactory', function ($http) {
 });
 
 app.controller('CartCtrl', function ($scope, cartInfo) {
-	$scope.myTestCart = {
-		cartName: 'my cart!',
-		cartQty: 10
-	};
 
 	$scope.cartInfo = cartInfo;
+
+	$scope.removeRow = function (productIndex) {
+		$scope.cartInfo.products.splice(productIndex, 1);
+	};
+
 });
 
 app.directive('borderOnHover', function(){
