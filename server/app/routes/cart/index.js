@@ -30,8 +30,26 @@ router.get('/', function (req, res, next) {
 		            productId: "99992221",  
 		            options: [{ sweets: "sweet & low", size: "mediumstack", toppings: "cocoa powder"}], 
 		            quantity: 1,
-		            price: 475
+		            price: 325
 		        },
+		        {  
+		            productId: "99253221",  
+		            options: [{ sweets: "splenda", size: "fullstack", toppings: "cocoa powder"}], 
+		            quantity: 1,
+		            price: 325
+		        },
+		        {  
+		            productId: "97732221",  
+		            options: [{ sweets: "raw sugar", size: "fullstack", toppings: "cinnamon"}], 
+		            quantity: 1,
+		            price: 250
+		        },
+		        {  
+		            productId: "00123221",  
+		            options: [{ sweets: "none", size: "mediumstack", toppings: "none"}], 
+		            quantity: 1,
+		            price: 550
+		        }
 		    ],
 		    subTotal:1000,
 		    tax:825, 
