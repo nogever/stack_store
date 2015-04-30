@@ -38,7 +38,6 @@ var schema = new mongoose.Schema({
 		type: String, 
 		default: 'none',
 		enum: [
-			'none',
 			'fullstack', 
 			'mediumstack', 
 			'smallstack'
