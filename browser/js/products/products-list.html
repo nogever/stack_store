@@ -10,19 +10,28 @@
     <div class="masonry-brick" ng-repeat="brick in bricks">
         <img ng-src="{{ brick.src }}" alt="A masonry brick">
     </div> -->
-	<div class="col-md-4"
-		ng-repeat="product in products">
-		<div class="thumbnail" >
-			<img ng-src="{{product.photo}}" alt="">
-			<div class="caption text-center">
-				<h3>{{ product.title }}</h3>
-				<h5>
-					<span class="label label-danger"
-						  ng-repeat="category in product.category">{{ category }}</span>
-				</h5>
-				<h5>{{ product.description }}</h5>
-				<a ui-sref="products.product({ id: product._id })" class="btn btn-info" role="button">More Info</a>
+
+<!--     <div masonry>
+    <div class="masonry-brick" ng-repeat="brick in bricks">
+        <img ng-src="{{ brick.src }}" alt="A masonry brick">
+    </div>
+</div> -->
+
+    <div masonry>
+		<div class="col-md-4 masonry-brick"
+			ng-repeat="product in products">
+			<div class="thumbnail" >
+				<img ng-src="{{product.photo}}" alt="">
+				<div class="caption text-center">
+					<h3>{{ product.title }}</h3>
+					<h5>
+						<span class="label label-danger"
+							  ng-repeat="category in product.category">{{ category }}</span>
+					</h5>
+					<h5>{{ product.description }}</h5>
+					<a ui-sref="products.product({ id: product._id })" class="btn btn-info" role="button">More Info</a>
+				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
 </div>
