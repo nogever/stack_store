@@ -29,8 +29,10 @@
 		        </div>
 		        <div class="navbar-collapse collapse sidebar-navbar-collapse">
 		          <ul class="nav navbar-nav">
- 		            <li ng-repeat="category in categories"
- 						><a ui-sref="products.category({ categoryName: category })">{{ category }}</a></li>
+ 		            <li ng-repeat="category in teaCategories"
+ 						><a ui-sref="tea.products({ categoryName: category })">{{ category }}</a></li>
+ 					<li ng-repeat="category in coffeeCategories"
+ 						><a ui-sref="coffee.products({ categoryName: category })">{{ category }}</a></li>
 		          </ul>
 		        </div><!--/.nav-collapse -->
 		      </div>
