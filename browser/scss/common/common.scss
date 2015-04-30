@@ -6,12 +6,13 @@
 	}
 }
 .sub-banner-tea{
-	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(http://t.wallpaperweb.org/wallpaper/development/1920x1200/Coffee_Tea_79.jpg) no-repeat bottom fixed;
+	background: #044c29;
+	xbackground: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(http://t.wallpaperweb.org/wallpaper/development/1920x1200/Coffee_Tea_79.jpg) no-repeat bottom fixed;
 }
 
 .sub-banner-coffee{
-	height:300px;
-	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(http://www.teacoffee.gov.np/images/gallery/ca538c343179bf0fbdfab6cd10469afd_1415619482.jpg) no-repeat bottom fixed;
+	background: #30120d;
+	xbackground: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(http://www.teacoffee.gov.np/images/gallery/ca538c343179bf0fbdfab6cd10469afd_1415619482.jpg) no-repeat bottom fixed;
 }
 .sub-banner-tea,
 .sub-banner-coffee{
@@ -19,22 +20,48 @@
 	.header{
   		font-weight: 300;
   		color: #fff;
-  		padding:60px 0;
+  		padding:50px 0;
 
   		h1{
-  			font-size:80px;
+  			font-size:60px;
   			font-weight: 300;
   		}
   		p{
-  			font-size:40px;
+  			font-size:30px;
   		}
   	}
 }
+
+.label {
+	display: inline-block;
+	margin:3px;
+	background-color: #333;
+	border-radius: 0;
+}
+
+.btn {
+	border-radius: 0;
+}
+
+.btn-info {
+	border-color: #fff;
+	background-color: #044c29;
+	&:hover{
+		background-color: #167f39;
+		border-color:#fff;
+	}
+}
+
+
+
 .navbar-default{
 	background-color:#fff;
 	border-color:#fff;
+	font-size: 24px;
+	font-weight:300;
 }
 .navbar-default .navbar-nav > li > a {
+	color:#333;
 	background-color:#fff;
 	border-bottom: 1px solid #333;
 }

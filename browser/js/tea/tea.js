@@ -24,7 +24,7 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('TeaCtrl', function ($scope) {
-  var categories = ['tea', 'decaf', 'hot', 'ice', 'green tea', 'black tea'];
+  var categories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
   $scope.categories = categories;
 });
 

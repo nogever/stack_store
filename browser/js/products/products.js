@@ -87,8 +87,11 @@ app.factory('OptionsDropdowns', function ($http) {
 });
 
 app.controller('ProductsCtrl', function ($scope) {
-    var categories = ['tea', 'coffee', 'decaf', 'hot', 'ice', 'green tea', 'black tea'];
-    $scope.categories = categories;
+  var teaCategories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
+  var coffeeCategories = ['coffee', 'decaf', 'ice', 'americano', 'espresso', 'freshly brewed coffee'];
+
+  $scope.teaCategories = teaCategories;
+  $scope.coffeeCategories = coffeeCategories;
 });
 
 
