@@ -26,25 +26,32 @@
 			  <div class="form-group form-group-sm">
 			    <label for="sweets">Sweets</label>
 			    <select class="form-control">
-			
-				</select>
-			    <input ng-model="newOptions.sweets" type="text" class="form-control" id="sweets" placeholder="Enter Sweets">
+			    	<option ng-repeat="sweet in dropdowns.sweets">{{ sweet }}</option>
+			    </select>
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="milk">Milk</label>
-			    <input ng-model="newOptions.milk" type="text" class="form-control" id="milk" placeholder="Enter Milk">
+			    <select class="form-control">
+			    	<option ng-repeat="milk in dropdowns.milk">{{ milk }}</option>
+			    </select>
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="flavors">Flavors</label>
-				<input ng-model="newOptionss.flavors" type="number" class="form-control" id="flavors" placeholder="Enter Price">
+			    <select class="form-control">
+			    	<option ng-repeat="flavor in dropdowns.flavors">{{ flavor }}</option>
+			    </select>
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="size">Size</label>
-			    <input ng-model="newOptions.size" type="text" class="form-control" id="size" placeholder="Enter Size">
+			    <select class="form-control">
+			    	<option ng-repeat="size in dropdowns.size">{{ size }}</option>
+			    </select>
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="sweets">Toppings</label>
-			    <input ng-model="newOptions.toppings" type="text" class="form-control" id="toppings" placeholder="Enter Toppings">
+			    <select class="form-control">
+			    	<option ng-repeat="milk in dropdowns.milk">{{ milk }}</option>
+			    </select>
 			  </div>
 			  <div class="form-group form-group-sm">
 			    <label for="quantity">Quantity</label>

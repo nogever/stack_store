@@ -72,13 +72,17 @@ app.factory('ProductReviewsFactory', function ($http, $stateParams) {
 
 });
 
-app.service('OptionsDropdowns', function ($http) {
+app.factory('OptionsDropdowns', function ($http) {
 
-  $http.get('/api/cart/options')
-    .then(function(response) {
-      console.log("dropdown data", response.data);
-      return response.data;
-    });
+  return {
+    getOptions: function () {
+      return $http.get('/api/cart/options')
+        .then(function(response) {
+          console.log("dropdown data", response.data);
+          return response.data;
+        });
+    }
+  }
 
 });
 
@@ -106,6 +110,11 @@ app.controller('ProductsHomeCtrl', function ($scope) {
 app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, OptionsDropdowns, $stateParams, $http) {
 
   $scope.reviews = {};
+
+  OptionsDropdowns.getOptions()
+    .then(function(options) {
+      $scope.dropdowns = options;
+  });
 
   if (AuthService.isAuthenticated()) {
 
@@ -156,70 +165,6 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   ProductReviewsFactory.getReviews().then(function(data) {
     $scope.reviews = data;
   });
-
-  $scope.coffeeOptions= {
-    sweets: [
-        'honey',
-        'raw sugar',
-        'splenda',
-        'none'
-    ],
-    milk: [
-        'soy',
-        'fat free',
-        'full milk',
-        'none'
-    ],
-    flavors: [
-        'A',
-        'B',
-        'C',
-        'none'
-    ],
-    size: [
-        'small',
-        'medium',
-        'large'
-    ],
-    toppings: [
-        'D',
-        'E',
-        'F',
-        'none'
-    ]
-  };
-
-  $scope.milkOptions= {
-    sweets: [
-        'honey',
-        'raw sugar',
-        'splenda',
-        'none'
-    ],
-    milk: [
-        'soy',
-        'fat free',
-        'full milk',
-        'none'
-    ],
-    flavors: [
-        'A',
-        'B',
-        'C',
-        'none'
-    ],
-    size: [
-        'small',
-        'medium',
-        'large'
-    ],
-    toppings: [
-        'D',
-        'E',
-        'F',
-        'none'
-    ]
-  };
 
   $scope.newOptions = {
     sweets: null,
