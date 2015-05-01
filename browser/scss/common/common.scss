@@ -1,3 +1,8 @@
+.logo {
+	font-size: 100px;
+	line-height: 100px;
+	font-family: 'Open Sans Condensed', sans-serif;
+}
 .heading-bar {
 	padding:15px 0;
 
@@ -6,12 +11,14 @@
 	}
 }
 .sub-banner-tea{
-	background: #044c29;
+	background: #000;
+	xbackground: #044c29;
 	xbackground: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(http://t.wallpaperweb.org/wallpaper/development/1920x1200/Coffee_Tea_79.jpg) no-repeat bottom fixed;
 }
 
 .sub-banner-coffee{
-	background: #30120d;
+	background: #000;
+	xbackground: #30120d;
 	xbackground: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(http://www.teacoffee.gov.np/images/gallery/ca538c343179bf0fbdfab6cd10469afd_1415619482.jpg) no-repeat bottom fixed;
 }
 .sub-banner-tea,

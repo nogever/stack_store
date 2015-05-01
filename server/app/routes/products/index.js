@@ -14,12 +14,11 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	var categoryModelParams = req.query.category ? { category: req.query.category } : {};
-	var typeModelParams = req.query.typeName ? { type: req.query.typeName } : {};
-	var typeName = req.query.typeName;
+	var categoryParams = req.query.category ? { category: req.query.category } : {};
+	var typeParam = req.query.typeName ? { type: req.query.typeName } : {};
 
-	ProductModel.find(categoryModelParams)
-		.where({ type: typeName })
+	ProductModel.find( categoryParams )
+		.where( typeParam )
 		.exec(function(err, products) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
