@@ -78,7 +78,7 @@ app.factory('OptionsDropdowns', function ($http) {
     getOptions: function () {
       return $http.get('/api/cart/options')
         .then(function(response) {
-          console.log("dropdown data", response.data);
+          // console.log("dropdown data", response.data);
           return response.data;
         });
     }
@@ -183,13 +183,14 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   }
 
   $scope.addToCart = function() {
-      // console.log('new options: ', $scope.newOptions);
+    // console.log('hi');
+    //   console.log('new options: ', $scope.newOptions);
 
-      $http.post("api/cart", $scope.newProduct)
-      .then (function(response) {
-          console.log("new product response", response.data);
+      $http.put("api/cart", $scope.newProduct)
+      .then(function(response) {
+          console.log("new product response", response);
       }).catch(function(err) {
-          console.log('new product post err');
+          console.log('add to cart returned err');
       });
 
   }

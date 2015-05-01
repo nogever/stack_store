@@ -16,13 +16,27 @@ module.exports = router;
 router.get('/', function (req, res, next) {
 
 	// if (!req.session.cart) {
-		req.session.cart = buildTestCart();
+		// req.session.cart = buildTestCart();
 	// };
 
-	console.log('cart session: ', req.session.id);
-	console.log('session: ', req.session);
+	CartModel.findOne({userId: req.session.passport.user}).populate('products.productId').exec(function(err, cart) {
 
-	res.send(req.session.cart);
+		if (err) return next(err);
+		// console.log('cart session: ', cart);
+		// console.log('session: ', req.session);
+		// cart.products.forEach(function(product, index) {
+		// 	// console.log('product: ', product);
+		// 	ProductModel.findById(product.productId, function(err, p) {
+		// 		// console.log('p: ', p);
+		// 		product.name = p.title;
+		// 		console.log('product: ', product);
+		// 	})
+		// })
+		// console.log('cart with product name: ', cart.products);
+
+		res.send(cart);
+
+	});
 
 });
 
@@ -43,13 +57,23 @@ router.get('/options', function (req, res, next) {
 
 });
 
-router.post('/', function(req, res, next) {
+router.put('/', function(req, res, next) {
 
-	productDetails = req.body;
-
+	var productDetails = req.body;
+	// console.log('product detail', req.body);
+	var currentUser = req.session.passport.user;
 	// req.body.productFromPage
 
-	req.session.cart.products.push(productDetails);
+	// req.session.cart.products.push(p
+
+	CartModel.findOne({userId: currentUser}, function(err, cart) {
+		if (err) return next(err);
+		cart.products.push(productDetails);
+		cart.save();
+	}).exec(function(err, cart){
+
+		res.send(cart);
+	});
 
 });
 
@@ -57,62 +81,62 @@ router.post('/', function(req, res, next) {
 // This will eventually be removed, but is used now for building test data for the cart
 // This should only be executed once.
 
-var buildTestCart = (function() {
-	var executed = false;
+// var buildTestCart = (function() {
+// 	var executed = false;
 
-	return function () {
-		if(!executed) {
-			executed = true;
+// 	return function () {
+// 		if(!executed) {
+// 			executed = true;
 
-			//code to be run once (on server reset);
-			var cartData = {
-				    products: [
-				        {  
-				            productId: "01234567",  
-				            options: [{ sweets: "honey", milk: "fat free", size: "fullstack"}], 
-				            quantity: 1,
-				            price: 500
-				        },
-				        {  
-				            productId: "98765432",  
-				            options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
-				            quantity: 1,
-				            price: 250
-				        },
-				        {  
-				            productId: "99992221",  
-				            options: [{ sweets: "sweet & low", size: "mediumstack", toppings: "cocoa powder"}], 
-				            quantity: 1,
-				            price: 325
-				        },
-				        {  
-				            productId: "99253221",  
-				            options: [{ sweets: "splenda", size: "fullstack", toppings: "cocoa powder"}], 
-				            quantity: 1,
-				            price: 325
-				        },
-				        {  
-				            productId: "97732221",  
-				            options: [{ sweets: "raw sugar", size: "fullstack", toppings: "cinnamon"}], 
-				            quantity: 1,
-				            price: 250
-				        },
-				        {  
-				            productId: "00123221",  
-				            options: [{ sweets: "none", size: "mediumstack", toppings: "none"}], 
-				            quantity: 1,
-				            price: 550
-				        }
-				    ],
-				    subTotal:1000,
-				    tax:825, 
-				    total:1083
-			};
+// 			//code to be run once (on server reset);
+// 			var cartData = {
+// 				    products: [
+// 				        {  
+// 				            productId: "01234567",  
+// 				            options: [{ sweets: "honey", milk: "fat free", size: "fullstack"}], 
+// 				            quantity: 1,
+// 				            price: 500
+// 				        },
+// 				        {  
+// 				            productId: "98765432",  
+// 				            options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
+// 				            quantity: 1,
+// 				            price: 250
+// 				        },
+// 				        {  
+// 				            productId: "99992221",  
+// 				            options: [{ sweets: "sweet & low", size: "mediumstack", toppings: "cocoa powder"}], 
+// 				            quantity: 1,
+// 				            price: 325
+// 				        },
+// 				        {  
+// 				            productId: "99253221",  
+// 				            options: [{ sweets: "splenda", size: "fullstack", toppings: "cocoa powder"}], 
+// 				            quantity: 1,
+// 				            price: 325
+// 				        },
+// 				        {  
+// 				            productId: "97732221",  
+// 				            options: [{ sweets: "raw sugar", size: "fullstack", toppings: "cinnamon"}], 
+// 				            quantity: 1,
+// 				            price: 250
+// 				        },
+// 				        {  
+// 				            productId: "00123221",  
+// 				            options: [{ sweets: "none", size: "mediumstack", toppings: "none"}], 
+// 				            quantity: 1,
+// 				            price: 550
+// 				        }
+// 				    ],
+// 				    subTotal:1000,
+// 				    tax:825, 
+// 				    total:1083
+// 			};
 
-			return cartData;
-		}
-	};
-})();
+// 			return cartData;
+// 		}
+// 	};
+// })();
 
 
 

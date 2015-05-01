@@ -4,9 +4,10 @@ var optionsSchema = require('./options');
 
 var schema = new mongoose.Schema({
 	session: String,
+	userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 	products: [{
 		productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
-		options: [optionsSchema],
+		options: optionsSchema,
 		quantity: Number,
 		price: Number
 	}],
