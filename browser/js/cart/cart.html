@@ -14,9 +14,9 @@
 
 		  <!-- Repeat rows all products in the cart -->
 		  <tr ng-repeat="(productIndex, product) in cartInfo.products">
-		  	<td>{{ product.productId }}</td>
-		  	<td>{{ product.options[0] }}</td>
-		  	<td>{{ product.options[0].size }}</td>
+		  	<td>{{ product.productId.title }}</td>
+		  	<td>{{ product.options }}</td>
+		  	<td>{{ product.options.size }}</td>
 		  	<td>{{ product.quantity }}</td>
 		  	<td>{{ product.price / 100 | currency }}</td>
 		  	<td>

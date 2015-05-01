@@ -2,6 +2,7 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var addressSchema = require('./address');
+var Cart = mongoose.model('Cart');
 
 var schema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -74,15 +75,20 @@ schema.method('correctPassword', function (candidatePassword) {
 mongoose.model('User', schema);
 
 // var User = mongoose.model('User', schema);
-// var user = new User({name: "Sean Kim", username: 'srockk', email: 'nogever@ggmail.com', roles: ['admin'], password: 'password'});
+
+// var user = new User({name: "Lei", username: 'clearsky', email: 'lei@gmail.com', roles: ['admin'], password: 'password'});
 
 // user.save(function(err) {
 //   if(err) {
 //     console.log(err);
 //   } else {
-//     console.log('user: ' + user.username + " saved.");
+//     Cart.create({userId: user._id}, function(err, cart) {
+//         console.log('user: ' + user.username + " saved.");
+//         console.log('cart', cart);
+//     });
 //   }
 // });
+
 
 
 

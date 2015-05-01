@@ -23,7 +23,7 @@ router.get('/:id', function (req, res, next) {
 router.post('/', function (req, res, next) {
 	ReviewModel.create(req.body, function(err, review) {
 		if (err) return next(err);
-		console.log('saved a review to db', review);
+		// console.log('saved a review to db', review);
 		res.json(review);
 	});
 });
@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
 router.put('/:id', function (req, res, next) {
 	ReviewModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, review) {
 		if (err) return next(err);
-		console.log('updated review', review);
+		// console.log('updated review', review);
 		res.json(review);
 	});
 });
