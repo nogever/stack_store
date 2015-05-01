@@ -8,7 +8,7 @@
 </div>
 <div class="container">
 	<!-- <pre>
-		{{ teas | json }}
+		{{ products | json }}
 		{{ categories | json }}
 	</pre> -->
 	<!-- <div class="heading-bar">
@@ -29,8 +29,12 @@
 		        </div>
 		        <div class="navbar-collapse collapse sidebar-navbar-collapse">
 		          <ul class="nav navbar-nav">
- 		            <li ng-repeat="category in categories"
- 						><a ui-sref="tea.products({ categoryName: category })">{{ category }}</a></li>
+ 		            <!-- <li ng-repeat="category in categories"
+ 						><a ui-sref="tea.products({ categoryName: category })">{{ category }}</a>
+ 					</li> -->
+ 					<li ng-repeat="tea in teas | unique: 'category'"
+ 						><a ui-sref="tea.products({ categoryName: tea })">{{ tea }}</a>
+ 					</li>
 		          </ul>
 		        </div><!--/.nav-collapse -->
 		      </div>

@@ -23,9 +23,17 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('TeaCtrl', function ($scope) {
-  var categories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
-  $scope.categories = categories;
+app.controller('TeaCtrl', function ($scope, $http) {
+  var queryParams = {
+    category: null,
+    typeName: 'tea'
+  }
+  $http.get('/api/products', {
+          params: queryParams
+        }).then(function(response) {
+          $scope.teas = response.data;
+        });
+
 });
 
 app.controller('TeaHomeCtrl', function ($scope) {
@@ -33,7 +41,6 @@ app.controller('TeaHomeCtrl', function ($scope) {
 });
 
 app.controller('TeaListCtrl', function ($scope, DrinkProductsFactory, $stateParams) {
-    console.log('hi');
   var categoryName = $stateParams.categoryName;
 
   var typeName = 'tea';
@@ -51,36 +58,6 @@ app.controller('TeaListCtrl', function ($scope, DrinkProductsFactory, $statePara
 });
 
 app.controller('TeaProductCtrl', function ($scope, DrinkProductFactory, ProductReviewsFactory, $stateParams) {
-  // DrinkProductFactory.getProduct().then(function(data) {
-
-  //       $scope.product = data;
-
-  //   });
-
-  //   ProductReviewsFactory.getReviews().then(function(data) {
-  //     $scope.reviews = data;
-  //   });
-
-
-  //   $scope.newOptions = {
-  //       sweets: null,
-  //       milk: null,
-  //       flavors: null, 
-  //       size: null,
-  //       toppings: null,
-  //   };
-
-  //   $scope.submit = function() {
-  //       console.log('new options: ', $scope.newOptions);
-
-  //       $http.put("api/products/" + data.id, $scope.newOption)
-  //       .then (function(response) {
-  //           console.log('hi');
-  //       }).catch(function(err) {
-  //           console.log('err');
-  //       });
-  //   }
-
 
   AuthService.getLoggedInUser()
     .then(function(user) {
@@ -123,90 +100,5 @@ app.controller('TeaProductCtrl', function ($scope, DrinkProductFactory, ProductR
   ProductReviewsFactory.getReviews().then(function(data) {
     $scope.reviews = data;
   });
-
-  $scope.coffeeOptions= {
-    sweets: [
-        'honey',
-        'raw sugar',
-        'splenda',
-        'none'
-    ],
-    milk: [
-        'soy',
-        'fat free',
-        'full milk',
-        'none'
-    ],
-    flavors: [
-        'A',
-        'B',
-        'C',
-        'none'
-    ],
-    size: [
-        'small',
-        'medium',
-        'large'
-    ],
-    toppings: [
-        'D',
-        'E',
-        'F',
-        'none'
-    ]
-  };
-
-  $scope.milkOptions= {
-    sweets: [
-        'honey',
-        'raw sugar',
-        'splenda',
-        'none'
-    ],
-    milk: [
-        'soy',
-        'fat free',
-        'full milk',
-        'none'
-    ],
-    flavors: [
-        'A',
-        'B',
-        'C',
-        'none'
-    ],
-    size: [
-        'small',
-        'medium',
-        'large'
-    ],
-    toppings: [
-        'D',
-        'E',
-        'F',
-        'none'
-    ]
-  };
-
-  $scope.newOptions = {
-    sweets: null,
-    milk: null,
-    flavors: null, 
-    size: null,
-    toppings: null,
-  };
-
-  $scope.addToCart = function() {
-      console.log('new options: ', $scope.newOptions);
-
-      $http.put("api/products/" + data.id, $scope.newProduct)
-      .then (function(response) {
-          console.log('hi');
-      }).catch(function(err) {
-          console.log('err');
-      });
-
-  }
-
 
 });

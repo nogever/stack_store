@@ -2,7 +2,7 @@
 app.config(function ($stateProvider) {
   $stateProvider.state('coffee', {
     url:'/coffee',
-    templateUrl: 'js/coffee/coffee.html',
+    templateUrl: 'js/coffee/coffees.html',
     controller: 'CoffeeCtrl',
   });
   $stateProvider.state('coffee.home', {
@@ -23,9 +23,16 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('CoffeeCtrl', function ($scope) {
-  var categories = ['coffee', 'decaf', 'ice', 'americano', 'espresso', 'freshly brewed coffee'];
-  $scope.categories = categories;
+app.controller('CoffeeCtrl', function ($scope, $http) {
+  var queryParams = {
+    category: null,
+    typeName: 'coffee'
+  }
+  $http.get('/api/products', {
+          params: queryParams
+        }).then(function(response) {
+          $scope.coffees = response.data;
+        });
 });
 
 app.controller('CoffeeHomeCtrl', function ($scope) {

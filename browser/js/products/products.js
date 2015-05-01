@@ -86,12 +86,45 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope) {
-  var teaCategories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
-  var coffeeCategories = ['coffee', 'decaf', 'ice', 'americano', 'espresso', 'freshly brewed coffee'];
+app.controller('ProductsCtrl', function ($scope, $http) {
+  // var teaCategories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
+  // var coffeeCategories = ['coffee', 'decaf', 'ice', 'americano', 'espresso', 'freshly brewed coffee'];
 
-  $scope.teaCategories = teaCategories;
-  $scope.coffeeCategories = coffeeCategories;
+  // $scope.teaCategories = teaCategories;
+  // $scope.coffeeCategories = coffeeCategories;
+
+  var teaQueryParams = {
+    category: null,
+    typeName: 'tea'
+  }
+
+  $http.get('/api/products', {
+          params: teaQueryParams
+        }).then(function(response) {
+          $scope.teas = response.data;
+        });
+        
+  var coffeeQueryParams = {
+    category: null,
+    typeName: 'coffee'
+  }
+
+  $http.get('/api/products', {
+          params: coffeeQueryParams
+        }).then(function(response) {
+          $scope.coffees = response.data;
+        });
+
+  var queryParams = {
+    category: null,
+    typeName: null
+  }
+
+  $http.get('/api/products', {
+          params: queryParams
+        }).then(function(response) {
+          $scope.products = response.data;
+        });
 });
 
 
