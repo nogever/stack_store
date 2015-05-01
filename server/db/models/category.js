@@ -4,4 +4,8 @@ var schema = new mongoose.Schema({
 	name: String
 });
 
-module.exports = schema;
+// module.exports = schema;
+
+mongoose.model('Categories', schema);
+
+

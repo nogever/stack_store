@@ -27,7 +27,6 @@ app.controller('AddUserController', function($scope, $http) {
         email: null,
         username: null,
         role: null,
-        password: null,
         twitter: null,
         facebook: null,
         google: null

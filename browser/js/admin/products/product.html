@@ -26,13 +26,17 @@
     <span class="help-block">Enter original cost in cents. (e.g. enter 100 for $1.00)</span>
   </div>
   <div class="form-group form-group-sm">
-    <label for="adminProductStock">Quantity</label>
-    <input ng-model="newProduct.stock" type="number" class="form-control" id="adminProductStock" placeholder="Enter Quantity" value="{{ product.stock }}">
+    <label for="adminProductStock">Stock</label>
+    <input ng-model="newProduct.stock" type="number" class="form-control" id="adminProductStock"  value="{{ product.stock }}">
+    <p class="help-block">Enter stock quantity.</p>
   </div>
   <div class="form-group form-group-sm">
+    <label for="adminProductType">Type</label>
+    <select ng-model="newProduct.type" class="form-control" id="adminProductType" ng-option="category.name for category in categories"></select>
+  </div>  
+  <div class="form-group form-group-sm">
     <label for="adminProductCategory">Category</label>
-    <input ng-model="newProduct.category" type="text" class="form-control" id="adminProductCategory" value="{{ product.category }}">
-    <p class="help-block">Can enter more than one.</p>
+    <select ng-model="newProduct.category" class="form-control" id="adminProductCategory" ng-option="category.name for category in categories"></select>
   </div>
   <div class="form-group form-group-sm">
     <label for="adminProductPhoto">Image</label>

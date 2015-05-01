@@ -18,9 +18,18 @@ app.config(function ($stateProvider) {
 
 app.factory('ProductsFactory', function ($http) {
     return {
-        getProducts: function() {
-            return $http.get('/api/products')
-                     .then(function(response) {
+        getProducts: function(category, typeName) {
+            var queryParams = {};
+            if (category) {
+              queryParams.category = category;
+            }
+
+            if (typeName) {
+              queryParams.typeName = typeName;
+            }
+            return $http.get('/api/products', {params: queryParams})
+                    .then(function(response) {
+                        console.log(response);
                 return response.data;
             });
         }
