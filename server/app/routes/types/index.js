@@ -50,8 +50,10 @@ router.put('/:id', function (req, res, next) {
 // delete a product
 // uri: api/types/id
 router.delete('/:id', function (req, res, next) {
-	TypeModel.findByIdAndRemove(req.params.id);
-	res.status(200).end();
+	TypeModel.findByIdAndRemove(req.params.id, function(err, doc) {
+		if (err) res.status(500).send(err);
+		res.status(200).end();
+	});
 });
 
 

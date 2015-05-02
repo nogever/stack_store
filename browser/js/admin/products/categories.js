@@ -28,7 +28,7 @@ app.factory('CategoriesFactory', function ($http) {
     };
 });
 
-app.controller('CategoriesController', function ($scope, $http, allCategories, $stateParams) {
+app.controller('CategoriesController', function ($scope, $http, allCategories, CategoriesFactory) {
 
     $scope.categories = allCategories;
         // console.log('scope.categories: ', $scope.categories);
@@ -39,21 +39,51 @@ app.controller('CategoriesController', function ($scope, $http, allCategories, $
         .then(function(response) {
             // console.log("addCategory response: ", response);
             $scope.categories.push(response.data);
+            $('#adminCategoryName').val('');
         }).catch(function(err) {
             console.log('addCategory returned err');
         });
     };
 
+    $scope.editCategory = function() {
+        $('#category-' + this.category.name).attr('disabled', false);
+        $('.edit-' + this.category.name).attr('disabled', true);
+        $('.update-' + this.category.name).attr('disabled', false);
+    };
+
     $scope.updateCategory = function() {
 
-        $scope.newCategory._id = $stateParams._id;
+        var updatedCategoryName = $('#category-' + this.category.name).val();
 
-        $http.put('api/categories/:id', $scope.newCategory)
+        $scope.newCategory = {
+            name: updatedCategoryName
+        };
+
+        $http.put('api/categories/' + this.category._id, $scope.newCategory)
             .then(function(response) {
                 // console.log("updateCategory response: ", response);
             }).catch(function(err) {
                 console.log('updateCategory returned err');
             });
+
+        $('#category-' + this.category.name).attr('disabled', true);
+        $('.update-' + this.category.name).attr('disabled', true);
+        $('.edit-' + this.category.name).attr('disabled', false);
+
+    };
+
+    $scope.deleteCategory = function() {
+
+        $http.delete('api/categories/' + this.category._id)
+            .then(function(response) {
+                CategoriesFactory.getCategories().then(function(categories) {
+                    $scope.categories = categories;
+                })
+                // console.log("type successfully deleted", response);
+            }).catch(function(err) {
+                console.log('deleteCategory returned err');
+            });
+
     };
 
 });

@@ -77,6 +77,20 @@ router.put('/:id', function (req, res, next) {
 // delete a product
 // uri: api/products/id
 router.delete('/:id', function (req, res, next) {
-	ProductModel.findByIdAndRemove(req.params.id);
-	res.status(200).end();
+	ProductModel.findByIdAndRemove(req.params.id, function(err, doc) {
+		if (err) res.status(500).send(err);
+		res.status(200).end();
+	});
 });
+
+
+
+
+
+
+
+
+
+
+
+

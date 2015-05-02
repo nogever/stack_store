@@ -7,12 +7,14 @@
 	</div>
 	<div class="panel-body">
 		<div class="admin-c-rows" ng-repeat="category in categories">
-			<div class="admin-c-info">
-				<span class="admin-c-stock">{{ category.name }}</span>
-			</div>
-			<div class="admin-c-menu">
-				<a ui-sref="administrator.product({id: category._id})">Edit</a>
-			</div>
+			<form name="type-{{ category.name }}" class="form-inline">
+				<div class="form-group form-group-sm">
+					<input type="text" class="form-control" id="category-{{ category.name }}" value="{{ category.name }}" disabled>
+				</div>
+				<button class="btn btn-default edit-{{ category.name }}" ng-click="editCategory()">Edit</button>
+				<button class="btn btn-success update-{{ category.name }}" ng-click="updateCategory()" disabled>Save</button>
+				<button class="btn btn-danger delete-{{ category.name }}" ng-click="deleteCategory()">Delete</button>	
+			</form>
 		</div>
 	</div>
 
@@ -30,7 +32,7 @@
 		    <label for="adminCategoryName">Name</label>
 		    <input ng-model="newCategory.name" category="text" class="form-control" id="adminCategoryName" placeholder="Enter Category">
 		  </div>
-		  <button tategory="submit" class="btn btn-default" ng-disabled="newCategoryForm.$invalid">Submit</button>
+		  <button id="add-new-category" class="btn btn-default" ng-disabled="newCategoryForm.$invalid">Submit</button>
 	  </form>
 
 	</div>
