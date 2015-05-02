@@ -29,7 +29,7 @@ app.factory('ProductsFactory', function ($http) {
             }
             return $http.get('/api/products', {params: queryParams})
                     .then(function(response) {
-                        console.log(response);
+                        // console.log(response);
                 return response.data;
             });
         }

@@ -18,7 +18,7 @@
 			<div class="admin-p-info">
 				<span class="admin-p-title">{{ product.title }}</span>
 				<span class="admin-p-price">{{ product.price | currency }}</span>
-				<span class="admin-p-category" ng-repeat="category in product.categories">{{ category }}</span>
+				<span class="admin-p-category" ng-repeat="category in product.categories">{{ category.name }}</span>
 				<span class="admin-p-stock">{{ product.stock }}</span>
 			</div>
 			<div class="admin-p-menu">

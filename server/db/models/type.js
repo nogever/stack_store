@@ -6,6 +6,6 @@ var schema = new mongoose.Schema({
 
 // module.exports = schema;
 
-mongoose.model('Types', schema);
+mongoose.model('Type', schema);
 
 

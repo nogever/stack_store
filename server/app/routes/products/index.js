@@ -8,6 +8,8 @@ var OrderModel = mongoose.model('Order');
 var ProductModel = mongoose.model('Product');
 var ReviewModel = mongoose.model('Review');
 var StoreModel = mongoose.model('Store');
+var TypeModel = mongoose.model('Type');
+var CategoryModel = mongoose.model('Categories');
 
 module.exports = router;
 
@@ -19,10 +21,10 @@ router.get('/', function (req, res, next) {
 
 	ProductModel.find(categoryParams)
 		.where(typeParam)
-		.populate('products.type')
-		.populate('products.categories')
+		.populate('categories')
 		.exec(function(err, products) {
 			if (err) return next(err);
+			console.log(products);
 			res.json(products);
 		});
 });

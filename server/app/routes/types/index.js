@@ -3,7 +3,7 @@
 var router = require('express').Router();
 var mongoose = require('mongoose');
 
-var TypeModel = mongoose.model('Types');
+var TypeModel = mongoose.model('Type');
 
 module.exports = router;
 
