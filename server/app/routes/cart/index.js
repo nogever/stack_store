@@ -15,40 +15,22 @@ module.exports = router;
 
 router.get('/', function (req, res, next) {
 
-	// if (!req.session.cart) {
-		// req.session.cart = buildTestCart();
-	// };
-
-	// req.session.cart = null;
-	// if user logged in
 	if (req.session.passport.user){
-		CartModel.findOne({userId: req.session.passport.user}).populate('products.productId').exec(function(err, cart) {
-
+		CartModel.findOne({userId: req.session.passport.user})
+		.populate('products.productId')
+		.exec(function(err, cart) {
 			if (err) return next(err);
-			req.session.cart.products.forEach(function(product){
-				cart.products.push(product);
-			});
-			res.send(cart);
-
+			res.json(cart);
 		});	
 
 	} else { // if user doesn't log in
-		// if cart session exists, retrieve the current cart data
-		if (req.session.cart) {
-			
-			res.send(req.session.cart);
-			
-		} else { // if cart session doesn't exist, create new cart
-
-			req.session.cart = {
-				products: [],
-				subTotal: null,
-				tax: null,
-				total: null
-			}
-
-			res.send(req.session.cart);
-		}
+		
+		CartModel.findOne({session: req.sessionID})
+		.populate('products.productId')
+		.exec(function(err, cart) {
+			if (err) return next(err);
+			res.json(cart);
+		});	
 	}
 
 });
@@ -75,42 +57,34 @@ router.put('/', function(req, res, next) {
 	var productDetails = req.body;
 	// console.log('product detail', req.body);
 	var currentUser = req.session.passport.user;
-	// req.body.productFromPage
-
-	// req.session.cart.products.push(p
 
 	// if user loggin in
 	if (currentUser) {
-		CartModel.findOne({userId: currentUser}, function(err, cart) {
-			if (err) return next(err);
 
-			// push the products in current cart session to current cart database			
-			cart.products.push(productDetails);
-			cart.save();
-		 
-		}).exec(function(err, cart){
+		CartModel.findOneAndUpdate(
+			{userId: currentUser}, 
+			{$push: { products: productDetails }},
+			{upsert: true})
+		.exec(function(err, cart) {
+			if(err) return next(err)
+			console.log(err);
+			console.log('user existing cart ', cart);
+		});
 
-			res.send(cart);
-		});		
 	} else { // if user is not loggin
-		// if cart session exists, retrieve the current cart data
-		if (req.session.cart) {
 
-			req.session.cart.products.push(productDetails);
+		console.log(req.sessionID);	
+		// find cart for session ID
+		CartModel.findOneAndUpdate(
+			{session: req.sessionID}, 
+			{$push: { products: productDetails }},
+			{upsert: true})
+		.exec(function(err, cart) {
+			if(err) return next(err)
+			console.log(err);
+			console.log('anon existing cart ', cart);
+		});
 
-			res.send(req.session.cart);
-			
-		} else { // if cart session doesn't exist, create new cart
-
-			req.session.cart = {
-				products: [],
-				subTotal: null,
-				tax: null,
-				total: null
-			}
-
-			res.send(req.session.cart);
-		}		
 	}
 
 });

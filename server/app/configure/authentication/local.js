@@ -4,6 +4,8 @@ var _ = require('lodash');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
+var CartModel = mongoose.model('Cart');
+var q = require('q');
 
 module.exports = function (app) {
 
@@ -39,6 +41,37 @@ module.exports = function (app) {
                 if (err) return next(err);
                 // We respond with a reponse object that has user with _id and email.
                 res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
+
+                var cartPromises = [];
+                // var anonCart = CartModel.find({session: req.sessionID}).exec(function(err, cart){
+                //     console.log('anonCart upon login', cart);
+                //     // return cart;
+                // });
+
+                // var userCart = CartModel.find({userId: req.session.passport.user}).exec(function(err, cart){
+                //     console.log('userCart after login', cart);
+                //     // return cart;
+                // });
+
+                cartPromises[0] = CartModel.find({session: req.sessionID}).exec(function(err, cart){
+                    console.log('anonCart upon login', cart);
+                    // return cart;
+                });
+
+                cartPromises[1] = CartModel.find({userId: req.session.passport.user}).exec(function(err, cart){
+                    console.log('userCart after login', cart);
+                    // return cart;
+                });
+
+                q.all(cartPromises)
+                .then(function (results) {
+                    console.log('anon cart before merge', results[0].merge);
+                    console.log('user cart before merge', results[1].merge);
+                    // results[1].merge(results[0]);
+                    console.log('anon cart after merge', results[0]);
+                    console.log('user cart after merge', results[1]);
+                })
+
             });
 
         };
