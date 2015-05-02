@@ -14,14 +14,14 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	var categoryModelParams = req.query.category ? { category: req.query.category } : {};
-	var typeModelParams = req.query.typeName ? { type: req.query.typeName } : {};
-	var typeName = req.query.typeName;
+	var categoryParams = req.query.category ? { category: req.query.category } : {};
+	var typeParam = req.query.typeName ? { type: req.query.typeName } : {};
 
-	ProductModel.find(categoryModelParams)
-		.where({ type: typeName })
+	ProductModel.find(categoryParams)
+		.where(typeParam)
+		.populate('products.type')
+		.populate('products.categories')
 		.exec(function(err, products) {
-			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
 			res.json(products);
 		});
@@ -47,7 +47,7 @@ router.get('/:id/reviews', function (req, res, next) {
 			// console.log(product);
 			// reviews.getReviews().then(function() {
 				// console.log("made it into review method");
-				console.log(reviews);
+				// console.log(reviews);
 				res.json(reviews);
 			// });
 		});
@@ -56,10 +56,9 @@ router.get('/:id/reviews', function (req, res, next) {
 // post a new product
 // uri: api/products
 router.post('/', function (req, res, next) {
-	console.log(req.body);
 	ProductModel.create(req.body, function(err, product) {
 		if (err) return next(err);
-		console.log('saved product to db', product);
+		// console.log('saved product to db', product);
 		res.json(product);
 	});
 });
