@@ -26,6 +26,14 @@ schema.methods.getPrice = function() {
 	}
 };
 
+schema.statics.merge = function( anonCart ) {
+	console.log('before merge products anonCart', anonCart.products);
+	// this.products = this.products.concat( anonCart.products );
+	console.log('after merge products', this.products);
+	// anonCart.remove();
+	return; 
+}
+
 schema.methods.getSubTotal = function() {
 	var productsTotal = 0;
 	if (this.products.length) {

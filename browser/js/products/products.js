@@ -216,11 +216,10 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   }
 
   $scope.addToCart = function() {
-    // console.log('hi');
-    //   console.log('new options: ', $scope.newOptions);
 
       $http.put("api/cart", $scope.newProduct)
       .then(function(response) {
+          // display the current cart in popup window
           console.log("new product response", response);
       }).catch(function(err) {
           console.log('add to cart returned err');
@@ -229,7 +228,3 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   }
 
 });
-
-// app.controller('proByCategoryCtrl', function ($scope, teaProductsInfo) {
-//   $scope.teas = teaProductsInfo;
-// });

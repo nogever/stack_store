@@ -15,28 +15,23 @@ module.exports = router;
 
 router.get('/', function (req, res, next) {
 
-	// if (!req.session.cart) {
-		// req.session.cart = buildTestCart();
-	// };
+	if (req.session.passport.user){
+		CartModel.findOne({userId: req.session.passport.user})
+		.populate('products.productId')
+		.exec(function(err, cart) {
+			if (err) return next(err);
+			res.json(cart);
+		});	
 
-	CartModel.findOne({userId: req.session.passport.user}).populate('products.productId').exec(function(err, cart) {
-
-		if (err) return next(err);
-		// console.log('cart session: ', cart);
-		// console.log('session: ', req.session);
-		// cart.products.forEach(function(product, index) {
-		// 	// console.log('product: ', product);
-		// 	ProductModel.findById(product.productId, function(err, p) {
-		// 		// console.log('p: ', p);
-		// 		product.name = p.title;
-		// 		console.log('product: ', product);
-		// 	})
-		// })
-		// console.log('cart with product name: ', cart.products);
-
-		res.send(cart);
-
-	});
+	} else { // if user doesn't log in
+		
+		CartModel.findOne({session: req.sessionID})
+		.populate('products.productId')
+		.exec(function(err, cart) {
+			if (err) return next(err);
+			res.json(cart);
+		});	
+	}
 
 });
 
@@ -62,21 +57,61 @@ router.put('/', function(req, res, next) {
 	var productDetails = req.body;
 	// console.log('product detail', req.body);
 	var currentUser = req.session.passport.user;
-	// req.body.productFromPage
 
-	// req.session.cart.products.push(p
+	// if user loggin in
+	if (currentUser) {
 
-	CartModel.findOne({userId: currentUser}, function(err, cart) {
-		if (err) return next(err);
-		cart.products.push(productDetails);
-		cart.save();
-	}).exec(function(err, cart){
+		CartModel.findOneAndUpdate(
+			{userId: currentUser}, 
+			{$push: { products: productDetails }},
+			{upsert: true})
+		.exec(function(err, cart) {
+			if(err) return next(err)
+			console.log(err);
+			console.log('user existing cart ', cart);
+		});
 
-		res.send(cart);
-	});
+	} else { // if user is not loggin
+
+		console.log(req.sessionID);	
+		// find cart for session ID
+		CartModel.findOneAndUpdate(
+			{session: req.sessionID}, 
+			{$push: { products: productDetails }},
+			{upsert: true})
+		.exec(function(err, cart) {
+			if(err) return next(err)
+			console.log(err);
+			console.log('anon existing cart ', cart);
+		});
+
+	}
 
 });
 
+// delete a product from cart
+// uri: api/cart/product/:id
+router.delete('product/:id', function (req, res, next) {
+	if (req.session.passport.user){
+		CartModel.findOne({userId: req.session.passport.user})
+		.exec(function(err, cart) {
+
+			if (err) return next(err);
+
+			// remove the product from cart.products
+			// return the new cart.products
+			// update the cart database
+			// send the cart with updated products
+
+			res.send(cart);
+
+		});	
+	} else {
+		// remove a product from session.cart.products array
+		// return the updated seesion.cart.products array
+	}
+	res.status(200).end();
+});
 
 // This will eventually be removed, but is used now for building test data for the cart
 // This should only be executed once.
