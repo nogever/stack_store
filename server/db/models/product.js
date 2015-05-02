@@ -4,11 +4,7 @@ var schema = new mongoose.Schema({
 	title: {type: String, required: true},
 	price: {type: Number, required: true},
 	description: {type: String, required: true},
-	type: { type: String, enum: [
-		'coffee', 
-		'tea'
-		]
-	},
+	type: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
 	category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
 	photo: String,
 	stock: {type: Number, required: true},
