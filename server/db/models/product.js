@@ -9,7 +9,7 @@ var schema = new mongoose.Schema({
 		'tea'
 		]
 	},
-	category: [String],
+	category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
 	photo: String,
 	stock: {type: Number, required: true},
 	cost: {type: Number, required: true},

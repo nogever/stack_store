@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3>Categories</h3>
+		<div class="admin-ps-heading">
+			<span class="admin-c-price">Name</span>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="admin-c-rows" ng-repeat="category in categories">
+			<div class="admin-c-info">
+				<span class="admin-c-stock">{{ category.name }}</span>
+			</div>
+			<div class="admin-c-menu">
+				<a ui-sref="administrator.product({id: category._id})">Edit</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="panel panel-default">
+
+	<div class="panel-heading">
+		<h3 class="panel-title">Add New Category</h3>
+	</div>
+	<div class="panel-body">
+
+		<form name="newCategoryForm" class="form-inline" ng-submit="newCategoryForm.$valid && addCategory()" novalidate>
+		  <div class="form-group form-group-sm">
+		    <label for="adminCategoryName">Name</label>
+		    <input ng-model="newCategory.name" category="text" class="form-control" id="adminCategoryName" placeholder="Enter Category">
+		  </div>
+		  <button tategory="submit" class="btn btn-default" ng-disabled="newCategoryForm.$invalid">Submit</button>
+	  </form>
+
+	</div>
+</div>  
+
+
+
+
+
+
+
+
+
+
+

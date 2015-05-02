@@ -1,6 +1,7 @@
 <div class="panel panel-default">
-	<div class="panel-heading"><h3 class="panel-title">All Users</h3></div>
-	<div class="panel-body">
+	<div class="panel-heading">
+	
+		<h3>All Users</h3>
 		<div class="admin-u-heading">
 			<span class="admin-u-name">Name</span>
 			<span class="admin-u-username">Username</span>
@@ -10,6 +11,10 @@
 			<span class="admin-u-facebook">Facebook</span>
 			<span class="admin-u-google">Google</span>
 		</div>
+	
+	</div>
+	<div class="panel-body">
+
 		<div class="admin-u-rows" ng-repeat="user in users">
 			<div class="admin-u-info">
 				<span class="admin-u-name">{{ user.name }}</span>
@@ -24,6 +29,7 @@
 				<a ui-sref="administrator.user({id: user._id})">Edit</a>
 			</div>
 		</div>
+	
 	</div>
 </div>
 

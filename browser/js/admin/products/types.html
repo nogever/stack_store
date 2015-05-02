@@ -1,0 +1,51 @@
+<div class="panel panel-default">
+	
+	<div class="panel-heading">
+		<h3>Types</h3>
+		<div class="admin-ps-heading">
+			<span class="admin-t-price">Name</span>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="admin-t-rows" ng-repeat="type in types">
+			<form name="type-{{ type.name }}" class="form-inline">
+				<div class="form-group form-group-sm">
+					<input type="text" class="form-control" id="type-{{ type.name }}" value="{{ type.name }}" disabled>
+				</div>
+				<button class="btn btn-default edit-{{ type.name }}" ng-click="editType()">Edit</button>
+				<button class="btn btn-success update-{{ type.name }}" ng-click="updateType()" disabled>Save</button>
+				<button class="btn btn-danger delete-{{ type.name }}" ng-click="deleteType()">Delete</button>	
+			</form>
+		</div>
+	</div>
+
+</div>
+
+	<div class="panel panel-default">
+
+		<div class="panel-heading">
+			<h3 class="panel-title">Add New Type</h3>
+		</div>
+		<div class="panel-body">
+
+			<form name="newTypeForm" class="form-inline" ng-submit="newTypeForm.$valid && addType()" novalidate>
+			  <div class="form-group form-group-sm">
+			    <label for="adminTypeName">Name</label>
+			    <input ng-model="newType.name" type="text" class="form-control" id="adminTypeName" placeholder="Enter Type">
+			  </div>
+			  <button class="btn btn-default" ng-disabled="newTypeForm.$invalid">Submit</button>
+		  </form>
+
+		</div>
+	</div>  
+
+
+
+
+
+
+
+
+
+
+

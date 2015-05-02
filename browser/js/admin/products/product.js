@@ -30,13 +30,28 @@ app.factory('ProductFactory', function ($http, $stateParams) {
 
 });
 
-app.controller('AddProductController', function($scope, $http) {
+app.controller('AddProductController', function($scope, $http, CategoriesFactory, TypesFactory) {
+
+    CategoriesFactory
+        .getCategories()
+        .then(function(categories) {
+            $scope.categories = categories;
+            // console.log($scope.categories); 
+        });
+
+    TypesFactory
+        .getTypes()
+        .then(function(types) {
+            $scope.types = types;
+            // console.log($scope.types);
+        });
 
     $scope.newProduct = {
         title: null,
         price: 0,
         description: null,
-        category: [null],
+        type: 'select one',
+        category: ['select one'],
         photo: 'http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg',
         stock: 0,
         cost: 0
@@ -56,7 +71,20 @@ app.controller('AddProductController', function($scope, $http) {
 
 });
 
-app.controller('ProductController', function ($scope, $http, ProductFactory) {
+app.controller('ProductController', function ($scope, $http, ProductFactory, CategoriesFactory, TypesFactory) {
+
+    CategoriesFactory
+        .getCategories()
+        .then(function(categories) {
+            $scope.categories = categories; 
+        });
+
+    TypesFactory
+        .getTypes()
+        .then(function(types) {
+            $scope.types = types;
+            // console.log($scope.types);
+        });
 
     ProductFactory.getProduct().then(function(data) {
 
@@ -66,6 +94,7 @@ app.controller('ProductController', function ($scope, $http, ProductFactory) {
             title: data.title,
             price: data.price,
             description: data.description,
+            type: data.type,
             category: [data.category],
             photo: data.photo,
             stock: data.stock,

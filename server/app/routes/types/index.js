@@ -3,54 +3,54 @@
 var router = require('express').Router();
 var mongoose = require('mongoose');
 
-var CategoryModel = mongoose.model('Categories');
+var TypeModel = mongoose.model('Types');
 
 module.exports = router;
 
-// get all categories
-// uri: api/categories
+// get all types
+// uri: api/types
 router.get('/', function (req, res, next) {
 
-	CategoryModel.find()
-		.exec(function(err, categories) {
+	TypeModel.find()
+		.exec(function(err, types) {
 			if (err) return next(err);
-			res.json(categories);
+			res.json(types);
 		});
 });
 
 // get one category
-// uri: api/categories/id
+// uri: api/types/id
 router.get('/:id', function (req, res, next) {
-	CategoryModel.findById(req.params.id, function(err, category) {
+	TypeModel.findById(req.params.id, function(err, type) {
 		if (err) return next(err);
-		res.json(category);
+		res.json(type);
 	});
 });
 
 // post a new category
-// uri: api/categories
+// uri: api/types
 router.post('/', function (req, res, next) {
 	// console.log(req.body);
-	CategoryModel.create(req.body, function(err, category) {
+	TypeModel.create(req.body, function(err, type) {
 		if (err) return next(err);
-		console.log('saved category to db', category);
-		res.json(category);
+		console.log('saved category to db', type);
+		res.json(type);
 	});
 });
 
 // update an existing category
-// uri: api/categories/id
+// uri: api/types/id
 router.put('/:id', function (req, res, next) {
-	CategoryModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, category) {
+	TypeModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, type) {
 		if (err) return next(err);
-		res.json(category);
+		res.json(type);
 	});
 });
 
 // delete a product
-// uri: api/categories/id
+// uri: api/types/id
 router.delete('/:id', function (req, res, next) {
-	CategoryModel.findByIdAndRemove(req.params.id);
+	TypeModel.findByIdAndRemove(req.params.id);
 	res.status(200).end();
 });
 

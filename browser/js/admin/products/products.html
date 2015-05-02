@@ -1,6 +1,7 @@
 <div class="panel panel-default">
-	<div class="panel-heading"><h3 class="panel-title">All Products</h3>
-	<div class="panel-body">
+	<div class="panel-heading">
+	
+		<h3>All Products</h3>
 		<div class="admin-ps-heading">
 			<span class="admin-thumb-list">Picture</span>
 			<span class="admin-p-title">Title</span>
@@ -8,6 +9,10 @@
 			<span class="admin-p-category">Category</span>
 			<span class="admin-p-stock">Quantity</span>
 		</div>
+	
+	</div>
+	<div class="panel-body">
+	
 		<div class="admin-p-rows" ng-repeat="product in products">
 			<img src="{{ product.photo }}" class="admin-thumb-list" />
 			<div class="admin-p-info">
@@ -20,6 +25,7 @@
 				<a ui-sref="administrator.product({id: product._id})">Edit</a>
 			</div>
 		</div>
+	
 	</div>
 </div>
 

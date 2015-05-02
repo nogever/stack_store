@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
         controller: 'CategoriesController',
         templateUrl: 'js/admin/products/categories.html',
         resolve: {
-            allCategories: function (CategoriesFactory) {
+            allCategories: function(CategoriesFactory) {
                 return CategoriesFactory.getCategories();
             }
         }
@@ -21,6 +21,7 @@ app.factory('CategoriesFactory', function ($http) {
         getCategories: function() {
             return $http.get('/api/categories')
                      .then(function(response) {
+                        // console.log('res from getCategories: ', response.data);
                 return response.data;
             });
         }
@@ -30,12 +31,14 @@ app.factory('CategoriesFactory', function ($http) {
 app.controller('CategoriesController', function ($scope, $http, allCategories, $stateParams) {
 
     $scope.categories = allCategories;
+        // console.log('scope.categories: ', $scope.categories);
     $scope.newCategory = {};
 
     $scope.addCategory = function() {
         $http.post('api/categories', $scope.newCategory)
         .then(function(response) {
-            console.log("addCategory response: ", response);
+            // console.log("addCategory response: ", response);
+            $scope.categories.push(response.data);
         }).catch(function(err) {
             console.log('addCategory returned err');
         });
@@ -47,7 +50,7 @@ app.controller('CategoriesController', function ($scope, $http, allCategories, $
 
         $http.put('api/categories/:id', $scope.newCategory)
             .then(function(response) {
-                console.log("updateCategory response: ", response);
+                // console.log("updateCategory response: ", response);
             }).catch(function(err) {
                 console.log('updateCategory returned err');
             });
