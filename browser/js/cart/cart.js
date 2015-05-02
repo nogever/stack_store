@@ -26,9 +26,7 @@ app.factory('CartFactory', function ($http) {
 
 			return $http.get('/api/cart').then (function(response) {
 			
-
 				return response.data;
-			
 
 			});	
 		}
