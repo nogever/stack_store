@@ -46,9 +46,11 @@ schema.methods.calculateCartAmounts = function() {
 		});
 
 		this.subTotal = subTotal;
-		this.tax = this.subTotal*nyTax;
-		this.total = this.subTotal + this.tax;
-	}
+	} 
+	
+	this.tax = this.subTotal*nyTax;
+	this.total = this.subTotal*(nyTax + 1);
+
 	return;
 };
 
