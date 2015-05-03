@@ -143,7 +143,7 @@ app.controller('ProductsHomeCtrl', function ($scope) {
 
 });
 
-app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, OptionsDropdowns, $stateParams, $http) {
+app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, OptionsDropdowns, $stateParams, $http, $state) {
 
   $scope.reviews = {};
 
@@ -221,8 +221,10 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
       .then(function(response) {
           // display the current cart in popup window
           console.log("new product response", response);
+          $state.go('home');
       }).catch(function(err) {
-          console.log('add to cart returned err');
+          console.log('add to cart returned err', err);
+          $state.go('home');
       });
 
   }

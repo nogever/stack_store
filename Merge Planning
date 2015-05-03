@@ -1,0 +1,43 @@
+Approach for cart merging on Stack Store
+
+schema.methods.merge = function ( anonCart ) {
+	
+	this.products = this.products.concat(anonCart.products);
+	anonCart.remove();
+
+}
+
+
+How can we identify both the anonymous cart and the user's cart in the DB?
+
+				anonCart			userCart
+	session: 	session.ID 			n/a
+	userId: 	n/a					user by Reference
+	products:   3					4
+
+
+Plan of attack:
+	On the backend...
+		0. There are two carts in the DB: One has a session ID, As a returning shopper, you also have a cart model document with user by reference...
+		1. we need to find the two carts, one via sessionID, and the other via actual user's Reference
+		2. We need to run .merge on both carts
+		3. We need to destroy the anonymous cart
+
+On the front-end...
+
+		0. If you are anonymous, display the anonymous cart, i.e. by Session ID
+		1. If you are logged in, displaly the user's cart 
+
+
+IF User has logged in...
+
+	Check if user has both an anonymous cart and a user cart {
+		Merge carts
+	}
+
+	else {
+
+		Work with User Cart
+
+	}
+	
