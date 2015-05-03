@@ -17,7 +17,7 @@
 
 		<div class="admin-u-rows" ng-repeat="user in users">
 			<div class="admin-u-info row">
-				<div class="admin-u-name col-sm-2 text-center">{{ user.name }}</div>
+				<div class="admin-u-name col-sm-2 text-center"><a ui-sref="administrator.user({id: user._id})">{{ user.name }}</a></div>
 				<div class="admin-u-username col-sm-2 text-center">{{ user.username }}</div>
 				<div class="admin-u-email col-sm-2 text-center">{{ user.email }}</div>
 				<div class="admin-u-role col-sm-1 text-center">{{ user.role }}</div>

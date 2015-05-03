@@ -33,7 +33,7 @@
   <div class="form-group form-group-sm">
     <label for="adminProductType">Type</label>
     <select ng-model="newProduct.type" class="form-control" id="adminProductType"
-     ng-options="type.name for type in types">
+     ng-options="type.name for type in types track by type._id">
      </select>
   </div>  
   <div class="form-group form-group-sm">
