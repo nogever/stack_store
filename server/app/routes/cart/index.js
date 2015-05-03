@@ -16,12 +16,13 @@ module.exports = router;
 router.get('/', function (req, res, next) {
 
 	var currentUserId = req.user;
-
+	console.log('START of Cart GET', Date.now());
 	CartModel.findOne({$or: [{userId: currentUserId}, {session: req.sessionID}]})
 		.populate('products.productId')
 		.exec(function(err, cart) {
 			console.log('getting to the cart when user logs in');
 			if (err) return next(err);
+			console.log('END of Cart GET', Date.now());
 			res.json(cart);
 		});	
 
@@ -49,6 +50,9 @@ router.put('/', function(req, res, next) {
 	var productDetails = req.body;
 	var currentUserId = req.user;
 
+	console.log("PUT: Product Details: ", productDetails);
+	console.log("PUT: User Details: ", currentUserId);
+
 	// if user loggin in
 	if (currentUserId) {
 
@@ -56,10 +60,13 @@ router.put('/', function(req, res, next) {
 			{userId: currentUserId}, 
 			{$push: { products: productDetails }},
 			{upsert: true})
-		.exec(function(err, cart) {
-			if(err) return next(err)
-			console.log(err);
-			console.log('user existing cart ', cart);
+		.exec(function(cart) {
+			// if(err) return next(err)
+			// if you do not explicitly run res.json or res.send, this will hang for long periods of time.
+			res.json(cart);
+			console.log('Logged in: PUT Request - User Cart ', cart);
+		}, function(err) {
+			console.log("Logged in user error PUT", err);
 		});
 
 	} else { // if user is not loggin
@@ -72,6 +79,8 @@ router.put('/', function(req, res, next) {
 			{upsert: true})
 		.exec(function(err, cart) {
 			if(err) return next(err)
+			res.json(cart);
+
 			console.log(err);
 			console.log('anon existing cart ', cart);
 		});
