@@ -73,7 +73,7 @@ app.controller('AddProductController', function($scope, $http, allCategories, al
             console.log('err');
         });
 
-    }
+    };
 
 });
 
@@ -107,7 +107,7 @@ app.controller('ProductController', function ($scope, $http, allCategories, allT
                 console.log('err');
             });
 
-        }
+        };
 
     });
     

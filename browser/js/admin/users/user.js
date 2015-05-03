@@ -42,7 +42,7 @@ app.controller('AddUserController', function($scope, $http) {
             console.log('err');
         });
 
-    }
+    };
 
 });
 
@@ -53,24 +53,16 @@ app.factory('UserFactory', function ($http, $stateParams) {
                      .then(function(response) {
                 return response.data;
             });
-        },
-        getUserMe: function() {
-            // var userId = Session.user; // get logged-in user's id
-            var userId = $stateParams.id;
-            return $http.get('/api/users/' + userId)
-                     .then(function(response) {
-                return response.data;
-            });
         }
     };
 });
 
-app.controller('UserController', function ($scope, UserFactory) {
+app.controller('UserController', function ($scope, $http, UserFactory) {
 
     UserFactory.getUser().then(function(data) {
 
         $scope.user = data;
-
+        
         $scope.newUser = {
             name: data.name,
             email: data.email,
@@ -83,15 +75,16 @@ app.controller('UserController', function ($scope, UserFactory) {
         };
 
         $scope.submit = function() {
+            console.log(data);
 
-            $http.put("api/users/" + data.id, $scope.newUser)
+            $http.put("api/users/" + data._id, $scope.newUser)
             .then (function(response) {
                 console.log('hi');
             }).catch(function(err) {
                 console.log('err');
             });
 
-        }
+        };
 
     });
 

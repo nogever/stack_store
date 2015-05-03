@@ -46,7 +46,7 @@ schema.methods.populateOrders = function() {
 schema.methods.populateProducts = function(order) {
 	var thisOrder = this;
 
-	var ids = _.pluck(this.products, 'productId')
+	var ids = _.pluck(this.products, 'productId');
 	// ['sadfsdfsdfsdf', 'asdfsdfsdfsdfsd', 'sdfsdfsdfsdfsdf']
 
 	return mongoose.model('Product').find({ _id: { $in: ids }}).exec().then(function(products) {
@@ -54,19 +54,10 @@ schema.methods.populateProducts = function(order) {
 			thisOrder.products[index].title = p.title;
 			thisOrder.products[index].description = p.description;
 			thisOrder.products[index].photo = p.photo;
-		})
-	})
+		});
+	});
 
-	// if (this.products.length) {
-	// 	this.products.forEach(function(product, index) {
-	// 		ProductModel.findById(product.productId, function(err, p) {
-	// 			thisOrder.products[index].title = p.title;
-	// 			thisOrder.products[index].description = p.description;
-	// 			thisOrder.products[index].photo = p.photo;
-	// 		})
-	// 	})
-	// }
-}
+};
 
 
 schema.pre('save', function(next) {
