@@ -15,23 +15,35 @@ module.exports = router;
 
 router.get('/', function (req, res, next) {
 
-	if (req.session.passport.user){
-		CartModel.findOne({userId: req.session.passport.user})
+	var currentUserId = req.user;
+
+	CartModel.findOne({$or: [{userId: currentUserId}, {session: req.sessionID}]})
 		.populate('products.productId')
 		.exec(function(err, cart) {
+			console.log('getting to the cart when user logs in');
 			if (err) return next(err);
 			res.json(cart);
 		});	
 
-	} else { // if user doesn't log in
+	// if (currentUserId){
+	// 	CartModel.findOne({userId: currentUserId})
+	// 	.populate('products.productId')
+	// 	.exec(function(err, cart) {
+	// 		console.log('getting to the cart when user logs in');
+	// 		if (err) return next(err);
+	// 		res.json(cart);
+	// 	});	
+
+	// } else { // if user doesn't log in
 		
-		CartModel.findOne({session: req.sessionID})
-		.populate('products.productId')
-		.exec(function(err, cart) {
-			if (err) return next(err);
-			res.json(cart);
-		});	
-	}
+	// 	CartModel.findOne({session: req.sessionID})
+	// 	.populate('products.productId')
+	// 	.exec(function(err, cart) {
+	// 		console.log('getting to the cart when user not logs in');			
+	// 		if (err) return next(err);
+	// 		res.json(cart);
+	// 	});	
+	// }
 
 });
 
@@ -56,13 +68,13 @@ router.put('/', function(req, res, next) {
 
 	var productDetails = req.body;
 	// console.log('product detail', req.body);
-	var currentUser = req.session.passport.user;
+	var currentUserId = req.user;
 
 	// if user loggin in
-	if (currentUser) {
+	if (currentUserId) {
 
 		CartModel.findOneAndUpdate(
-			{userId: currentUser}, 
+			{userId: currentUserId}, 
 			{$push: { products: productDetails }},
 			{upsert: true})
 		.exec(function(err, cart) {
