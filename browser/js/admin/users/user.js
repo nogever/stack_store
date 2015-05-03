@@ -11,16 +11,13 @@ app.config(function ($stateProvider) {
         url: '/user/:id',
         controller: 'UserController',
         templateUrl: 'js/admin/users/user.html'
-        // resolve: {
-        //     singleUser: function (UserFactory) {
-        //         return UserFactory.getUser();
-        //     }
-        // }
     });
 
 });
 
-app.controller('AddUserController', function($scope, $http) {
+app.controller('AddUserController', function($scope, $http, UserFactory) {
+
+    $scope.roles = UserFactory.roles();
 
     $scope.newUser = {
         name: null,
@@ -53,21 +50,27 @@ app.factory('UserFactory', function ($http, $stateParams) {
                      .then(function(response) {
                 return response.data;
             });
+        },
+        roles: function() {
+            return ['admin', 'shop manager', 'subscriber'];
         }
+
     };
 });
 
 app.controller('UserController', function ($scope, $http, UserFactory) {
 
+    $scope.roles = UserFactory.roles();
+
     UserFactory.getUser().then(function(data) {
 
         $scope.user = data;
-        
+        console.log(data);
         $scope.newUser = {
             name: data.name,
             email: data.email,
             username: data.username,
-            role: data.roles,
+            role: data.role,
             password: data.password,
             twitter: data.twitter,
             facebook: data.facebook,
@@ -89,8 +92,6 @@ app.controller('UserController', function ($scope, $http, UserFactory) {
     });
 
 });
-
-
 
 
 

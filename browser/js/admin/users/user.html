@@ -18,7 +18,9 @@
   </div>
   <div class="form-group form-group-sm">
     <label for="adminUserRole">Role</label>
-    <input ng-model="newUser.role" type="text" class="form-control" id="adminUserStock" placeholder="Enter Role">
+    <select ng-model="newUser.role" class="form-control" id="adminUserRole"
+     ng-options="role for role in roles">
+     </select>
   </div>
   <div class="form-group form-group-sm">
     <label for="adminUserTwitter">Twitter</label>
