@@ -39,21 +39,21 @@ app.controller('CategoriesController', function ($scope, $http, allCategories, C
         .then(function(response) {
             // console.log("addCategory response: ", response);
             $scope.categories.push(response.data);
-            $('#adminCategoryName').val('');
+            angular.elem('#adminCategoryName').val('');
         }).catch(function(err) {
             console.log('addCategory returned err');
         });
     };
 
     $scope.editCategory = function() {
-        $('#category-' + this.category.name).attr('disabled', false);
-        $('.edit-' + this.category.name).attr('disabled', true);
-        $('.update-' + this.category.name).attr('disabled', false);
+        angular.elem('#category-' + this.category.name).attr('disabled', false);
+        angular.elem('.edit-' + this.category.name).attr('disabled', true);
+        angular.elem('.update-' + this.category.name).attr('disabled', false);
     };
 
     $scope.updateCategory = function() {
 
-        var updatedCategoryName = $('#category-' + this.category.name).val();
+        var updatedCategoryName = angular.elem('#category-' + this.category.name).val();
 
         $scope.newCategory = {
             name: updatedCategoryName
@@ -66,9 +66,9 @@ app.controller('CategoriesController', function ($scope, $http, allCategories, C
                 console.log('updateCategory returned err');
             });
 
-        $('#category-' + this.category.name).attr('disabled', true);
-        $('.update-' + this.category.name).attr('disabled', true);
-        $('.edit-' + this.category.name).attr('disabled', false);
+        angular.elem('#category-' + this.category.name).attr('disabled', true);
+        angular.elem('.update-' + this.category.name).attr('disabled', true);
+        angular.elem('.edit-' + this.category.name).attr('disabled', false);
 
     };
 

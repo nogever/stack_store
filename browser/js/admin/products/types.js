@@ -39,21 +39,21 @@ app.controller('TypesController', function ($scope, $http, allTypes, TypesFactor
         .then(function(response) {
             // console.log("addType response: ", response);
             $scope.types.push(response.data);
-            $('#adminTypeName').val('');
+            angular.elem('#adminTypeName').val('');
         }).catch(function(err) {
             console.log('addType returned err');
         });
     };
 
     $scope.editType = function() {
-        $('#type-' + this.type.name).attr('disabled', false);
-        $('.edit-' + this.type.name).attr('disabled', true);
-        $('.update-' + this.type.name).attr('disabled', false);
+        angular.elem('#type-' + this.type.name).attr('disabled', false);
+        angular.elem('.edit-' + this.type.name).attr('disabled', true);
+        angular.elem('.update-' + this.type.name).attr('disabled', false);
     };
 
     $scope.updateType = function() {
 
-        var updatedTypeName = $('#type-' + this.type.name).val();
+        var updatedTypeName = angular.elem('#type-' + this.type.name).val();
 
         $scope.newType = {
             name: updatedTypeName
@@ -66,9 +66,9 @@ app.controller('TypesController', function ($scope, $http, allTypes, TypesFactor
                 console.log('updateType returned err');
             });
 
-        $('#type-' + this.type.name).attr('disabled', true);
-        $('.update-' + this.type.name).attr('disabled', true);
-        $('.edit-' + this.type.name).attr('disabled', false);
+        angular.elem('#type-' + this.type.name).attr('disabled', true);
+        angular.elem('.update-' + this.type.name).attr('disabled', true);
+        angular.elem('.edit-' + this.type.name).attr('disabled', false);
 
     };
 
@@ -78,7 +78,7 @@ app.controller('TypesController', function ($scope, $http, allTypes, TypesFactor
             .then(function(response) {
                 TypesFactory.getTypes().then(function(types) {
                     $scope.types = types;
-                })
+                });
                 // console.log("type successfully deleted", response);
             }).catch(function(err) {
                 console.log('deleteType returned err');

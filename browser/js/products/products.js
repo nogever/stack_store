@@ -26,7 +26,7 @@ app.config(function ($stateProvider) {
 app.factory('DrinkProductsFactory', function ($http) {
 
   return {
-    getProducts: function(category, typeName) {
+    getProducts: function(typeName, category) {
 
       var queryParams = {};
       if (category) {

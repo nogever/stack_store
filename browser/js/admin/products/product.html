@@ -38,7 +38,6 @@
   </div>  
   <div class="form-group form-group-sm">
     <label class="checkbox-label">Category</label>
-    <!-- <select ng-model="newProduct.category" class="form-control" id="adminProductCategory" ng-options="category.name for category in categories"><option value="" selected>Select one</option></select> -->
     <label ng-repeat="category in categories" class="checkbox-inline">
       <input
         type="checkbox" 
@@ -46,7 +45,6 @@
         checklist-value="category._id"
       >{{category.name}}
     </label>
-
   </div>
   <div class="form-group form-group-sm">
     <label for="adminProductPhoto">Image</label>

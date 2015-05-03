@@ -16,6 +16,11 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
+	
+	if (req.query.category)
+	var catId = req.query.category
+
+
 	var categoryParams = req.query.category ? { category: req.query.category } : {};
 	var typeParam = req.query.typeName ? { type: req.query.typeName } : {};
 
