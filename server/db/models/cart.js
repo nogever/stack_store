@@ -26,43 +26,38 @@ schema.methods.getPrice = function() {
 	}
 };
 
-schema.methods.testing = function(cb) {
-	console.log('testing');
-};
-
 schema.methods.merge = function( anonCart ) {
-	// console.log('before merge products anonCart', anonCart.products);
-	// console.log('this: ', this);
-	// console.log('anonCart: ', anonCart);
 	if (anonCart !== null) {
 		this.products = this.products.concat( anonCart.products );
 		this.save();
 		console.log('after merge products', this.products);
 		anonCart.remove();
 	}
-	// return; 
 };
 
-schema.methods.getSubTotal = function() {
-	var productsTotal = 0;
+schema.methods.calculateCartAmounts = function() {
+	var subTotal = 0;
+	var nyTax = 0.0875;
+
 	if (this.products.length) {
+
 		this.products.forEach(function(product) {
-			ProductModel.findById(product.productId, function(err, p) {
-				productsTotal += p.price;
-			});
+			subTotal += ( product.price * product.quantity );
 		});
+
+		this.subTotal = subTotal;
+		this.tax = this.subTotal*nyTax;
+		this.total = this.subTotal + this.tax;
 	}
-	this.subTotal = productsTotal;
+	return;
 };
 
-schema.methods.calculateTax = function() {
-// calculate tax based on tax table
-};
+// schema.methods.calculateTax = function() {
+// // calculate tax based on tax table
+// };
 
-schema.methods.calculateTotal = function() {
-	var cartTotal = this.subTotal + this.tax;
-	this.total = cartTotal;
-};
+// schema.methods.calculateTotal = function() {
+// };
 
 // module.exports = schema;
 

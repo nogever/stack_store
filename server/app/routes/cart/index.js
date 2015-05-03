@@ -16,14 +16,17 @@ module.exports = router;
 router.get('/', function (req, res, next) {
 
 	var currentUserId = req.user;
-	console.log('START of Cart GET', Date.now());
+	
 	CartModel.findOne({$or: [{userId: currentUserId}, {session: req.sessionID}]})
 		.populate('products.productId')
-		.exec(function(err, cart) {
-			console.log('getting to the cart when user logs in');
-			if (err) return next(err);
-			console.log('END of Cart GET', Date.now());
+		.exec()
+		.then(function(cart) {
+			// if (err) return next(err);
+			cart.calculateCartAmounts();
+			cart.save();
 			res.json(cart);
+		}, function(err) {
+			console.log("GET Cart Error", err);
 		});	
 
 });
@@ -50,9 +53,6 @@ router.put('/', function(req, res, next) {
 	var productDetails = req.body;
 	var currentUserId = req.user;
 
-	console.log("PUT: Product Details: ", productDetails);
-	console.log("PUT: User Details: ", currentUserId);
-
 	// if user loggin in
 	if (currentUserId) {
 
@@ -60,11 +60,14 @@ router.put('/', function(req, res, next) {
 			{userId: currentUserId}, 
 			{$push: { products: productDetails }},
 			{upsert: true})
-		.exec(function(cart) {
+		.exec()
+		.then(function(cart) {
 			// if(err) return next(err)
 			// if you do not explicitly run res.json or res.send, this will hang for long periods of time.
+			console.log("Before Cart Amt Calculated", cart);
+			cart.calculateCartAmounts();
+			cart.save();
 			res.json(cart);
-			console.log('Logged in: PUT Request - User Cart ', cart);
 		}, function(err) {
 			console.log("Logged in user error PUT", err);
 		});
@@ -77,12 +80,16 @@ router.put('/', function(req, res, next) {
 			{session: req.sessionID}, 
 			{$push: { products: productDetails }},
 			{upsert: true})
-		.exec(function(err, cart) {
-			if(err) return next(err)
+		.exec()
+		.then(function(cart) {
+			// if(err) return next(err)
+			console.log("Before Cart Amt Calculated", cart);
+			cart.calculateCartAmounts();
+			cart.save();
 			res.json(cart);
-
-			console.log(err);
 			console.log('anon existing cart ', cart);
+		}, function(err) {
+			console.log('logged out Cart PUT Error', err);
 		});
 
 	}
@@ -101,11 +108,11 @@ router.delete('/product/:id', function (req, res, next) {
 			if (err) res.status(500).send(err);
 			cart.products.pull({_id: req.params.id});
 			console.log('find cart to delete product', cart.products);
+			cart.calculateCartAmounts();
 			cart.save();
 			res.json(cart);
 			res.status(200).end();
 		});
-
 });
 
 

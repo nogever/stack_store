@@ -17,13 +17,6 @@ app.config(function($stateProvider) {
 app.factory('CartFactory', function ($http) {
 	return {
 		getCartInfo: function (cartId) {
-
-			// var cartContents = {};
-
-			// return $http.get('/api/cart', {
-			// 	params: cartContents
-			// }).then(function(response) {
-
 			return $http.get('/api/cart').then (function(response) {
 			
 				return response.data;
