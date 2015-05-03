@@ -217,12 +217,15 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
 
   $scope.addToCart = function() {
 
+      console.log("Starting API/CART PUT request", Date.now());
       $http.put("api/cart", $scope.newProduct)
       .then(function(response) {
           // display the current cart in popup window
           console.log("new product response", response);
+          console.log("received API/CART PUT request", Date.now());
           $state.go('home');
       }).catch(function(err) {
+          console.log("ERROR from API/CART PUT request", Date.now());
           console.log('add to cart returned err', err);
           $state.go('home');
       });
