@@ -26,13 +26,22 @@ schema.methods.getPrice = function() {
 	}
 };
 
-schema.statics.merge = function( anonCart ) {
-	console.log('before merge products anonCart', anonCart.products);
-	// this.products = this.products.concat( anonCart.products );
-	console.log('after merge products', this.products);
-	// anonCart.remove();
-	return; 
-}
+schema.methods.testing = function(cb) {
+	console.log('testing');
+};
+
+schema.methods.merge = function( anonCart ) {
+	// console.log('before merge products anonCart', anonCart.products);
+	// console.log('this: ', this);
+	// console.log('anonCart: ', anonCart);
+	if (anonCart !== null) {
+		this.products = this.products.concat( anonCart.products );
+		this.save();
+		console.log('after merge products', this.products);
+		anonCart.remove();
+	}
+	// return; 
+};
 
 schema.methods.getSubTotal = function() {
 	var productsTotal = 0;
@@ -58,6 +67,14 @@ schema.methods.calculateTotal = function() {
 // module.exports = schema;
 
 mongoose.model('Cart', schema);
+
+
+
+
+
+
+
+
 
 
 
