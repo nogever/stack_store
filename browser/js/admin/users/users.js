@@ -27,22 +27,19 @@ app.factory('UsersFactory', function ($http) {
     };
 });
 
-app.controller('UsersController', function ($scope, $http, allUsers, UsersFactory, $stateParams) {
+app.controller('UsersController', function ($scope, $http, allUsers, UsersFactory) {
 
     $scope.users = allUsers;
-    var userId = $stateParams.id;
 
-    $scope.delete = function(userId) {
+    $scope.delete = function(id) {
 
-        $http.delete('api/users/' + userId)
-            .then(function(response) {
-                UsersFactory.getUser().then(function(users) {
-                    $scope.users = users;
-                })
-            }).catch(function(err) {
-                console.log('delete user returned err');
-            });
-
+        $http.delete('api/users/' + id)
+        .then(UsersFactory.getUser)
+        .then(function(users) {
+            $scope.users = users;
+        }).catch(function(err) {
+            console.log('delete user returned err');
+        });
     };
 
 });

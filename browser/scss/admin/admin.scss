@@ -1,10 +1,17 @@
+.admin-ps-heading span {
+	display: inline-block;
+}
 .admin-thumb-list {
 	width: 60px;
 	float: left;
-	margin-right: 30px;
+	margin-right: 10px;
 }
 .admin-thumb-detail {
 	float: left;
+}
+.admin-title {
+	margin-top: 0;
+	font-size: 24px;
 }
 textarea {
 	min-height: 66px;
