@@ -25,26 +25,6 @@ router.get('/', function (req, res, next) {
 			res.json(cart);
 		});	
 
-	// if (currentUserId){
-	// 	CartModel.findOne({userId: currentUserId})
-	// 	.populate('products.productId')
-	// 	.exec(function(err, cart) {
-	// 		console.log('getting to the cart when user logs in');
-	// 		if (err) return next(err);
-	// 		res.json(cart);
-	// 	});	
-
-	// } else { // if user doesn't log in
-		
-	// 	CartModel.findOne({session: req.sessionID})
-	// 	.populate('products.productId')
-	// 	.exec(function(err, cart) {
-	// 		console.log('getting to the cart when user not logs in');			
-	// 		if (err) return next(err);
-	// 		res.json(cart);
-	// 	});	
-	// }
-
 });
 
 //get options
@@ -67,7 +47,6 @@ router.get('/options', function (req, res, next) {
 router.put('/', function(req, res, next) {
 
 	var productDetails = req.body;
-	// console.log('product detail', req.body);
 	var currentUserId = req.user;
 
 	// if user loggin in
@@ -103,87 +82,22 @@ router.put('/', function(req, res, next) {
 
 // delete a product from cart
 // uri: api/cart/product/:id
-router.delete('product/:id', function (req, res, next) {
-	if (req.session.passport.user){
-		CartModel.findOne({userId: req.session.passport.user})
+// /api/cart/product/55413b258a4f2fc079844d1b 
+router.delete('/product/:id', function (req, res, next) {
+	var currentUserId = req.user;
+	console.log('deleting a product from server route');
+	CartModel.findOne(
+		{$or: [{userId: currentUserId}, {session: req.sessionID}]})
 		.exec(function(err, cart) {
+			if (err) res.status(500).send(err);
+			cart.products.pull({_id: req.params.id});
+			console.log('find cart to delete product', cart.products);
+			cart.save();
+			res.json(cart);
+			res.status(200).end();
+		});
 
-			if (err) return next(err);
-
-			// remove the product from cart.products
-			// return the new cart.products
-			// update the cart database
-			// send the cart with updated products
-
-			res.send(cart);
-
-		});	
-	} else {
-		// remove a product from session.cart.products array
-		// return the updated seesion.cart.products array
-	}
-	res.status(200).end();
 });
-
-// This will eventually be removed, but is used now for building test data for the cart
-// This should only be executed once.
-
-// var buildTestCart = (function() {
-// 	var executed = false;
-
-// 	return function () {
-// 		if(!executed) {
-// 			executed = true;
-
-// 			//code to be run once (on server reset);
-// 			var cartData = {
-// 				    products: [
-// 				        {  
-// 				            productId: "01234567",  
-// 				            options: [{ sweets: "honey", milk: "fat free", size: "fullstack"}], 
-// 				            quantity: 1,
-// 				            price: 500
-// 				        },
-// 				        {  
-// 				            productId: "98765432",  
-// 				            options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
-// 				            quantity: 1,
-// 				            price: 250
-// 				        },
-// 				        {  
-// 				            productId: "99992221",  
-// 				            options: [{ sweets: "sweet & low", size: "mediumstack", toppings: "cocoa powder"}], 
-// 				            quantity: 1,
-// 				            price: 325
-// 				        },
-// 				        {  
-// 				            productId: "99253221",  
-// 				            options: [{ sweets: "splenda", size: "fullstack", toppings: "cocoa powder"}], 
-// 				            quantity: 1,
-// 				            price: 325
-// 				        },
-// 				        {  
-// 				            productId: "97732221",  
-// 				            options: [{ sweets: "raw sugar", size: "fullstack", toppings: "cinnamon"}], 
-// 				            quantity: 1,
-// 				            price: 250
-// 				        },
-// 				        {  
-// 				            productId: "00123221",  
-// 				            options: [{ sweets: "none", size: "mediumstack", toppings: "none"}], 
-// 				            quantity: 1,
-// 				            price: 550
-// 				        }
-// 				    ],
-// 				    subTotal:1000,
-// 				    tax:825, 
-// 				    total:1083
-// 			};
-
-// 			return cartData;
-// 		}
-// 	};
-// })();
 
 
 

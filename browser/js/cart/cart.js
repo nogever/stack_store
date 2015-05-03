@@ -33,13 +33,28 @@ app.factory('CartFactory', function ($http) {
 	};
 });
 
-app.controller('CartCtrl', function ($scope, cartInfo) {
+app.controller('CartCtrl', function ($scope, cartInfo, $http, CartFactory) {
 
 	$scope.cartInfo = cartInfo;
 
 	$scope.removeRow = function (productIndex) {
 		$scope.cartInfo.products.splice(productIndex, 1);
 	};
+
+	$scope.deleteRow = function(productId) {
+		console.log('productId', productId);
+
+        $http.delete('api/cart/product/' + productId)
+            .then(function(response) {
+            	console.log('deleting product');
+                CartFactory.getCartInfo().then(function(cartInfo) {
+                    $scope.cartInfo = cartInfo;
+                })
+            }).catch(function(err) {
+                console.log('delete product in cart returned err');
+            });
+
+    };
 
 });
 
