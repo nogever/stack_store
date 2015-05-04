@@ -35,8 +35,11 @@ schema.methods.calculateCartAmounts = function() {
     this.tax = subTotal*nyTax;
     this.total = subTotal*(nyTax + 1);
     this.save();
+    // this.save(function(err){
+    // 	if (err) throw err;
+    // });
     
-    return;
+    // return;
 };
 
 schema.methods.merge = function( anonCart ) {

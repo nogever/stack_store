@@ -58,8 +58,10 @@ module.exports = function (app) {
 
                 CartModel.findOne({userId: req.session.passport.user}, function(err, userCart) { //
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
+                        if (err) res.status(500).send(err);                      
                         userCart.merge(sessionCart);
-                        console.log('userCart: ', userCart);
+                        res.status(200).end();
+                        // console.log('userCart: ', userCart);
                     })
                 });
 
