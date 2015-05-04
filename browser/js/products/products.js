@@ -82,21 +82,46 @@ app.factory('OptionsDropdowns', function ($http) {
           return response.data;
         });
     }
-  }
+  };
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http) {
-  // var teaCategories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
-  // var coffeeCategories = ['coffee', 'decaf', 'ice', 'americano', 'espresso', 'freshly brewed coffee'];
-
-  // $scope.teaCategories = teaCategories;
-  // $scope.coffeeCategories = coffeeCategories;
-
+app.controller('ProductsCtrl', function ($scope, $http, CategoriesFactory, TypesFactory) {
+  
+  var coffeeQueryParams = {
+    category: null,
+    typeName: null
+  };
   var teaQueryParams = {
     category: null,
-    typeName: 'tea'
-  }
+    typeName: null
+  };
+  var queryParams = {
+    category: null,
+    typeName: null
+  };
+
+  CategoriesFactory.getCategories().then(function(data) {
+    var categories = data;
+    // console.log(categories, typeof categories);
+    categories.forEach(function(category, index) {
+      if (category.name === 'green') {
+        queryParams.typeName = categories[index]._id;
+      }
+    });
+  });
+
+  TypesFactory.getTypes().then(function(data) {
+    var types = data;
+    // console.log(types, typeof types);
+    types.forEach(function(type, index) {
+      if (type.name === 'Coffee') {
+        coffeeQueryParams.typeName = types[index]._id;
+      } else if (type.name === 'Tea') {
+        teaQueryParams.typeName = types[index]._id;
+      }
+    });
+  });
 
   $http.get('/api/products', {
           params: teaQueryParams
@@ -104,10 +129,6 @@ app.controller('ProductsCtrl', function ($scope, $http) {
           $scope.teas = response.data;
         });
         
-  var coffeeQueryParams = {
-    category: null,
-    typeName: 'coffee'
-  }
 
   $http.get('/api/products', {
           params: coffeeQueryParams
@@ -115,10 +136,6 @@ app.controller('ProductsCtrl', function ($scope, $http) {
           $scope.coffees = response.data;
         });
 
-  var queryParams = {
-    category: null,
-    typeName: null
-  }
 
   $http.get('/api/products', {
           params: queryParams
@@ -213,7 +230,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   $scope.newProduct = {
     options: $scope.newOptions,
     quantity: 1
-  }
+  };
 
   $scope.addToCart = function() {
 
@@ -230,6 +247,6 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
           $state.go('home');
       });
 
-  }
+  };
 
 });

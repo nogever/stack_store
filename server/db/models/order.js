@@ -31,15 +31,15 @@ var schema = new mongoose.Schema({
  //, { autoIndex: false } recommended to be added in production by the Mongoose document
  );
 
-schema.methods.getPrice = function() {
-	if (this.products.length) {
-		this.products.forEach(function(product) {
-			ProductModel.findById(product.productId, function(err, p) {
-				product.price = p.price;
-			});
-		});
-	}
-};
+// schema.methods.getPrice = function() {
+// 	if (this.products.length) {
+// 		this.products.forEach(function(product) {
+// 			ProductModel.findById(product.productId, function(err, p) {
+// 				product.price = p.price;
+// 			});
+// 		});
+// 	}
+// };
 
 schema.methods.populateOrders = function() {
 	//return mongoose.model('Products').find(...).exec()   ????

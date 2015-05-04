@@ -60,7 +60,7 @@ module.exports = function (app) {
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
                         userCart.merge(sessionCart);
                         console.log('userCart: ', userCart);
-                    })
+                    });
                 });
 
                 // q.all(cartPromises)

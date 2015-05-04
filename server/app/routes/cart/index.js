@@ -76,7 +76,7 @@ router.put('/', function(req, res, next) {
 			{$push: { products: productDetails }},
 			{upsert: true})
 		.exec(function(err, cart) {
-			if(err) return next(err)
+			if(err) return next(err);
 			res.json(cart);
 
 			console.log(err);

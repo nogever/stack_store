@@ -30,7 +30,6 @@ app.controller('AddUserController', function($scope, $http, UserFactory) {
     };
 
     $scope.submit = function() {
-        console.log('new user: ', $scope.newUser);
 
         $http.post("api/users", $scope.newUser)
         .then(function(response) {
@@ -65,7 +64,7 @@ app.controller('UserController', function ($scope, $http, UserFactory) {
     UserFactory.getUser().then(function(data) {
 
         $scope.user = data;
-        console.log(data);
+
         $scope.newUser = {
             name: data.name,
             email: data.email,
@@ -78,7 +77,6 @@ app.controller('UserController', function ($scope, $http, UserFactory) {
         };
 
         $scope.submit = function() {
-            console.log(data);
 
             $http.put("api/users/" + data._id, $scope.newUser)
             .then (function(response) {

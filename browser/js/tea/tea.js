@@ -27,7 +27,7 @@ app.controller('TeaCtrl', function ($scope, $http) {
   var queryParams = {
     category: null,
     typeName: 'tea'
-  }
+  };
   $http.get('/api/products', {
           params: queryParams
         }).then(function(response) {
@@ -57,7 +57,7 @@ app.controller('TeaListCtrl', function ($scope, DrinkProductsFactory, $statePara
 
 });
 
-app.controller('TeaProductCtrl', function ($scope, DrinkProductFactory, ProductReviewsFactory, $stateParams) {
+app.controller('TeaProductCtrl', function ($scope, $http, AuthService, DrinkProductFactory, ProductReviewsFactory, $stateParams) {
 
   AuthService.getLoggedInUser()
     .then(function(user) {

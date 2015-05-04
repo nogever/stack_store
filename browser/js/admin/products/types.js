@@ -31,44 +31,41 @@ app.factory('TypesFactory', function ($http) {
 app.controller('TypesController', function ($scope, $http, allTypes, TypesFactory) {
 
     $scope.types = allTypes;
-    // console.log('scope.types: ', $scope.types);
     $scope.newType = {};
 
     $scope.addType = function() {
         $http.post('api/types', $scope.newType)
         .then(function(response) {
-            // console.log("addType response: ", response);
             $scope.types.push(response.data);
-            angular.elem('#adminTypeName').val('');
+            angular.element('#adminTypeName').val('');
         }).catch(function(err) {
             console.log('addType returned err');
         });
     };
 
     $scope.editType = function() {
-        angular.elem('#type-' + this.type.name).attr('disabled', false);
-        angular.elem('.edit-' + this.type.name).attr('disabled', true);
-        angular.elem('.update-' + this.type.name).attr('disabled', false);
+        angular.element('#type-' + this.type.name).attr('disabled', false);
+        angular.element('.edit-' + this.type.name).attr('disabled', true);
+        angular.element('.update-' + this.type.name).attr('disabled', false);
     };
 
     $scope.updateType = function() {
 
-        var updatedTypeName = angular.elem('#type-' + this.type.name).val();
+        var updatedTypeName = angular.element('#type-' + this.type.name).val();
 
-        $scope.newType = {
+        $scope.updatedType = {
             name: updatedTypeName
         };
 
-        $http.put('api/types/' + this.type._id, $scope.newType)
+        $http.put('api/types/' + this.type._id, $scope.updatedType)
             .then(function(response) {
-                // console.log("updateType response: ", response);
             }).catch(function(err) {
                 console.log('updateType returned err');
             });
 
-        angular.elem('#type-' + this.type.name).attr('disabled', true);
-        angular.elem('.update-' + this.type.name).attr('disabled', true);
-        angular.elem('.edit-' + this.type.name).attr('disabled', false);
+        angular.element('#type-' + this.type.name).attr('disabled', true);
+        angular.element('.update-' + this.type.name).attr('disabled', true);
+        angular.element('.edit-' + this.type.name).attr('disabled', false);
 
     };
 
@@ -79,7 +76,6 @@ app.controller('TypesController', function ($scope, $http, allTypes, TypesFactor
                 TypesFactory.getTypes().then(function(types) {
                     $scope.types = types;
                 });
-                // console.log("type successfully deleted", response);
             }).catch(function(err) {
                 console.log('deleteType returned err');
             });

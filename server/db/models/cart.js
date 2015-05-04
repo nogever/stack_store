@@ -16,15 +16,15 @@ var schema = new mongoose.Schema({
 	total: Number
 });
 
-schema.methods.getPrice = function() {
-	if (this.products.length) {
-		this.products.forEach(function(product) {
-			ProductModel.findById(product.productId, function(err, p) {
-				product.price = p.price;
-			});
-		});
-	}
-};
+// schema.methods.getPrice = function() {
+// 	if (this.products.length) {
+// 		this.products.forEach(function(product) {
+// 			ProductModel.findById(product.productId, function(err, p) {
+// 				product.price = p.price;
+// 			});
+// 		});
+// 	}
+// };
 
 schema.methods.testing = function(cb) {
 	console.log('testing');
@@ -43,17 +43,17 @@ schema.methods.merge = function( anonCart ) {
 	// return; 
 };
 
-schema.methods.getSubTotal = function() {
-	var productsTotal = 0;
-	if (this.products.length) {
-		this.products.forEach(function(product) {
-			ProductModel.findById(product.productId, function(err, p) {
-				productsTotal += p.price;
-			});
-		});
-	}
-	this.subTotal = productsTotal;
-};
+// schema.methods.getSubTotal = function() {
+// 	var productsTotal = 0;
+// 	if (this.products.length) {
+// 		this.products.forEach(function(product) {
+// 			ProductModel.findById(product.productId, function(err, p) {
+// 				productsTotal += p.price;
+// 			});
+// 		});
+// 	}
+// 	this.subTotal = productsTotal;
+// };
 
 schema.methods.calculateTax = function() {
 // calculate tax based on tax table

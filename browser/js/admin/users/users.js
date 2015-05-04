@@ -19,7 +19,6 @@ app.config(function ($stateProvider) {
 app.factory('UsersFactory', function ($http) {
     return {
         getUser: function() {
-            // var userId = Session.user; // get logged-in user's id
             return $http.get('/api/users').then(function(response) {
                 return response.data;
             });

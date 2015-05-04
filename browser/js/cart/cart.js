@@ -49,7 +49,7 @@ app.controller('CartCtrl', function ($scope, cartInfo, $http, CartFactory) {
             	console.log('deleting product');
                 CartFactory.getCartInfo().then(function(cartInfo) {
                     $scope.cartInfo = cartInfo;
-                })
+                });
             }).catch(function(err) {
                 console.log('delete product in cart returned err');
             });

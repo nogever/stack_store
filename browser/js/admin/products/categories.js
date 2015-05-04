@@ -2,7 +2,6 @@
 
 app.config(function ($stateProvider) {
 
-    // Register our *products* state.
     $stateProvider.state('administrator.categories', {
         url: '/categories',
         controller: 'CategoriesController',
@@ -21,7 +20,6 @@ app.factory('CategoriesFactory', function ($http) {
         getCategories: function() {
             return $http.get('/api/categories')
                      .then(function(response) {
-                        // console.log('res from getCategories: ', response.data);
                 return response.data;
             });
         }
@@ -31,44 +29,41 @@ app.factory('CategoriesFactory', function ($http) {
 app.controller('CategoriesController', function ($scope, $http, allCategories, CategoriesFactory) {
 
     $scope.categories = allCategories;
-        // console.log('scope.categories: ', $scope.categories);
     $scope.newCategory = {};
 
     $scope.addCategory = function() {
         $http.post('api/categories', $scope.newCategory)
         .then(function(response) {
-            // console.log("addCategory response: ", response);
             $scope.categories.push(response.data);
-            angular.elem('#adminCategoryName').val('');
+            angular.element('#adminCategoryName').val('');
         }).catch(function(err) {
             console.log('addCategory returned err');
         });
     };
 
     $scope.editCategory = function() {
-        angular.elem('#category-' + this.category.name).attr('disabled', false);
-        angular.elem('.edit-' + this.category.name).attr('disabled', true);
-        angular.elem('.update-' + this.category.name).attr('disabled', false);
+        angular.element('#category-' + this.category.name).attr('disabled', false);
+        angular.element('.edit-' + this.category.name).attr('disabled', true);
+        angular.element('.update-' + this.category.name).attr('disabled', false);
     };
 
     $scope.updateCategory = function() {
 
-        var updatedCategoryName = angular.elem('#category-' + this.category.name).val();
+        var updatedCategoryName = angular.element('#category-' + this.category.name).val();
 
-        $scope.newCategory = {
+        $scope.updatedCategory = {
             name: updatedCategoryName
         };
 
-        $http.put('api/categories/' + this.category._id, $scope.newCategory)
+        $http.put('api/categories/' + this.category._id, $scope.updatedCategory)
             .then(function(response) {
-                // console.log("updateCategory response: ", response);
             }).catch(function(err) {
                 console.log('updateCategory returned err');
             });
 
-        angular.elem('#category-' + this.category.name).attr('disabled', true);
-        angular.elem('.update-' + this.category.name).attr('disabled', true);
-        angular.elem('.edit-' + this.category.name).attr('disabled', false);
+        angular.element('#category-' + this.category.name).attr('disabled', true);
+        angular.element('.update-' + this.category.name).attr('disabled', true);
+        angular.element('.edit-' + this.category.name).attr('disabled', false);
 
     };
 
@@ -78,8 +73,7 @@ app.controller('CategoriesController', function ($scope, $http, allCategories, C
             .then(function(response) {
                 CategoriesFactory.getCategories().then(function(categories) {
                     $scope.categories = categories;
-                })
-                // console.log("type successfully deleted", response);
+                });
             }).catch(function(err) {
                 console.log('deleteCategory returned err');
             });

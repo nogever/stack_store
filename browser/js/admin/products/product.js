@@ -100,7 +100,7 @@ app.controller('ProductController', function ($scope, $http, allCategories, allT
 
         $scope.updateProduct = function() {
 
-            $http.put("api/products/" + data.id, $scope.newProduct)
+            $http.put("api/products/" + data._id, $scope.newProduct)
             .then (function(response) {
                 console.log('hi');
             }).catch(function(err) {
