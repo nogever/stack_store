@@ -31,7 +31,7 @@
  		            <!-- <li ng-repeat="category in categories"
  						><a ui-sref="coffee.products({ categoryName: category })">{{ category }}</a>
  					</li> -->
- 					<li ng-repeat="coffee in coffees | unique: 'category'"
+ 					<li ng-repeat="coffee in coffees"
  						><a ui-sref="coffee.products({ categoryName: coffee })">{{ coffee }}</a>
  					</li>
 

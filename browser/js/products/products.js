@@ -4,7 +4,12 @@ app.config(function ($stateProvider) {
   $stateProvider.state('products', {
     url:'/products',
     templateUrl: 'js/products/products.html',
-    controller: 'ProductsCtrl'
+    controller: 'ProductsCtrl',
+    resolve: {
+      allDrinks: function(DrinkProducts) {
+        return DrinkProducts.getAll();
+      }
+    }
   });
   $stateProvider.state('products.category', {
       url:'/category/:categoryName',
@@ -23,10 +28,10 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.factory('DrinkProductsFactory', function ($http) {
+app.factory('DrinkProducts', function ($http, $stateParams) {
 
   return {
-    getProducts: function(typeName, category) {
+    getAll: function(typeName, category) {
 
       var queryParams = {};
       if (category) {
@@ -42,24 +47,17 @@ app.factory('DrinkProductsFactory', function ($http) {
         }).then(function(response) {
           return response.data;
         });
+    },
+    getOne: function() {
+        return $http.get('/api/products/' + $stateParams.id)
+                 .then(function(response) {
+            return response.data;
+        });
     }
   };
 });
 
-app.factory('DrinkProductFactory', function ($http, $stateParams) {
-
-    return {
-        getProduct: function() {
-            return $http.get('/api/products/' + $stateParams.id)
-                     .then(function(response) {
-                return response.data;
-            });
-        }
-    };
-
-});
-
-app.factory('ProductReviewsFactory', function ($http, $stateParams) {
+app.factory('ProductReviews', function ($http, $stateParams) {
 
     return {
         getReviews: function() {
@@ -86,7 +84,9 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, CategoriesFactory, TypesFactory) {
+app.controller('ProductsCtrl', function ($scope, $http, allDrinks, CategoriesFactory, TypesFactory) {
+  
+  $scope.drinks = allDrinks;
   
   var coffeeQueryParams = {
     category: null,
@@ -128,14 +128,12 @@ app.controller('ProductsCtrl', function ($scope, $http, CategoriesFactory, Types
         }).then(function(response) {
           $scope.teas = response.data;
         });
-        
 
   $http.get('/api/products', {
           params: coffeeQueryParams
         }).then(function(response) {
           $scope.coffees = response.data;
         });
-
 
   $http.get('/api/products', {
           params: queryParams

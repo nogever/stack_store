@@ -6,14 +6,19 @@ app.config(function ($stateProvider) {
         controller: 'OrdersController',
         templateUrl: 'js/admin/orders/orders.html',
         resolve: {
-            allOrders: function (Order) {
+            allOrders: function(Order) {
                 return Order.getAll();
             }
         }
     }).state('administrator.addOrder', {
         url: '/add-order',
         controller: 'OrderController',
-        templateUrl: 'js/admin/orders/order.html'
+        templateUrl: 'js/admin/orders/order.html',
+        resolve: {
+            allDrinks: function(DrinkProducts) {
+                return DrinkProducts.getAll();
+            }
+        }
     });
 
 });
@@ -46,27 +51,12 @@ app.controller('OrdersController', function ($scope, allOrders) {
 
 });
 
-app.controller('OrderController', function ($scope, Order, ProductsFactory, DrinkProductsFactory) {
+app.controller('OrderController', function ($scope, Order, allDrinks) {
 
     $scope.status = Order.status();
+    $scope.products = allDrinks;
     var today = new Date();
     
-    ProductsFactory.getProducts().then(function(products) {
-        $scope.products = products;
-    });
-
-    DrinkProductsFactory.getProducts('coffee').then(function(products) {
-        $scope.coffees = products;
-    }).catch(function(err) {
-        console.log('err');
-    });
-
-    DrinkProductsFactory.getProducts('teas').then(function(products) {
-        $scope.teas = products;
-    }).catch(function(err) {
-        console.log('err');
-    });
-
     $scope.newOrder = {
         orderNumber: null,
         products: [{
@@ -83,6 +73,33 @@ app.controller('OrderController', function ($scope, Order, ProductsFactory, Drin
     };
 
 });
+
+app.filter('Coffee', function() {
+    return function(items) {
+        var filtered = [];
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item.type.name === 'Coffee') {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+    }
+});
+
+app.filter('Tea', function() {
+    return function(items) {
+        var filtered = [];
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            if (item.type.name === 'Tea') {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+    }
+});
+
 
 
 

@@ -12,27 +12,39 @@
     <label for="adminOrderStatus">Order Status</label>
     <select ng-model="newOrder.orderStatus" class="form-control" ng-options="item for item in status" id="adminOrderStatus"></select>
   </div>
-  <div class="well">
-    <div class="form-group form-group-sm">
-      <label class="checkbox-label">Add Coffee</label>
-      <label ng-repeat="coffee in coffees" class="checkbox-inline">
+  <div class="well row">
+
+    <div class="form-group form-group-sm col-sm-6">
+      <label class="control-label">Add Coffee</label>
+      <label ng-repeat="product in products | Coffee" class="radio-inline radio">
         <input
-          type="checkbox" 
-          checklist-model="newOrder.products" 
-          checklist-value="coffee._id"
+          type="radio" 
+          ng-model="newOrder.products" 
+          ng-value="product._id"
         >{{product.title}}
       </label>
     </div>
-    <div class="form-group form-group-sm">
-      <label class="checkbox-label">Add Tea</label>
-      <label ng-repeat="tea in teas" class="checkbox-inline">
+    <div class="form-group form-group-sm col-sm-6">
+      <label class="control-label">Add Tea</label>
+      <label ng-repeat="product in products | Tea" class="radio-inline radio">
         <input
-          type="checkbox" 
-          checklist-model="newOrder.products" 
-          checklist-value="tea._id"
+          type="radio" 
+          ng-model="newOrder.products" 
+          ng-value="product._id"
         >{{product.title}}
       </label>
     </div>
+    <div class="form-group form-group-sm col-sm-12">
+      <label class="control-label">Add Options</label>
+      <label ng-repeat="option in options" class="checkbox-inline">
+        <input
+          type="checkbox"
+          checklist-model="newOrder.options"
+          checklist-value="product.name"
+          >{{option.name}}
+      </label>
+    </div>
+
   </div>
 
   <button type="submit" class="btn btn-default" ng-disabled="addProduct.$invalid">Submit</button>

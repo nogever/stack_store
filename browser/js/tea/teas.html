@@ -32,7 +32,7 @@
  		            <!-- <li ng-repeat="category in categories"
  						><a ui-sref="tea.products({ categoryName: category })">{{ category }}</a>
  					</li> -->
- 					<li ng-repeat="tea in teas | unique: 'category'"
+ 					<li ng-repeat="tea in teas"
  						><a ui-sref="tea.products({ categoryName: tea })">{{ tea }}</a>
  					</li>
 		          </ul>

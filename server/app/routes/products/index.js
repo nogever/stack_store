@@ -16,12 +16,13 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
+	// var categoryParams = req.query.category ? { category: req.query.category } : {};
+	// var typeParam = req.query.typeName ? { type: req.query.typeName } : {};
 
-	var categoryParams = req.query.category ? { category: req.query.category } : {};
-	var typeParam = req.query.typeName ? { type: req.query.typeName } : {};
-
-	ProductModel.find( categoryParams )
-		.where( typeParam )
+	ProductModel.find( /* categoryParams */ )
+		.where( /* typeParam */ )
+		.populate( 'type' )
+		.populate( 'categories' )
 		.exec(function(err, products) {
 			if (err) return next(err);
 			res.json(products);
