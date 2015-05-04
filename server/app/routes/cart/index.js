@@ -23,6 +23,7 @@ router.get('/', function (req, res, next) {
 			console.log('getting to the cart when user logs in');
 			if (err) return next(err);
 			console.log('END of Cart GET', Date.now());
+			cart.calculateCartAmounts();
 			res.json(cart);
 		});	
 
@@ -63,6 +64,7 @@ router.put('/', function(req, res, next) {
 		.exec(function(cart) {
 			// if(err) return next(err)
 			// if you do not explicitly run res.json or res.send, this will hang for long periods of time.
+			cart.calculateCartAmounts();
 			res.json(cart);
 			console.log('Logged in: PUT Request - User Cart ', cart);
 		}, function(err) {
@@ -101,9 +103,8 @@ router.delete('/product/:id', function (req, res, next) {
 			if (err) res.status(500).send(err);
 			cart.products.pull({_id: req.params.id});
 			console.log('find cart to delete product', cart.products);
-			cart.save();
+			cart.calculateCartAmounts();
 			res.json(cart);
-			res.status(200).end();
 		});
 
 });
