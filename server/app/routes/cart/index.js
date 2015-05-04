@@ -15,16 +15,26 @@ module.exports = router;
 
 router.get('/', function (req, res, next) {
 
-	var currentUserId = req.user;
+	var currentUserId = req.user._id;
+	console.log(typeof req.user);
+	console.log("req.user = ", currentUserId);
+	console.log(typeof req.sessionID);
+	console.log("req.SessionID = ", req.sessionID);
 	console.log('START of Cart GET', Date.now());
-	CartModel.findOne({$or: [{userId: currentUserId}, {session: req.sessionID}]})
+
+	CartModel.findOne({$or: [{userId: 'currentUserId'}, {session: req.sessionID}]})
 		.populate('products.productId')
-		.exec(function(err, cart) {
-			console.log('getting to the cart when user logs in');
+		.exec()
+		.then(function(cart) {
 			if (err) return next(err);
-			console.log('END of Cart GET', Date.now());
+			console.log('Cart GET Success Handler: ', cart);
+
 			cart.calculateCartAmounts();
-			res.json(cart);
+			res.status(201).json(cart);
+		})
+		.then(null, function(err) {
+			console.log('Cart GET Error Handler: ', err);
+			res.status(501).end();
 		});	
 
 });
