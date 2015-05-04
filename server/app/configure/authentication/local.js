@@ -55,7 +55,6 @@ module.exports = function (app) {
                 //     // console.log('userCart after login', cart);
                 //     // return cart;
                 // });
-                console.log("LOGING IN: ", req.session.passport.user);
 
                 CartModel.findOne({userId: req.session.passport.user}, function(err, userCart) { //
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
