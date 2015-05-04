@@ -28,11 +28,11 @@
 		        </div>
 		        <div class="navbar-collapse collapse sidebar-navbar-collapse">
 		          <ul class="nav navbar-nav">
- 					<li ng-repeat="tea in teas">
- 						<a ui-sref="tea.products({ categoryName: tea })">{{ tea }}</a>
+		          	<li ng-repeat="type in types">
+ 						<a ui-sref="products.type({name: type.name})">{{ type.name }}</a>
  					</li>
- 					<li ng-repeat="coffee in coffees">
- 						<a ui-sref="coffee.products({ categoryName: coffee })">{{ coffee }}</a>
+ 					<li ng-repeat="category in categories">
+ 						<a ui-sref="products.category({name: category.name})">{{ category.name }}</a>
  					</li>
 		          </ul>
 		        </div><!--/.nav-collapse -->

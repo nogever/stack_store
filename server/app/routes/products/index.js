@@ -16,11 +16,12 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	// var categoryParams = req.query.category ? { category: req.query.category } : {};
-	// var typeParam = req.query.typeName ? { type: req.query.typeName } : {};
+	var categoryParams = req.query.category ? { category: mongoose.Types.ObjectId(req.query.category) } : {};
+	var typeParam = req.query.typeName ? { type: mongoose.Types.ObjectId(req.query.typeName) } : {};
+	console.log('req.query', req.query);
 
-	ProductModel.find( /* categoryParams */ )
-		.where( /* typeParam */ )
+	ProductModel.find(  categoryParams  )
+		.where(  typeParam  )
 		.populate( 'type' )
 		.populate( 'categories' )
 		.exec(function(err, products) {
