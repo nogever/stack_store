@@ -56,11 +56,11 @@ module.exports = function (app) {
                 //     // return cart;
                 // });
 
-                CartModel.findOne({userId: req.session.passport.user}, function(err, userCart) { //
+                CartModel.findOne({userId: req.session.passport.user}, {upsert: true}, function(err, userCart) { //
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
                         userCart.merge(sessionCart);
                         console.log('userCart: ', userCart);
-                    })
+                    });
                 });
 
                 // q.all(cartPromises)

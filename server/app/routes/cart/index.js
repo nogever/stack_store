@@ -2,7 +2,7 @@
 
 var router = require('express').Router();
 var mongoose = require('mongoose');
-var _ = require('lodash');
+// var _ = require('lodash');
 
 var ProductModel = mongoose.model('Product');
 var CartModel = mongoose.model('Cart');
@@ -15,14 +15,14 @@ module.exports = router;
 
 router.get('/', function (req, res, next) {
 
-	var currentUserId = req.user._id;
-	console.log(typeof req.user);
-	console.log("req.user = ", currentUserId);
-	console.log(typeof req.sessionID);
-	console.log("req.SessionID = ", req.sessionID);
-	console.log('START of Cart GET', Date.now());
+	// // var currentUserId = req.user._id;
+	// console.log(typeof req.user);
+	// // console.log("req.user = ", currentUserId);
+	// console.log(typeof req.sessionID);
+	// console.log("req.SessionID = ", req.sessionID);
+	// console.log('START of Cart GET', Date.now());
 
-	CartModel.findOne({$or: [{userId: 'currentUserId'}, {session: req.sessionID}]})
+	CartModel.findOne({$or: [{userId: req.user._id}, {session: req.sessionID}]})
 		.populate('products.productId')
 		.exec()
 		.then(function(cart) {
@@ -59,42 +59,52 @@ router.get('/options', function (req, res, next) {
 router.put('/', function(req, res, next) {
 
 	var productDetails = req.body;
-	var currentUserId = req.user;
-
-	console.log("PUT: Product Details: ", productDetails);
-	console.log("PUT: User Details: ", currentUserId);
+	// console.log("PUT req.user: ", req.user);
+	// console.log("PUT req._passport: ", req._passport);
+	// console.log("PUT req.body: ", req.body);
+	// var currentUserId = req.user._id;
+	// console.log("PUT: Product Details: ", productDetails);
 
 	// if user loggin in
-	if (currentUserId) {
+	if (req.user) {
 
+		console.log("ENTERED Logged In PUT Request");	
+		
 		CartModel.findOneAndUpdate(
-			{userId: currentUserId}, 
+			{userId: req.user._id}, 
 			{$push: { products: productDetails }},
 			{upsert: true})
-		.exec(function(cart) {
-			// if(err) return next(err)
+		.exec()
+		.then(function(cart) {
+			if(err) return next(err);
+
 			// if you do not explicitly run res.json or res.send, this will hang for long periods of time.
 			cart.calculateCartAmounts();
-			res.json(cart);
-			console.log('Logged in: PUT Request - User Cart ', cart);
-		}, function(err) {
-			console.log("Logged in user error PUT", err);
-		});
+			console.log('Logged in: PUT Request Success: User Cart ', cart);
+			res.status(201).json(cart);
+		})
+		.then(null, function(err) {
+			console.log('Cart PUT Error Handler (Logged In): ', err);
+			res.status(501).end();
+		});	
 
 	} else { // if user is not loggin
 
-		console.log(req.sessionID);	
+		console.log("ENTERED Logged Out PUT Request");	
 		// find cart for session ID
 		CartModel.findOneAndUpdate(
 			{session: req.sessionID}, 
 			{$push: { products: productDetails }},
 			{upsert: true})
-		.exec(function(err, cart) {
-			if(err) return next(err)
-			res.json(cart);
-
-			console.log(err);
-			console.log('anon existing cart ', cart);
+		.exec()
+		.then(function(err, cart) {
+			if(err) return next(err);
+			console.log('Logged Out: PUT Request Success: Anon Cart ', cart);
+			res.status(201).json(cart);
+		})
+		.then(null, function(err) {
+			console.log('Cart PUT Error Handler (Logged Out): ', err);
+			res.status(501).end();
 		});
 
 	}
@@ -105,10 +115,11 @@ router.put('/', function(req, res, next) {
 // uri: api/cart/product/:id
 // /api/cart/product/55413b258a4f2fc079844d1b 
 router.delete('/product/:id', function (req, res, next) {
-	var currentUserId = req.user;
+
+	// var currentUserId = req.user;
 	console.log('deleting a product from server route');
 	CartModel.findOne(
-		{$or: [{userId: currentUserId}, {session: req.sessionID}]})
+		{$or: [{userId: req.user._id}, {session: req.sessionID}]})
 		.exec(function(err, cart) {
 			if (err) res.status(500).send(err);
 			cart.products.pull({_id: req.params.id});

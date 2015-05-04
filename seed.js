@@ -57,31 +57,31 @@ var getCurrentStoreData = function () {
 var seedUsers = function () {
 
     var users = [
-        {name:"Lei", username:"leiclearsky", roles:['admin'], email:"lei@gmail.com", password:'password'}
-        {name:"Sean", username:"nogever", roles:['subscriber'], email:"nogever@fullstack.com", password:'password'}
-        {name:"Pete", username:"pdedes", roles:['subscriber'], email:"pdedes@fullstack.com", password:'password'}
-        {name:"Zeke", username:"znien", roles:['subscriber'], email:"znien@fullstack.com", password:'password'}
-        {name:"Nimit", username:"nolimitnimit", roles:['admin'], email:"nolimitnimit@fullstack.com", password:'password'}
-        {name:"Gabe", username:"nodeangel", roles:['subscriber'], email:"nodeangel@fullstack.com", password:'password'}
-        {name:"David", username:"yanggang", roles:['subscriber'], email:"yanggang@fullstack.com", password:'password'}
-        {name:"Omri", username:"ominous", roles:['subscriber'], email:"ominous@fullstack.com", password:'password'}
-        {name:"Joe", username:"jalves", roles:['subscriber'], email:"jalves@fullstack.com", password:'password'}
-        {name:"Charlotte", username:"char", roles:['subscriber'], email:"char@fullstack.com", password:'password'}
+        {name:"Lei", username:"leiclearsky", roles:['admin'], email:"lei@gmail.com", password:'password'},
+        {name:"Sean", username:"nogever", roles:['subscriber'], email:"nogever@fullstack.com", password:'password'},
+        {name:"Pete", username:"pdedes", roles:['subscriber'], email:"pdedes@fullstack.com", password:'password'},
+        {name:"Zeke", username:"znien", roles:['subscriber'], email:"znien@fullstack.com", password:'password'},
+        {name:"Nimit", username:"nolimitnimit", roles:['admin'], email:"nolimitnimit@fullstack.com", password:'password'},
+        {name:"Gabe", username:"nodeangel", roles:['subscriber'], email:"nodeangel@fullstack.com", password:'password'},
+        {name:"David", username:"yanggang", roles:['subscriber'], email:"yanggang@fullstack.com", password:'password'},
+        {name:"Omri", username:"ominous", roles:['subscriber'], email:"ominous@fullstack.com", password:'password'},
+        {name:"Joe", username:"jalves", roles:['subscriber'], email:"jalves@fullstack.com", password:'password'},
+        {name:"Charlotte", username:"char", roles:['subscriber'], email:"char@fullstack.com", password:'password'},
 
-        {name:"Lei1", username:"leiclearsky1", roles:['admin'], email:"leiclearsky1@fullstack.com", password:'password'}
-        {name:"Sean1", username:"nogever1", roles:['subscriber'], email:"nogever1@fullstack.com", password:'password'}
-        {name:"Pete1", username:"pdedes1", roles:['subscriber'], email:"pdedes1@fullstack.com", password:'password'}
-        {name:"Zeke1", username:"znien1", roles:['subscriber'], email:"znien1@fullstack.com", password:'password'}
-        {name:"Nimit1", username:"nolimitnimit1", roles:['admin'], email:"nolimitnimit1@fullstack.com", password:'password'}
-        {name:"Gabe1", username:"nodeangel1", roles:['subscriber'], email:"nodeangel1@fullstack.com", password:'password'}
-        {name:"David1", username:"yanggang1", roles:['subscriber'], email:"yanggang1@fullstack.com", password:'password'}
-        {name:"Omri1", username:"ominous1", roles:['subscriber'], email:"ominous1@fullstack.com", password:'password'}
-        {name:"Joe1", username:"jalves1", roles:['subscriber'], email:"jalves1@fullstack.com", password:'password'}
-        {name:"Charlotte1", username:"char1", roles:['subscriber'], email:"char1@fullstack.com", password:'password'}
+        {name:"Lei1", username:"leiclearsky1", roles:['admin'], email:"leiclearsky1@fullstack.com", password:'password'},
+        {name:"Sean1", username:"nogever1", roles:['subscriber'], email:"nogever1@fullstack.com", password:'password'},
+        {name:"Pete1", username:"pdedes1", roles:['subscriber'], email:"pdedes1@fullstack.com", password:'password'},
+        {name:"Zeke1", username:"znien1", roles:['subscriber'], email:"znien1@fullstack.com", password:'password'},
+        {name:"Nimit1", username:"nolimitnimit1", roles:['admin'], email:"nolimitnimit1@fullstack.com", password:'password'},
+        {name:"Gabe1", username:"nodeangel1", roles:['subscriber'], email:"nodeangel1@fullstack.com", password:'password'},
+        {name:"David1", username:"yanggang1", roles:['subscriber'], email:"yanggang1@fullstack.com", password:'password'},
+        {name:"Omri1", username:"ominous1", roles:['subscriber'], email:"ominous1@fullstack.com", password:'password'},
+        {name:"Joe1", username:"jalves1", roles:['subscriber'], email:"jalves1@fullstack.com", password:'password'},
+        {name:"Charlotte1", username:"char1", roles:['subscriber'], email:"char1@fullstack.com", password:'password'},
         
-        {name:"David2", username:"yanggang2", roles:['subscriber'], email:"yanggang2@fullstack.com", password:'password'}
-        {name:"Omri2", username:"ominous2", roles:['subscriber'], email:"ominous2@fullstack.com", password:'password'}
-        {name:"Joe2", username:"jalves2", roles:['subscriber'], email:"jalves2@fullstack.com", password:'password'}
+        {name:"David2", username:"yanggang2", roles:['subscriber'], email:"yanggang2@fullstack.com", password:'password'},
+        {name:"Omri2", username:"ominous2", roles:['subscriber'], email:"ominous2@fullstack.com", password:'password'},
+        {name:"Joe2", username:"jalves2", roles:['subscriber'], email:"jalves2@fullstack.com", password:'password'},
         {name:"Charlotte2", username:"char2", roles:['subscriber'], email:"char2@fullstack.com", password:'password'}
 
     ]
