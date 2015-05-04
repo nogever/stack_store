@@ -88,14 +88,14 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, CategoriesFac
   
   $scope.drinks = allDrinks;
   
-  var coffeeQueryParams = {
-    category: null,
-    typeName: null
-  };
-  var teaQueryParams = {
-    category: null,
-    typeName: null
-  };
+  // var coffeeQueryParams = {
+  //   category: null,
+  //   typeName: null
+  // };
+  // var teaQueryParams = {
+  //   category: null,
+  //   typeName: null
+  // };
   var queryParams = {
     category: null,
     typeName: null
@@ -106,7 +106,7 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, CategoriesFac
     // console.log(categories, typeof categories);
     categories.forEach(function(category, index) {
       if (category.name === 'green') {
-        queryParams.typeName = categories[index]._id;
+        queryParams.categoryName = categories[index]._id;
       }
     });
   });
@@ -115,25 +115,26 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, CategoriesFac
     var types = data;
     // console.log(types, typeof types);
     types.forEach(function(type, index) {
+      console.log(type);
       if (type.name === 'Coffee') {
-        coffeeQueryParams.typeName = types[index]._id;
+        queryParams.typeName = types[index]._id;
       } else if (type.name === 'Tea') {
-        teaQueryParams.typeName = types[index]._id;
+        queryParams.typeName = types[index]._id;
       }
     });
   });
 
-  $http.get('/api/products', {
-          params: teaQueryParams
-        }).then(function(response) {
-          $scope.teas = response.data;
-        });
+  // $http.get('/api/products', {
+  //         params: teaQueryParams
+  //       }).then(function(response) {
+  //         $scope.teas = response.data;
+  //       });
 
-  $http.get('/api/products', {
-          params: coffeeQueryParams
-        }).then(function(response) {
-          $scope.coffees = response.data;
-        });
+  // $http.get('/api/products', {
+  //         params: coffeeQueryParams
+  //       }).then(function(response) {
+  //         $scope.coffees = response.data;
+  //       });
 
   $http.get('/api/products', {
           params: queryParams

@@ -23,15 +23,49 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('TeaCtrl', function ($scope, $http) {
+app.controller('TeaCtrl', function ($scope, $http, CategoriesFactory, TypesFactory) {
+
   var queryParams = {
     category: null,
-    typeName: 'tea'
+    typeName: null
   };
+
+  CategoriesFactory.getCategories().then(function(data) {
+    var categories = data;
+    // console.log(categories, typeof categories);
+    categories.forEach(function(category, index) {
+      if (category.name === 'green') {
+        queryParams.category = categories[index]._id;
+      }
+    });
+  });
+
+  TypesFactory.getTypes().then(function(data) {
+    var types = data;
+    // console.log(types, typeof types);
+    types.forEach(function(type, index) {
+      console.log(type);
+      if (type.name === 'coffee') {
+        queryParams.typeName = types[index]._id;
+      } else if (type.name === 'tea') {
+        queryParams.typeName = types[index]._id;
+      }
+    });
+  });
+
+  // var queryParams = {
+  //   category: null,
+  //   typeName: 'tea'
+  // };
+
+  console.log('queryParams', queryParams);
+
   $http.get('/api/products', {
           params: queryParams
         }).then(function(response) {
-          $scope.teas = response.data;
+          // $scope.teas = response.data;
+          $scope.products = response.data;
+
         });
 
 });
