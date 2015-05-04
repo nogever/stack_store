@@ -11,23 +11,19 @@ app.config(function ($stateProvider) {
         url: '/user/:id',
         controller: 'UserController',
         templateUrl: 'js/admin/users/user.html'
-        // resolve: {
-        //     singleUser: function (UserFactory) {
-        //         return UserFactory.getUser();
-        //     }
-        // }
     });
 
 });
 
-app.controller('AddUserController', function($scope, $http) {
+app.controller('AddUserController', function($scope, $http, UserFactory) {
+
+    $scope.roles = UserFactory.roles();
 
     $scope.newUser = {
         name: null,
         email: null,
         username: null,
         role: null,
-        password: null,
         twitter: null,
         facebook: null,
         google: null
@@ -43,7 +39,7 @@ app.controller('AddUserController', function($scope, $http) {
             console.log('err');
         });
 
-    }
+    };
 
 });
 
@@ -55,28 +51,26 @@ app.factory('UserFactory', function ($http, $stateParams) {
                 return response.data;
             });
         },
-        getUserMe: function() {
-            // var userId = Session.user; // get logged-in user's id
-            var userId = $stateParams.id;
-            return $http.get('/api/users/' + userId)
-                     .then(function(response) {
-                return response.data;
-            });
+        roles: function() {
+            return ['admin', 'shop manager', 'subscriber'];
         }
+
     };
 });
 
-app.controller('UserController', function ($scope, UserFactory) {
+app.controller('UserController', function ($scope, $http, UserFactory) {
+
+    $scope.roles = UserFactory.roles();
 
     UserFactory.getUser().then(function(data) {
 
         $scope.user = data;
-
+        console.log(data);
         $scope.newUser = {
             name: data.name,
             email: data.email,
             username: data.username,
-            role: data.roles,
+            role: data.role,
             password: data.password,
             twitter: data.twitter,
             facebook: data.facebook,
@@ -84,21 +78,20 @@ app.controller('UserController', function ($scope, UserFactory) {
         };
 
         $scope.submit = function() {
+            console.log(data);
 
-            $http.put("api/users/" + data.id, $scope.newUser)
+            $http.put("api/users/" + data._id, $scope.newUser)
             .then (function(response) {
                 console.log('hi');
             }).catch(function(err) {
                 console.log('err');
             });
 
-        }
+        };
 
     });
 
 });
-
-
 
 
 

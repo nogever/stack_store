@@ -5,7 +5,7 @@ var optionsSchema = require('./options');
 var ProductModel = mongoose.model('Product');
 
 var schema = new mongoose.Schema({
-	orderNumber: {type: Number, unique: true},
+	orderNumber: {type: Number, unique: true, index: true},
 	products: [{
 		productId: { 
 			type: mongoose.Schema.Types.ObjectId, 
@@ -27,7 +27,9 @@ var schema = new mongoose.Schema({
 		]
 	},
 	_user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-});
+}
+ //, { autoIndex: false } recommended to be added in production by the Mongoose document
+ );
 
 schema.methods.getPrice = function() {
 	if (this.products.length) {
@@ -46,7 +48,7 @@ schema.methods.populateOrders = function() {
 schema.methods.populateProducts = function(order) {
 	var thisOrder = this;
 
-	var ids = _.pluck(this.products, 'productId')
+	var ids = _.pluck(this.products, 'productId');
 	// ['sadfsdfsdfsdf', 'asdfsdfsdfsdfsd', 'sdfsdfsdfsdfsdf']
 
 	return mongoose.model('Product').find({ _id: { $in: ids }}).exec().then(function(products) {
@@ -54,19 +56,41 @@ schema.methods.populateProducts = function(order) {
 			thisOrder.products[index].title = p.title;
 			thisOrder.products[index].description = p.description;
 			thisOrder.products[index].photo = p.photo;
-		})
-	})
+		});
+	});
 
-	// if (this.products.length) {
-	// 	this.products.forEach(function(product, index) {
-	// 		ProductModel.findById(product.productId, function(err, p) {
-	// 			thisOrder.products[index].title = p.title;
-	// 			thisOrder.products[index].description = p.description;
-	// 			thisOrder.products[index].photo = p.photo;
-	// 		})
-	// 	})
-	// }
+};
+
+function sequenceGenerator(name){
+  var SequenceSchema, Sequence;
+
+  SequenceSchema = new mongoose.Schema({
+    nextSeqNumber: { type: Number, default: 1 }
+  });
+
+  Sequence = mongoose.model(name + 'Seq', SequenceSchema);
+
+  return {
+    next: function(callback){
+      Sequence.find(function(err, data){
+        if(err) throw(err);
+        if(data.length < 1){
+          Sequence.create({}, function(err, seq){
+            if(err) throw(err);
+            callback(seq.nextSeqNumber);
+          });
+        } else {
+          Sequence.findByIdAndUpdate(data[0]._id, { $inc: { nextSeqNumber: 1 } }, function(err, seq){
+            if(err) { throw(err); }
+            callback(seq.nextSeqNumber);
+          });
+        }
+      });
+    }
+  };
 }
+
+var sequence = sequenceGenerator('order');
 
 
 schema.pre('save', function(next) {
@@ -75,11 +99,15 @@ schema.pre('save', function(next) {
 	next();
 });
 
+schema.pre('save', function(next){
+  var doc = this;
+  sequence.next(function(nextSeq){
+    doc.orderNumber = nextSeq;
+    next();
+  });
+});
+
 mongoose.model('Order', schema);
-
-
-
-
 
 
 

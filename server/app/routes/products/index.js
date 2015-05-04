@@ -8,6 +8,8 @@ var OrderModel = mongoose.model('Order');
 var ProductModel = mongoose.model('Product');
 var ReviewModel = mongoose.model('Review');
 var StoreModel = mongoose.model('Store');
+var TypeModel = mongoose.model('Type');
+var CategoryModel = mongoose.model('Categories');
 
 module.exports = router;
 
@@ -20,7 +22,6 @@ router.get('/', function (req, res, next) {
 	ProductModel.find( categoryParams )
 		.where( typeParam )
 		.exec(function(err, products) {
-			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
 			res.json(products);
 		});
@@ -41,12 +42,10 @@ router.get('/:id/reviews', function (req, res, next) {
 
 	ReviewModel.find({product: req.params.id})
 		.exec(function(err, reviews) {
-			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
-			// console.log(product);
 			// reviews.getReviews().then(function() {
 				// console.log("made it into review method");
-				console.log(reviews);
+				// console.log(reviews);
 				res.json(reviews);
 			// });
 		});
@@ -55,10 +54,8 @@ router.get('/:id/reviews', function (req, res, next) {
 // post a new product
 // uri: api/products
 router.post('/', function (req, res, next) {
-	console.log(req.body);
 	ProductModel.create(req.body, function(err, product) {
 		if (err) return next(err);
-		console.log('saved product to db', product);
 		res.json(product);
 	});
 });
@@ -76,6 +73,20 @@ router.put('/:id', function (req, res, next) {
 // delete a product
 // uri: api/products/id
 router.delete('/:id', function (req, res, next) {
-	ProductModel.findByIdAndRemove(req.params.id);
-	res.status(200).end();
+	ProductModel.findByIdAndRemove(req.params.id, function(err, doc) {
+		if (err) res.status(500).send(err);
+		res.status(200).end();
+	});
 });
+
+
+
+
+
+
+
+
+
+
+
+

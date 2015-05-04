@@ -1,29 +1,36 @@
 <div class="panel panel-default">
-	<div class="panel-heading"><h3 class="panel-title">All Users</h3></div>
+	<div class="panel-heading">
+	
+		<h3 class="admin-title">All Users</h3>
+		<div class="admin-u-heading row">
+			<div class="admin-u-name col-sm-2 text-center">Name</div>
+			<div class="admin-u-username col-sm-2 text-center">Username</div>
+			<div class="admin-u-email col-sm-2 text-center">Email</div>
+			<div class="admin-u-role col-sm-1 text-center">Role</div>
+			<div class="admin-u-twitter col-sm-1 text-center">Twitter</div>
+			<div class="admin-u-facebook col-sm-1 text-center">Facebook</div>
+			<div class="admin-u-google col-sm-1 text-center">Google</div>
+		</div>
+	
+	</div>
 	<div class="panel-body">
-		<div class="admin-u-heading">
-			<span class="admin-u-name">Name</span>
-			<span class="admin-u-username">Username</span>
-			<span class="admin-u-email">Email</span>
-			<span class="admin-u-role">Role</span>
-			<span class="admin-u-twitter">Twitter</span>
-			<span class="admin-u-facebook">Facebook</span>
-			<span class="admin-u-google">Google</span>
-		</div>
+
 		<div class="admin-u-rows" ng-repeat="user in users">
-			<div class="admin-u-info">
-				<span class="admin-u-name">{{ user.name }}</span>
-				<span class="admin-u-username">{{ user.username | currency }}</span>
-				<span class="admin-u-email">{{ user.email }}</span>
-				<span class="admin-u-role">{{ user.roles }}</span>
-				<span class="admin-u-twitter">{{ user.twitter }}</span>
-				<span class="admin-u-facebook">{{ user.facebook }}</span>
-				<span class="admin-u-google">{{ user.google }}</span>
+			<div class="admin-u-info row">
+				<div class="admin-u-name col-sm-2 text-center"><a ui-sref="administrator.user({id: user._id})">{{ user.name }}</a></div>
+				<div class="admin-u-username col-sm-2 text-center">{{ user.username }}</div>
+				<div class="admin-u-email col-sm-2 text-center">{{ user.email }}</div>
+				<div class="admin-u-role col-sm-1 text-center">{{ user.role }}</div>
+				<div class="admin-u-twitter col-sm-1 text-center">{{ user.twitter }}</div>
+				<div class="admin-u-facebook col-sm-1 text-center">{{ user.facebook }}</div>
+				<div class="admin-u-google col-sm-1 text-center">{{ user.google }}</div>
 			</div>
-			<div class="admin-u-menu">
-				<a ui-sref="administrator.user({id: user._id})">Edit</a>
+			<div class="admin-u-menu row">
+				<div class="col-sm-1 text-center"><a ui-sref="administrator.user({id: user._id})">Edit</a></div>
+				<div class="col-sm-1 text-center"><a href="#" ng-click="delete(user._id)">Delete</a></div>
 			</div>
 		</div>
+	
 	</div>
 </div>
 

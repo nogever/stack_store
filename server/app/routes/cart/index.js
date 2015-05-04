@@ -12,7 +12,6 @@ module.exports = router;
 
 //get cart 
 //uri: api/cart
-
 router.get('/', function (req, res, next) {
 
 	var currentUserId = req.user;
@@ -30,7 +29,6 @@ router.get('/', function (req, res, next) {
 
 //get options
 //uri: api/cart/options
-
 router.get('/options', function (req, res, next) {
 
 	var dropdowns = {
@@ -39,7 +37,7 @@ router.get('/options', function (req, res, next) {
 		flavors: OptionsModel.schema.path('flavors').enumValues,
 		size: OptionsModel.schema.path('size').enumValues,
 		toppings: OptionsModel.schema.path('toppings').enumValues
-	}
+	};
 
 	res.json(dropdowns);
 

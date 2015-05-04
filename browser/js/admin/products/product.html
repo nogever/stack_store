@@ -1,5 +1,5 @@
 <h3>{{ product.title || 'Add New Product'}}</h3>
-<form name="addProduct" ng-submit="addProduct.$valid && submit()" novalidate>
+<form name="productForm" novalidate>
 	<div class="col-sm-7">
   <div class="form-group form-group-sm">
     <label for="adminProductTitle">Title</label>
@@ -26,26 +26,42 @@
     <span class="help-block">Enter original cost in cents. (e.g. enter 100 for $1.00)</span>
   </div>
   <div class="form-group form-group-sm">
-    <label for="adminProductStock">Quantity</label>
-    <input ng-model="newProduct.stock" type="number" class="form-control" id="adminProductStock" placeholder="Enter Quantity" value="{{ product.stock }}">
+    <label for="adminProductStock">Stock</label>
+    <input ng-model="newProduct.stock" type="number" class="form-control" id="adminProductStock"  value="{{ product.stock }}">
+    <p class="help-block">Enter stock quantity.</p>
   </div>
   <div class="form-group form-group-sm">
-    <label for="adminProductCategory">Category</label>
-    <input ng-model="newProduct.category" type="text" class="form-control" id="adminProductCategory" value="{{ product.category }}">
-    <p class="help-block">Can enter more than one.</p>
+    <label for="adminProductType">Type</label>
+    <select ng-model="newProduct.type" class="form-control" id="adminProductType"
+     ng-options="type.name for type in types track by type._id">
+     </select>
+  </div>  
+  <div class="form-group form-group-sm">
+    <label class="checkbox-label">Category</label>
+    <label ng-repeat="category in categories" class="checkbox-inline">
+      <input
+        type="checkbox" 
+        checklist-model="newProduct.categories" 
+        checklist-value="category._id"
+      >{{category.name}}
+    </label>
   </div>
   <div class="form-group form-group-sm">
     <label for="adminProductPhoto">Image</label>
     <input ng-model="newProduct.photo" type="text" class="form-control" id="adminProductPhoto">
     <p class="help-block">Enter the url of the photo of the product here.</p>
   </div>
-  <button type="submit" class="btn btn-default" ng-disabled="addProduct.$invalid">Submit</button>
+  <button ng-hide="product.title" ng-click="addProduct()" type="submit" class="btn btn-default" ng-disabled="productForm.$invalid">Create</button>
+  <button ng-show="product.title" ng-click="updateProduct()" type="submit" class="btn btn-success" ng-disabled="productForm.$invalid">Update</button>
   </div>
   <div class="col-sm-5" ng-show="product.photo">
   <img src="{{ product.photo }}" width="300" class="admin-thumb-detail" />
   </div>
 </form>
 
+<pre>
+{{ newProduct | json}}
+</pre>
 
 
 

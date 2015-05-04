@@ -1,5 +1,4 @@
 'use strict';
-var Session = {};
 
 app.config(function ($stateProvider) {
 
@@ -9,7 +8,7 @@ app.config(function ($stateProvider) {
         controller: 'UsersController',
         templateUrl: 'js/admin/users/users.html',
         resolve: {
-            allUsers: function (UsersFactory) {
+            allUsers: function(UsersFactory) {
                 return UsersFactory.getUser();
             }
         }
@@ -21,16 +20,36 @@ app.factory('UsersFactory', function ($http) {
     return {
         getUser: function() {
             // var userId = Session.user; // get logged-in user's id
-            return $http.get('/api/users')
-                     .then(function(response) {
+            return $http.get('/api/users').then(function(response) {
                 return response.data;
             });
         }
     };
 });
 
-app.controller('UsersController', function ($scope, allUsers) {
+app.controller('UsersController', function ($scope, $http, allUsers, UsersFactory) {
 
     $scope.users = allUsers;
 
+    $scope.delete = function(id) {
+
+        $http.delete('api/users/' + id)
+        .then(UsersFactory.getUser)
+        .then(function(users) {
+            $scope.users = users;
+        }).catch(function(err) {
+            console.log('delete user returned err');
+        });
+    };
+
 });
+
+
+
+
+
+
+
+
+
+
