@@ -8,13 +8,48 @@ app.config(function ($stateProvider) {
     resolve: {
       allDrinks: function(DrinkProducts) {
         return DrinkProducts.getAll();
+      },
+      allCategories: function(CategoriesFactory) {
+        return CategoriesFactory.getCategories();
+      },
+      allTypes: function(TypesFactory) {
+        return TypesFactory.getTypes();
       }
     }
-  });
-  $stateProvider.state('products.category', {
-      url:'/category/:categoryName',
+  }).state('products.category', {
+      url:'/category/:name',
       templateUrl: 'js/products/products-list.html',
-      controller: 'ProductByCategoryCtrl'
+      controller: 'ProductsCtrl'
+    }).state('products.coffee', {
+      url:'/type/coffee',
+      templateUrl: 'js/products/products-list-type.html',
+      controller: 'ProductsCoffeeCtrl',
+      resolve: {
+        allDrinks: function(DrinkProducts) {
+          return DrinkProducts.getAll();
+        },
+        allCategories: function(CategoriesFactory) {
+          return CategoriesFactory.getCategories();
+        },
+        allTypes: function(TypesFactory) {
+          return TypesFactory.getTypes();
+        }
+      }
+    }).state('products.tea', {
+      url:'/type/tea',
+      templateUrl: 'js/products/products-list-type.html',
+      controller: 'ProductsTeaCtrl',
+      resolve: {
+        allDrinks: function(DrinkProducts) {
+          return DrinkProducts.getAll();
+        },
+        allCategories: function(CategoriesFactory) {
+          return CategoriesFactory.getCategories();
+        },
+        allTypes: function(TypesFactory) {
+          return TypesFactory.getTypes();
+        }
+      }
     });
   $stateProvider.state('products.home', {
     url: '/home',
@@ -72,49 +107,31 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, CategoriesFactory, TypesFactory) {
+app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams) {
   
   $scope.products = allDrinks;
+  $scope.categories = allCategories;
+  $scope.types = allTypes;
+  $scope.typeName = $stateParams.name;
+  $scope.cat = $stateParams.name;
 
-  // CategoriesFactory.getCategories().then(function(data) {
-  //   var categories = data;
-  //   // console.log(categories, typeof categories);
-  //   categories.forEach(function(category, index) {
-  //     if (category.name === 'green') {
-  //       queryParams.categoryName = categories[index]._id;
-  //     }
-  //   });
-  // });
-
-  // TypesFactory.getTypes().then(function(data) {
-  //   var types = data;
-  //   // console.log(types, typeof types);
-  //   types.forEach(function(type, index) {
-  //     console.log(type);
-  //     if (type.name === 'Coffee') {
-  //       queryParams.typeName = types[index]._id;
-  //     } else if (type.name === 'Tea') {
-  //       queryParams.typeName = types[index]._id;
-  //     }
-  //   });
-  // });
-
-  // $http.get('/api/products', {
-  //         params: queryParams
-  //       }).then(function(response) {
-  //         $scope.products = response.data;
-  //       });
 });
 
+app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes) {
+  
+  $scope.products = allDrinks;
+  $scope.categories = allCategories;
+  $scope.types = allTypes;
+  $scope.typeName = 'coffee';
 
-app.controller('ProductByCategoryCtrl', function ($scope, DrinkProductsFactory, $stateParams) {
+});
 
-  var categoryName = $stateParams.categoryName;
-  DrinkProductsFactory.getProducts(categoryName).then(function (products) {
-    $scope.products = products;
-  }).catch(function(err) {
-    $scope.error = err;
-  });
+app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategories, allTypes) {
+  
+  $scope.products = allDrinks;
+  $scope.categories = allCategories;
+  $scope.types = allTypes;
+  $scope.typeName = 'tea';
 
 });
 
