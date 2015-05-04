@@ -44,8 +44,9 @@ schema.methods.calculateCartAmounts = function() {
 
 schema.methods.merge = function( anonCart ) {
 	// console.log('before merge products anonCart', anonCart.products);
-	// console.log('this: ', this);
+	console.log('MERGE this: ', this);
 	// console.log('anonCart: ', anonCart);
+
 	if (anonCart !== null) {
 		this.products = this.products.concat( anonCart.products );
 		this.save();

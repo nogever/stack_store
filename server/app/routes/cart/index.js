@@ -22,20 +22,37 @@ router.get('/', function (req, res, next) {
 	// console.log("req.SessionID = ", req.sessionID);
 	// console.log('START of Cart GET', Date.now());
 
-	CartModel.findOne({$or: [{userId: req.user._id}, {session: req.sessionID}]})
-		.populate('products.productId')
-		.exec()
-		.then(function(cart) {
-			if (err) return next(err);
-			console.log('Cart GET Success Handler: ', cart);
-			
-			cart.calculateCartAmounts();
-			res.status(201).json(cart);
-		})
-		.then(null, function(err) {
-			console.log('Cart GET Error Handler: ', err);
-			res.status(501).end();
-		});	
+	if(req.user) {
+		CartModel.findOne({userId: req.user._id})
+			.populate('products.productId')
+			.exec()
+			.then(function(cart) {
+				if (err) return next(err);
+				console.log('Cart GET Success Handler: ', cart);
+				
+				cart.calculateCartAmounts();
+				res.status(201).json(cart);
+			})
+			.then(null, function(err) {
+				console.log('Cart GET Error Handler: ', err);
+				res.status(501).next(err);
+			});	
+	} else {
+		CartModel.findOne({session: req.sessionID})
+			.populate('products.productId')
+			.exec()
+			.then(function(cart) {
+				if (err) return next(err);
+				console.log('Cart GET Success Handler: ', cart);
+				
+				cart.calculateCartAmounts();
+				res.status(201).json(cart);
+			})
+			.then(null, function(err) {
+				console.log('Cart GET Error Handler: ', err);
+				res.status(501).next(err);
+			});	
+	}
 
 });
 
@@ -50,7 +67,7 @@ router.get('/options', function (req, res, next) {
 		flavors: OptionsModel.schema.path('flavors').enumValues,
 		size: OptionsModel.schema.path('size').enumValues,
 		toppings: OptionsModel.schema.path('toppings').enumValues
-	}
+	};
 
 	res.json(dropdowns);
 

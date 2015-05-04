@@ -44,7 +44,7 @@ module.exports = function (app) {
                 // We respond with a reponse object that has user with _id and email.
                 res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
 
-                var cartPromises = [];
+                // var cartPromises = [];
 
                 // cartPromises[0] = CartModel.find({session: req.sessionID}).exec(function(err, cart){
                 //     // console.log('anonCart upon login', cart);
@@ -55,13 +55,14 @@ module.exports = function (app) {
                 //     // console.log('userCart after login', cart);
                 //     // return cart;
                 // });
+                console.log("LOGING IN: ", req.session.passport.user);
 
-                CartModel.findOne({userId: req.session.passport.user}, {upsert: true}, function(err, userCart) { //
+                CartModel.findOne({userId: req.session.passport.user}, function(err, userCart) { //
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
-                        if (err) res.status(500).send(err);                      
+                        if (err) res.status(500).send(err);
+                        console.log('userCart: ', userCart);
                         userCart.merge(sessionCart);
                         res.status(200).end();
-                        console.log('userCart: ', userCart);
                     })
 
                 });

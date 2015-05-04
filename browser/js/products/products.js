@@ -40,6 +40,7 @@ app.factory('DrinkProductsFactory', function ($http) {
       return $http.get('/api/products', {
           params: queryParams
         }).then(function(response) {
+          console.log("RESOLVED PRODUCTS", response.data);
           return response.data;
         });
     }
@@ -217,12 +218,13 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
 
   $scope.addToCart = function() {
 
+    console.log("Product to be added to cart", $scope.newProduct);
       $http.put("api/cart", $scope.newProduct)
-        .then(function(response) {
+        .success(function(response) {
             // display the current cart in popup window
             console.log("FRONT-END: PUT response", response);
             $state.go('^');
-        }).catch(function(err) {
+        }).error(function(err) {
             console.log("FRONT-END, ERROR from API/CART PUT", err);
             $state.go('^');
         });
