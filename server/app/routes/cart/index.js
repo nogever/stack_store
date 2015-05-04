@@ -28,7 +28,7 @@ router.get('/', function (req, res, next) {
 		.then(function(cart) {
 			if (err) return next(err);
 			console.log('Cart GET Success Handler: ', cart);
-
+			
 			cart.calculateCartAmounts();
 			res.status(201).json(cart);
 		})
@@ -99,6 +99,7 @@ router.put('/', function(req, res, next) {
 		.exec()
 		.then(function(err, cart) {
 			if(err) return next(err);
+			cart.calculateCartAmounts();
 			console.log('Logged Out: PUT Request Success: Anon Cart ', cart);
 			res.status(201).json(cart);
 		})
@@ -124,8 +125,7 @@ router.delete('/product/:id', function (req, res, next) {
 			if (err) res.status(500).send(err);
 			cart.products.pull({_id: req.params.id});
 			console.log('find cart to delete product', cart.products);
-			if (cart)
-				cart.calculateCartAmounts();
+			cart.calculateCartAmounts();
 			cart.save();
 			res.json(cart);
 		});
