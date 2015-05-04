@@ -31,22 +31,10 @@ app.config(function ($stateProvider) {
 app.factory('DrinkProducts', function ($http, $stateParams) {
 
   return {
-    getAll: function(typeName, category) {
-
-      var queryParams = {};
-      if (category) {
-        queryParams.category = category;
-      }
-
-      if (typeName) {
-        queryParams.typeName = typeName;
-      }
-
-      return $http.get('/api/products', {
-          params: queryParams
-        }).then(function(response) {
+    getAll: function() {
+      return $http.get('/api/products').then(function(response) {
           return response.data;
-        });
+        })
     },
     getOne: function() {
         return $http.get('/api/products/' + $stateParams.id)
@@ -86,61 +74,36 @@ app.factory('OptionsDropdowns', function ($http) {
 
 app.controller('ProductsCtrl', function ($scope, $http, allDrinks, CategoriesFactory, TypesFactory) {
   
-  $scope.drinks = allDrinks;
-  
-  // var coffeeQueryParams = {
-  //   category: null,
-  //   typeName: null
-  // };
-  // var teaQueryParams = {
-  //   category: null,
-  //   typeName: null
-  // };
-  var queryParams = {
-    category: null,
-    typeName: null
-  };
+  $scope.products = allDrinks;
 
-  CategoriesFactory.getCategories().then(function(data) {
-    var categories = data;
-    // console.log(categories, typeof categories);
-    categories.forEach(function(category, index) {
-      if (category.name === 'green') {
-        queryParams.categoryName = categories[index]._id;
-      }
-    });
-  });
+  // CategoriesFactory.getCategories().then(function(data) {
+  //   var categories = data;
+  //   // console.log(categories, typeof categories);
+  //   categories.forEach(function(category, index) {
+  //     if (category.name === 'green') {
+  //       queryParams.categoryName = categories[index]._id;
+  //     }
+  //   });
+  // });
 
-  TypesFactory.getTypes().then(function(data) {
-    var types = data;
-    // console.log(types, typeof types);
-    types.forEach(function(type, index) {
-      console.log(type);
-      if (type.name === 'Coffee') {
-        queryParams.typeName = types[index]._id;
-      } else if (type.name === 'Tea') {
-        queryParams.typeName = types[index]._id;
-      }
-    });
-  });
+  // TypesFactory.getTypes().then(function(data) {
+  //   var types = data;
+  //   // console.log(types, typeof types);
+  //   types.forEach(function(type, index) {
+  //     console.log(type);
+  //     if (type.name === 'Coffee') {
+  //       queryParams.typeName = types[index]._id;
+  //     } else if (type.name === 'Tea') {
+  //       queryParams.typeName = types[index]._id;
+  //     }
+  //   });
+  // });
 
   // $http.get('/api/products', {
-  //         params: teaQueryParams
+  //         params: queryParams
   //       }).then(function(response) {
-  //         $scope.teas = response.data;
+  //         $scope.products = response.data;
   //       });
-
-  // $http.get('/api/products', {
-  //         params: coffeeQueryParams
-  //       }).then(function(response) {
-  //         $scope.coffees = response.data;
-  //       });
-
-  $http.get('/api/products', {
-          params: queryParams
-        }).then(function(response) {
-          $scope.products = response.data;
-        });
 });
 
 
