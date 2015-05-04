@@ -17,14 +17,14 @@ router.get('/', function (req, res, next) {
 
 	// // var currentUserId = req.user._id;
 	// console.log(typeof req.user);
-	// // console.log("req.user = ", currentUserId);
+	console.log("req.user = ", req.user);
 	// console.log(typeof req.sessionID);
 	// console.log("req.SessionID = ", req.sessionID);
 	// console.log('START of Cart GET', Date.now());
 
 	if(req.user) {
 		CartModel.findOne({userId: req.user._id})
-			.populate('products.productId')
+			.populate('productId')
 			.exec()
 			.then(function(cart) {
 				if (err) return next(err);
@@ -39,7 +39,7 @@ router.get('/', function (req, res, next) {
 			});	
 	} else {
 		CartModel.findOne({session: req.sessionID})
-			.populate('products.productId')
+			.populate('productId')
 			.exec()
 			.then(function(cart) {
 				if (err) return next(err);
