@@ -1,5 +1,5 @@
 <h3>{{ order.orderNumber || 'Add New Order'}}</h3>
-<form name="singleOrder" ng-submit="addProduct.$valid && submit()" novalidate>
+<form name="singleOrder" ng-submit="singleOrder.$valid && submit()" novalidate>
   <div class="form-group form-group-sm" ng-show="order.orderNumber">
     <label for="adminOrderNumber">Order Number</label>
     <input ng-model="newOrder.orderNumber" type="text" class="form-control" id="adminOrderNumber">
@@ -12,46 +12,80 @@
     <label for="adminOrderStatus">Order Status</label>
     <select ng-model="newOrder.orderStatus" class="form-control" ng-options="item for item in status" id="adminOrderStatus"></select>
   </div>
-  <div class="well row">
+  <div class="form-group form-group-sm">
+    <label for="adminOrderProducts">Products</label>
+    <table class="table table-striped">
+      <thead><tr><th>Title</th><th>Qty.</th><th>Unit Price</th><th>Price</th></tr></thead>
+      <tbody>
+        <tr ng-repeat="product in newOrder.products">
+          <td>{{product.productId.title}}</td>
+          <td>{{product.quantity}}</td>
+          <td>{{product.productId.price | currency}}</td>
+          <td>{{product.quantity * product.productId.price | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="form-group form-group-sm col-sm-6">
-      <label class="control-label">Add Coffee</label>
-      <label ng-repeat="product in products | Coffee" class="radio-inline radio">
+  <div class="well container-fluid">
+
+    <div class="">
+      <p class="form-label">Add Coffee</p>
+      <label ng-repeat="product in products | Type:'Coffee'" class="radio-inline">
         <input
           type="radio" 
-          ng-model="newOrder.products" 
-          ng-value="product._id"
+          name="newOrderProduct" 
+          ng-model="tempProduct.productId" 
+          ng-value="product"
+        >{{product.title}}
+      </label>
+      <p class="form-label">Add Tea</p>
+      <label ng-repeat="product in products | Type:'Tea'" class="radio-inline">
+        <input
+          type="radio" 
+          name="newOrderProduct"
+          ng-model="tempProduct.productId" 
+          ng-value="product"
         >{{product.title}}
       </label>
     </div>
-    <div class="form-group form-group-sm col-sm-6">
-      <label class="control-label">Add Tea</label>
-      <label ng-repeat="product in products | Tea" class="radio-inline radio">
-        <input
-          type="radio" 
-          ng-model="newOrder.products" 
-          ng-value="product._id"
-        >{{product.title}}
-      </label>
+    <div class="form-group form-group-sm row">
+      <div class="pull-left panel-body">
+        <p class="form-label">Sweets</p>
+        <select ng-model="tempOptions.sweets"><option ng-repeat="option in options.sweets" value="{{option}}">{{option}}</option></select>
+      </div>
+      <div class="pull-left panel-body">
+        <p class="form-label">Milk</p>
+        <select ng-model="tempOptions.milk"><option ng-repeat="option in options.milk" value="{{option}}">{{option}}</option></select>
+      </div>
+      <div class="pull-left panel-body">
+        <p class="form-label">Flavors</p>
+        <select ng-model="tempOptions.flavors"><option ng-repeat="option in options.flavors" value="{{option}}">{{option}}</option></select>
+      </div>
+      <div class="pull-left panel-body">
+        <p class="form-label">Size</p>
+        <select ng-model="tempOptions.size"><option ng-repeat="option in options.size" value="{{option}}">{{option}}</option></select>
+      </div>
+      <div class="pull-left panel-body">
+        <p class="form-label">Toppings</p>
+        <select ng-model="tempOptions.toppings"><option ng-repeat="option in options.toppings" value="{{option}}">{{option}}</option></select>
+      </div>
     </div>
-    <div class="form-group form-group-sm col-sm-12">
-      <label class="control-label">Add Options</label>
-      <label ng-repeat="option in options" class="checkbox-inline">
-        <input
-          type="checkbox"
-          checklist-model="newOrder.options"
-          checklist-value="product.name"
-          >{{option.name}}
-      </label>
+    <div class="form-group form-group-sm form-inline">
+      <label for="orderProductQuantity">Quantity</label>
+      <input type="number" class="form-control" name="orderProductQuantity" id="orderProductQuantity" ng-model="tempProduct.quantity"/>
     </div>
+
+    <button type="button" class="btn btn-default btn-sm" ng-click="addProductToOrder()">Add Product</button>
 
   </div>
 
-  <button type="submit" class="btn btn-default" ng-disabled="addProduct.$invalid">Submit</button>
+  <button type="submit" class="btn btn-success" ng-disabled="singleOrder.$invalid">Add Order</button>
 
   </div>
 </form>
-
+<pre>{{newOrder | json}}</pre>
+<pre>{{newProduct | json}}</pre>
 
 
 
