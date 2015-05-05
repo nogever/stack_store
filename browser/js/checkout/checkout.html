@@ -1,6 +1,6 @@
 <h2> Purchase your Cart! </h2>
 <br>
-<form name="checkoutForm" ng-submit="checkoutForm.$valid && submitCard(card)" novalidate>
+<form name="checkoutForm" ng-submit="checkoutForm.$valid && purchase()" novalidate>
     <span class="error" ng-show="checkoutForm.question.$invalid && checkoutForm.$submitted">Question is not valid.</span>
     <label>Credit Cart Number:</label>
     <input 
@@ -41,7 +41,7 @@
     </select>
     <br><br>
     <div class="btn-group" role="group" aria-label="...">
-      <a class="btn btn-success" ng-disabled="checkoutForm.$invalid" role="button">Purchase Cart</a>
+      <a id="purchaseButton" type="submit" class="btn btn-success" ng-disabled="checkoutForm.$invalid" role="button">Purchase Cart</a>
     </div>
 </form>
 <br>
