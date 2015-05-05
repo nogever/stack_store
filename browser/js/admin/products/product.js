@@ -41,12 +41,13 @@ app.factory('ProductFactory', function ($http, $stateParams) {
                      .then(function(response) {
                 return response.data;
             });
-        }
+        },
+
     };
 
 });
 
-app.controller('AddProductController', function($scope, $http, allCategories, allTypes, CategoriesFactory, TypesFactory) {
+app.controller('AddProductController', function($scope, $state, $http, allCategories, allTypes, CategoriesFactory, TypesFactory) {
     
     $scope.categories = allCategories;
 
@@ -57,18 +58,25 @@ app.controller('AddProductController', function($scope, $http, allCategories, al
         price: 0,
         description: null,
         type: null,
-        categories: [],
+        categories: null,
         photo: 'http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg',
         stock: 0,
         cost: 0
     };
 
     $scope.addProduct = function() {
+
+        var _idCategories = [];
+        $scope.newProduct.categories.forEach(function(category, index) {
+            _idCategories.push(category._id);
+        });
+        $scope.newProduct.categories = _idCategories;
         $scope.newProduct.type = $scope.newProduct.type._id;
-        console.log('$scope.newProduct: ', $scope.newProduct);
+
         $http.post("api/products", $scope.newProduct)
         .then(function(response) {
             console.log('hi');
+            $state.go('administrator.products');
         }).catch(function(err) {
             console.log('err');
         });
@@ -91,7 +99,7 @@ app.controller('ProductController', function ($scope, $http, allCategories, allT
             price: data.price,
             description: data.description,
             type: data.type,
-            categories: [data.category],
+            categories: data.categories,
             photo: data.photo,
             stock: data.stock,
             cost: data.cost,
@@ -99,6 +107,13 @@ app.controller('ProductController', function ($scope, $http, allCategories, allT
             // console.log('new product: ', $scope.newProduct);
 
         $scope.updateProduct = function() {
+
+            var _idCategories = [];
+            $scope.newProduct.categories.forEach(function(category, index) {
+                _idCategories.push(category._id);
+            });
+            $scope.newProduct.categories = _idCategories;
+            $scope.newProduct.type = $scope.newProduct.type._id;
 
             $http.put("api/products/" + data._id, $scope.newProduct)
             .then (function(response) {

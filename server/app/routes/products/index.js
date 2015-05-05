@@ -16,12 +16,7 @@ module.exports = router;
 // get all products
 // uri: api/products
 router.get('/', function (req, res, next) {
-	var categoryParams = req.query.category ? { category: mongoose.Types.ObjectId(req.query.category) } : {};
-	var typeParam = req.query.typeName ? { type: mongoose.Types.ObjectId(req.query.typeName) } : {};
-	console.log('req.query', req.query);
-
-	ProductModel.find(  categoryParams  )
-		.where(  typeParam  )
+	ProductModel.find()
 		.populate( 'type' )
 		.populate( 'categories' )
 		.exec(function(err, products) {
@@ -33,9 +28,12 @@ router.get('/', function (req, res, next) {
 // get one product
 // uri: api/products/id
 router.get('/:id', function (req, res, next) {
-	ProductModel.findById(req.params.id, function(err, product) {
-		if (err) return next(err);
-		res.json(product);
+	ProductModel.findById(req.params.id)
+		.populate( 'type' )
+		.populate( 'categories' )
+		.exec(function(err, product) {
+			if (err) return next(err);
+			res.json(product);
 	});
 });
 
@@ -58,8 +56,8 @@ router.get('/:id/reviews', function (req, res, next) {
 // uri: api/products
 router.post('/', function (req, res, next) {
 	ProductModel.create(req.body, function(err, product) {
-		if (err) return next(err);
-		res.json(product);
+			if (err) return next(err);
+			res.json(product);
 	});
 });
 
@@ -68,9 +66,9 @@ router.post('/', function (req, res, next) {
 // uri: api/products/id
 router.put('/:id', function (req, res, next) {
 	ProductModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, product) {
-		if (err) return next(err);
-		res.json(product);
-	});
+			if (err) return next(err);
+			res.json(product);
+		});
 });
 
 // delete a product

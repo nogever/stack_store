@@ -23,7 +23,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.factory('Order', function ($http) {
+app.factory('Order', function ($http, $state) {
     return {
         getAll: function() {
             return $http.get('/api/orders')
@@ -41,7 +41,73 @@ app.factory('Order', function ($http) {
                 'delivered', 
                 'picked-up'
             ];
+        },
+        options: {
+            sweets: ['none', 'sugar', 'splenda', 'raw sugar', 'honey'],
+            milk: ['none', 'whole milk', 'half and half', 'reduced fat', 'skim', 'soy'],
+            flavors: ['none', 'hazelnut', 'vanilla', 'chocolate'],
+            size: ['fullstack', 'mediumstack', 'smallstack'],
+            toppings: ['none', 'cinnamon', 'JAVAscript', 'cocoa powder', 'whip cream']
+        },
+        save: function(newOrder) {
+            
+            newOrder.products.forEach(function(product, index) {
+                product.productId = product.productId._id;
+            });
+
+            return $http.post('/api/orders', newOrder)
+                    .then(function(response) {
+                        console.log('response from save()', response);
+                        // return response.data;
+                        $state.go('administrator.orders');
+                    });
         }
+        // options: [
+        //     {
+        //         name: sweets,
+        //         choices: [
+        //             'none',
+        //             'sugar', 
+        //             'splenda', 
+        //             'raw sugar', 
+        //             'honey'
+        //         ]
+        //     }, {
+        //         name: milk,
+        //         choices: [
+        //             'none',
+        //             'whole milk', 
+        //             'half and half', 
+        //             'reduced fat', 
+        //             'skim', 
+        //             'soy'
+        //         ]
+        //     }, {
+        //         name: flavors,
+        //         choices: [
+        //             'none',
+        //             'hazelnut', 
+        //             'vanilla', 
+        //             'chocolate'
+        //         ]
+        //     }, {
+        //         name: size,
+        //         choices: [
+        //             'fullstack', 
+        //             'mediumstack', 
+        //             'smallstack'
+        //         ]
+        //     }, {
+        //         name: toppings,
+        //         choices: [
+        //             'none',
+        //             'cinnamon', 
+        //             'JAVAscript', 
+        //             'cocoa powder', 
+        //             'whip cream'
+        //         ]
+        //     }
+        // ] // <-- folded: 'options' in json format
     };
 });
 
@@ -51,25 +117,42 @@ app.controller('OrdersController', function ($scope, allOrders) {
 
 });
 
-app.controller('OrderController', function ($scope, Order, allDrinks) {
+app.controller('OrderController', function ($scope, $state, Order, AuthService, allDrinks) {
 
     $scope.status = Order.status();
     $scope.products = allDrinks;
-    var today = new Date();
-    
+    $scope.options = Order.options; 
+    var today = new Date();    
+
+    $scope.tempOptions = {sweets:'none',flavors:'none',milk:'none',size:'fullstack',toppings:'none'};
+    $scope.tempProduct = {productId: null, options: $scope.newOptions, quantity: null};
+
     $scope.newOrder = {
         orderNumber: null,
-        products: [{
-            productId: null, 
-            options: [
-                null
-            ],
-            quantity: null,
-            price: null
-        }],
+        products: [],
         date: today,
         orderStatus: 'paid',
-        _user: 'anonymous'
+        _user: null
+    };
+
+    AuthService.getLoggedInUser().then(function(user) {
+        $scope.newOrder._user = user._id;
+    });
+
+
+    $scope.addProductToOrder = function() {
+        $scope.newOptions = $scope.tempOptions;
+        $scope.newProduct = $scope.tempProduct;
+        $scope.newProduct.price = $scope.tempProduct.productId.price;
+
+        $scope.newOrder.products.push($scope.newProduct);
+
+        $scope.tempOptions = {sweets:'none',flavors:'none',milk:'none',size:'fullstack',toppings:'none'};
+        $scope.tempProduct = {productId: null, options: $scope.newOptions, quantity: null};
+    };
+
+    $scope.submit = function() {
+        Order.save($scope.newOrder);
     };
 
 });
@@ -84,7 +167,7 @@ app.filter('Type', function() {
             }
         }
         return filtered;
-    }
+    };
 });
 
 app.filter('Category', function() {
@@ -99,7 +182,7 @@ app.filter('Category', function() {
             }
         }
         return filtered;
-    }
+    };
 });
 
 

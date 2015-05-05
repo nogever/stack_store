@@ -83,7 +83,7 @@ app.factory('DrinkProducts', function ($http, $stateParams) {
     getAll: function() {
       return $http.get('/api/products').then(function(response) {
           return response.data;
-        })
+        });
     },
     getOne: function() {
         return $http.get('/api/products/' + $stateParams.id)
@@ -121,22 +121,11 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-// app.factory('ProductPreview', function ($http, productId) {
-//     getOne: function() {
-//         return $http.get('/api/products/' + productId)
-//                  .then(function(response) {
-//             return response.data;
-//         });
-//     }
-//   };
-// });
-
 app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal) {
-  
+
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = $stateParams.name;
   $scope.cat = $stateParams.name;
 
   $scope.quickView = function() {
@@ -175,7 +164,7 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
 });
 
 app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
-  
+
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
