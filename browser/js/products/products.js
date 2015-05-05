@@ -35,6 +35,9 @@ app.config(function ($stateProvider) {
       },
       allTypes: function(TypesFactory) {
         return TypesFactory.getTypes();
+      },
+      allOptions: function(OptionsDropdowns) {
+        return OptionsDropdowns.getOptions();
       }
     }
   })
@@ -51,6 +54,9 @@ app.config(function ($stateProvider) {
       },
       allTypes: function(TypesFactory) {
         return TypesFactory.getTypes();
+      },
+      allOptions: function(OptionsDropdowns) {
+        return OptionsDropdowns.getOptions();
       }
     }
   })
@@ -115,7 +121,17 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams) {
+// app.factory('ProductPreview', function ($http, productId) {
+//     getOne: function() {
+//         return $http.get('/api/products/' + productId)
+//                  .then(function(response) {
+//             return response.data;
+//         });
+//     }
+//   };
+// });
+
+app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal) {
   
   $scope.products = allDrinks;
   $scope.categories = allCategories;
@@ -123,23 +139,122 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
   $scope.typeName = $stateParams.name;
   $scope.cat = $stateParams.name;
 
+  $scope.quickView = function() {
+    $http.post('api/reviews', $scope.newReview)
+      .then (function(response) {
+          $scope.reviews.push(response.data);
+      }).catch(function(err) {
+          console.log('err');
+    });
+  };
+
+  $scope.animationsEnabled = true;
+
+  $scope.open = function (size, productId) {
+
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'js/products/product-modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        allOptions: function(OptionsDropdowns) {
+          return OptionsDropdowns.getOptions();
+        },
+        viewProduct: function() {
+          return $http.get('/api/products/' + productId)
+                 .then(function(response) {
+            return response.data;
+          });
+        }
+      }
+    });
+
+  };
+
 });
 
-app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes) {
+app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
   
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
   $scope.typeName = 'coffee';
 
+  $scope.quickView = function() {
+    $http.post('api/reviews', $scope.newReview)
+      .then (function(response) {
+          $scope.reviews.push(response.data);
+      }).catch(function(err) {
+          console.log('err');
+    });
+  };
+
+  $scope.animationsEnabled = true;
+
+  $scope.open = function (size, productId) {
+
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'js/products/product-modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        allOptions: function(OptionsDropdowns) {
+          return OptionsDropdowns.getOptions();
+        },
+        viewProduct: function() {
+          return $http.get('/api/products/' + productId)
+                 .then(function(response) {
+            return response.data;
+          });
+        }
+      }
+    });
+
+  };
+
 });
 
-app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategories, allTypes) {
+app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
   
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
   $scope.typeName = 'tea';
+
+  $scope.quickView = function() {
+    $http.post('api/reviews', $scope.newReview)
+      .then (function(response) {
+          $scope.reviews.push(response.data);
+      }).catch(function(err) {
+          console.log('err');
+    });
+  };
+
+  $scope.animationsEnabled = true;
+
+  $scope.open = function (size, productId) {
+
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'js/products/product-modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        allOptions: function(OptionsDropdowns) {
+          return OptionsDropdowns.getOptions();
+        },
+        viewProduct: function() {
+          return $http.get('/api/products/' + productId)
+                 .then(function(response) {
+            return response.data;
+          });
+        }
+      }
+    });
+
+  };
 
 });
 
@@ -180,10 +295,8 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
   });
 
   $scope.addReview = function() {
-    // console.log('new review: ', $scope.newReview);
     $http.post('api/reviews', $scope.newReview)
       .then (function(response) {
-          // console.log('reviews: ', response.data);
           $scope.reviews.push(response.data);
       }).catch(function(err) {
           console.log('err');
@@ -227,4 +340,40 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
 
   };
 
+});
+
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduct, allOptions, $http) {
+
+  $scope.product = viewProduct;
+  $scope.dropdowns = allOptions;
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+
+  $scope.newOptions = {
+    sweets: null,
+    milk: null,
+    flavors: null, 
+    size: null,
+    toppings: null,
+  };
+
+  $scope.newProduct = {
+    productId: viewProduct._id,
+    price: viewProduct.price,
+    options: $scope.newOptions,
+    quantity: 1
+  };
+
+  $scope.addToCart = function() {
+
+    $http.put("api/cart", $scope.newProduct)
+    .then(function(response) {
+        $modalInstance.close($scope.product);
+    }).catch(function(err) {
+        console.log(err);
+    });
+
+  };
 });

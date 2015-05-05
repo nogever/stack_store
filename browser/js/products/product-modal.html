@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <h3 class="modal-title">Product Quick View</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+    <div class="col-md-8">
+        <div class="thumbnail" >
+            <img src="{{product.photo}}" alt="">
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div>
+            <h3>{{ product.title }}</h3>
+            <h5>
+                <span class="label label-danger"
+                      ng-repeat="category in product.category">{{ category }}</span>
+            </h5>
+            <h5>{{ product.description }}</h5>
+            <h3>Add Options</h3>
+            <form name="buildDrink" ng-submit="buildDrink.$valid && addToCart()" novalidate>
+              <div class="form-group form-group-sm">
+                <label for="sweets">Sweets</label>
+                <select ng-model="newProduct.options.sweets" class="form-control">
+                    <option ng-repeat="sweet in dropdowns.sweets">{{ sweet }}</option>
+                </select>
+              </div>
+              <div class="form-group form-group-sm">
+                <label for="milk">Milk</label>
+                <select ng-model="newProduct.options.milk" class="form-control">
+                    <option ng-repeat="milk in dropdowns.milk">{{ milk }}</option>
+                </select>
+              </div>
+              <div class="form-group form-group-sm">
+                <label for="flavors">Flavors</label>
+                <select ng-model="newProduct.options.flavors" class="form-control">
+                    <option ng-repeat="flavor in dropdowns.flavors">{{ flavor }}</option>
+                </select>
+              </div>
+              <div class="form-group form-group-sm">
+                <label for="size">Size</label>
+                <select ng-model="newProduct.options.size" class="form-control">
+                    <option ng-repeat="size in dropdowns.size">{{ size }}</option>
+                </select>
+              </div>
+              <div class="form-group form-group-sm">
+                <label for="sweets">Toppings</label>
+                <select ng-model="newProduct.options.toppings" class="form-control">
+                    <option ng-repeat="topping in dropdowns.toppings">{{ topping }}</option>
+                </select>
+              </div>
+              <div class="form-group form-group-sm">
+                <label for="quantity">Quantity</label>
+                <input ng-model="newProduct.quantity" type="number" class="form-control" id="toppings" placeholder="Number of Drinks">
+              </div>
+              <button type="submit" class="btn btn-info" ng-disabled="buildDrink.$invalid">Add to Cart</button>
+              </div>
+            </form>
+    </div>
+</div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>
+
