@@ -16,51 +16,59 @@ app.config(function ($stateProvider) {
         return TypesFactory.getTypes();
       }
     }
-  }).state('products.category', {
-      url:'/category/:name',
-      templateUrl: 'js/products/products-list.html',
-      controller: 'ProductsCtrl'
-    }).state('products.coffee', {
-      url:'/type/coffee',
-      templateUrl: 'js/products/products-list-type.html',
-      controller: 'ProductsCoffeeCtrl',
-      resolve: {
-        allDrinks: function(DrinkProducts) {
-          return DrinkProducts.getAll();
-        },
-        allCategories: function(CategoriesFactory) {
-          return CategoriesFactory.getCategories();
-        },
-        allTypes: function(TypesFactory) {
-          return TypesFactory.getTypes();
-        }
+  })
+  .state('products.category', {
+    url:'/category/:name',
+    templateUrl: 'js/products/products-list.html',
+    controller: 'ProductsCtrl'
+  })
+  .state('products.coffee', {
+    url:'/type/coffee',
+    templateUrl: 'js/products/products-list-type.html',
+    controller: 'ProductsCoffeeCtrl',
+    resolve: {
+      allDrinks: function(DrinkProducts) {
+        return DrinkProducts.getAll();
+      },
+      allCategories: function(CategoriesFactory) {
+        return CategoriesFactory.getCategories();
+      },
+      allTypes: function(TypesFactory) {
+        return TypesFactory.getTypes();
       }
-    }).state('products.tea', {
-      url:'/type/tea',
-      templateUrl: 'js/products/products-list-type.html',
-      controller: 'ProductsTeaCtrl',
-      resolve: {
-        allDrinks: function(DrinkProducts) {
-          return DrinkProducts.getAll();
-        },
-        allCategories: function(CategoriesFactory) {
-          return CategoriesFactory.getCategories();
-        },
-        allTypes: function(TypesFactory) {
-          return TypesFactory.getTypes();
-        }
+    }
+  })
+  .state('products.tea', {
+    url:'/type/tea',
+    templateUrl: 'js/products/products-list-type.html',
+    controller: 'ProductsTeaCtrl',
+    resolve: {
+      allDrinks: function(DrinkProducts) {
+        return DrinkProducts.getAll();
+      },
+      allCategories: function(CategoriesFactory) {
+        return CategoriesFactory.getCategories();
+      },
+      allTypes: function(TypesFactory) {
+        return TypesFactory.getTypes();
       }
-    });
-  $stateProvider.state('products.home', {
+    }
+  })
+  .state('products.home', {
     url: '/home',
     templateUrl: 'js/products/home.html',
     controller: 'ProductsHomeCtrl'
+  })
+  .state('products.product', {
+    url: '/product/:id',
+    templateUrl: 'js/products/product.html',
+    controller: 'ProductCtrl',
+    resolve: {
+      allOptions: function(OptionsDropdowns) {
+        return OptionsDropdowns.getOptions();
+      }
+    }
   });
-    $stateProvider.state('products.product', {
-      url: '/product/:id',
-      templateUrl: 'js/products/product.html',
-      controller: 'ProductCtrl'
-    });
 });
 
 app.factory('DrinkProducts', function ($http, $stateParams) {
@@ -139,14 +147,10 @@ app.controller('ProductsHomeCtrl', function ($scope) {
 
 });
 
-app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, OptionsDropdowns, $stateParams, $http, $state) {
+app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, DrinkProducts, allOptions, $http, $state) {
 
   $scope.reviews = {};
-
-  OptionsDropdowns.getOptions()
-    .then(function(options) {
-      $scope.dropdowns = options;
-  });
+  $scope.dropdowns = allOptions;
 
   if (AuthService.isAuthenticated()) {
 
@@ -155,8 +159,6 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
 
         $scope.user = user;
         
-        // if (user._id) {
-
         $scope.newReview = {
           user: user._id, 
           rating: null,
@@ -164,17 +166,18 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
           title: null
         };
 
-        // }
-
       })
-      .then(DrinkProductFactory.getProduct)
+      .then(DrinkProducts.getOne)
       .then(function(product) {
         $scope.newReview.product = product._id;
       }
     );
     
   }
-
+  
+  ProductReviews.getReviews().then(function(data) {
+    $scope.reviews = data;
+  });
 
   $scope.addReview = function() {
     // console.log('new review: ', $scope.newReview);
@@ -187,16 +190,12 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
     });
   };
 
-  DrinkProductFactory.getProduct()
+  DrinkProducts.getOne()
     .then(function(data) {
         $scope.product = data;
         $scope.newProduct.productId = data._id;
         $scope.newProduct.price = data.price;
     });
-
-  ProductReviewsFactory.getReviews().then(function(data) {
-    $scope.reviews = data;
-  });
 
   $scope.newOptions = {
     sweets: null,
