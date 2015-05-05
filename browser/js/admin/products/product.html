@@ -37,12 +37,12 @@
      </select>
   </div>  
   <div class="form-group form-group-sm">
-    <label class="checkbox-label">Category</label>
+    <label class="checkbox-label">Categories</label>
     <label ng-repeat="category in categories" class="checkbox-inline">
       <input
         type="checkbox" 
         checklist-model="newProduct.categories" 
-        checklist-value="category._id"
+        checklist-value="category"
       >{{category.name}}
     </label>
   </div>

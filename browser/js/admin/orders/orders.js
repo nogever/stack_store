@@ -84,7 +84,7 @@ app.filter('Type', function() {
             }
         }
         return filtered;
-    }
+    };
 });
 
 app.filter('Category', function() {
@@ -99,7 +99,7 @@ app.filter('Category', function() {
             }
         }
         return filtered;
-    }
+    };
 });
 
 

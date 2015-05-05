@@ -69,7 +69,7 @@ app.factory('DrinkProducts', function ($http, $stateParams) {
     getAll: function() {
       return $http.get('/api/products').then(function(response) {
           return response.data;
-        })
+        });
     },
     getOne: function() {
         return $http.get('/api/products/' + $stateParams.id)
@@ -107,17 +107,16 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams) {
+app.controller('ProductsCtrl', function ($scope, allDrinks, allCategories, allTypes, $stateParams) {
   
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = $stateParams.name;
   $scope.cat = $stateParams.name;
 
 });
 
-app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes) {
+app.controller('ProductsCoffeeCtrl', function ($scope, allDrinks, allCategories, allTypes) {
   
   $scope.products = allDrinks;
   $scope.categories = allCategories;
@@ -126,7 +125,7 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
 
 });
 
-app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategories, allTypes) {
+app.controller('ProductsTeaCtrl', function ($scope, allDrinks, allCategories, allTypes) {
   
   $scope.products = allDrinks;
   $scope.categories = allCategories;
