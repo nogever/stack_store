@@ -15,7 +15,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('AddUserController', function($scope, $http, UserFactory) {
+app.controller('AddUserController', function($scope, $state, $http, UserFactory) {
 
     $scope.roles = UserFactory.roles();
 
@@ -34,6 +34,7 @@ app.controller('AddUserController', function($scope, $http, UserFactory) {
         $http.post("api/users", $scope.newUser)
         .then(function(response) {
             console.log('hi');
+            $state.go('administrator.users');
         }).catch(function(err) {
             console.log('err');
         });
