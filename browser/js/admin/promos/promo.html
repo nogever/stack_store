@@ -1,0 +1,36 @@
+<h3>{{ promo.name || 'Add New Promo'}}</h3>
+<pre>{{ newPromo | json }}</pre>
+<form name="addPromo" ng-submit="addPromo.$valid && submit()" novalidate>
+  <div class="form-group form-group-sm">
+    <label for="adminPromoName">Name</label>
+    <input ng-model="newPromo.name" type="text" class="form-control" id="adminPromoName" placeholder="Enter Promotion Name" value="{{ promo.name }}">
+  </div>
+  <div class="form-group form-group-sm">
+    <label for="adminPromoCode">Promo Code</label>
+    <input ng-model="newPromo.code" type="text" class="form-control" id="adminPromoCode" placeholder="Enter Promo Code" value="{{ promo.code }}">
+  </div>
+
+  <button type="submit" class="btn btn-default" ng-disabled="addPromo.$invalid">Submit</button>
+
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

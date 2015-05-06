@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+	
+		<h3 class="admin-title">All Promos <span class="btn btn-default"><a ui-sref="administrator.promo">Add New</a></span></h3>
+		<div class="admin-pm-heading row">
+			<div class="admin-pm-name col-sm-2 text-center">Name</div>
+			<div class="admin-pm-name col-sm-2 text-center">Code</div>
+			<div class="admin-pm-email col-sm-2 text-center">Discount</div>
+			<div class="admin-pm-username col-sm-2 text-center">Expiration</div>
+			<div class="admin-pm-role col-sm-1 text-center">White List</div>
+			<div class="admin-pm-twitter col-sm-1 text-center">Black List</div>
+		</div>
+	
+	</div>
+	<div class="panel-body">
+
+		<div class="admin-pm-rows" ng-repeat="promo in promos">
+			<div class="admin-pm-info row">
+				<div class="admin-pm-name col-sm-2 text-center"><a ui-sref="administrator.promo({id: promo._id})">{{ promo.name }}</a></div>
+				<div class="admin-pm-name col-sm-2 text-center"><a ui-sref="administrator.promo({id: promo._id})">{{ promo.code }}</a></div>
+				<div class="admin-pm-username col-sm-2 text-center">{{ promo.discount }}</div>
+				<div class="admin-pm-email col-sm-2 text-center">{{ promo.expires }}</div>
+				<div class="admin-pm-role col-sm-1 text-center">
+					<div ng-repeat="white in promo.whiteList">{{ white.title }}</div>
+				</div>
+				<div class="admin-pm-twitter col-sm-1 text-center">
+					<div ng-repeat="black in promo.blackList">{{ black.title }}</div>
+				</div>
+				<div class="col-sm-1 text-center"><a ui-sref="administrator.promo({id: promo._id})">Edit</a></div>
+				<div class="col-sm-1 text-center"><a href="#" ng-click="delete(promo._id)">Delete</a></div>
+			</div>
+		</div>
+	
+	</div>
+</div>
+<pre>{{promos | json}}</pre>
+
+
+
+
+
+
+
+
