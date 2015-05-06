@@ -27,13 +27,12 @@ router.get('/', function (req, res, next) {
 			.populate('productId')
 			.exec()
 			.then(function(cart) {
-				if (err) return next(err);
+				// if (err) return next(err);
 				console.log('Cart GET Success Handler: ', cart);
 				
 				cart.calculateCartAmounts();
 				res.status(201).json(cart);
-			})
-			.then(null, function(err) {
+			}, function(err) {
 				console.log('Cart GET Error Handler: ', err);
 				res.status(501).next(err);
 			});	
@@ -42,13 +41,12 @@ router.get('/', function (req, res, next) {
 			.populate('productId')
 			.exec()
 			.then(function(cart) {
-				if (err) return next(err);
+				// if (err) return next(err);
 				console.log('Cart GET Success Handler: ', cart);
-				
+				// console.log('req.sessionID', req.session);
 				cart.calculateCartAmounts();
 				res.status(201).json(cart);
-			})
-			.then(null, function(err) {
+			}, function(err) {
 				console.log('Cart GET Error Handler: ', err);
 				res.status(501).next(err);
 			});	
@@ -73,7 +71,20 @@ router.get('/options', function (req, res, next) {
 
 });
 
-router.put('/', function(req, res, next) {
+var checkAndCreateCart = function(req, res, next) {
+
+	if(!req.user) {
+		CartModel.findOneAndUpdate({session: req.sessionID}, {}, {upsert:true}, function(err, anonCart) {
+			console.log('Middleware Executed: Anon Cart = ', anonCart);
+			next();
+		})
+	} else {
+		next();
+	}
+
+};
+
+router.put('/', checkAndCreateCart, function(req, res, next) {
 
 	var productDetails = req.body;
 	// console.log("PUT req.user: ", req.user);
@@ -93,14 +104,12 @@ router.put('/', function(req, res, next) {
 			{upsert: true})
 		.exec()
 		.then(function(cart) {
-			if(err) return next(err);
-
+			// if(err) return next(err);
 			// if you do not explicitly run res.json or res.send, this will hang for long periods of time.
-			cart.calculateCartAmounts();
+			// cart.calculateCartAmounts();
 			console.log('Logged in: PUT Request Success: User Cart ', cart);
 			res.status(201).json(cart);
-		})
-		.then(null, function(err) {
+		}, function(err) {
 			console.log('Cart PUT Error Handler (Logged In): ', err);
 			res.status(501).end();
 		});	
@@ -115,12 +124,11 @@ router.put('/', function(req, res, next) {
 			{upsert: true})
 		.exec()
 		.then(function(err, cart) {
-			if(err) return next(err);
+			// if(err) return next(err);
 			cart.calculateCartAmounts();
 			console.log('Logged Out: PUT Request Success: Anon Cart ', cart);
 			res.status(201).json(cart);
-		})
-		.then(null, function(err) {
+		}, function(err) {
 			console.log('Cart PUT Error Handler (Logged Out): ', err);
 			res.status(501).end();
 		});
@@ -138,13 +146,17 @@ router.delete('/product/:id', function (req, res, next) {
 	console.log('deleting a product from server route');
 	CartModel.findOne(
 		{$or: [{userId: req.user._id}, {session: req.sessionID}]})
-		.exec(function(err, cart) {
-			if (err) res.status(500).send(err);
+		.exec()
+		.then(function(cart) {
+			// if (err) res.status(500).send(err);
 			cart.products.pull({_id: req.params.id});
 			console.log('find cart to delete product', cart.products);
 			cart.calculateCartAmounts();
 			cart.save();
-			res.json(cart);
+			res.status(201).json(cart);
+		}, function(err) {
+			console.log("Cart DELETE error", err);
+			res.status(501).end();
 		});
 
 });

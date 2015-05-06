@@ -42,7 +42,6 @@ module.exports = function (app) {
             req.logIn(user, function (err) {
                 if (err) return next(err);
                 // We respond with a reponse object that has user with _id and email.
-                res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
 
                 // var cartPromises = [];
 
@@ -55,16 +54,24 @@ module.exports = function (app) {
                 //     // console.log('userCart after login', cart);
                 //     // return cart;
                 // });
-
-                CartModel.findOne({userId: req.session.passport.user}, function(err, userCart) { //
+                CartModel.findOneAndUpdate({userId: req.session.passport.user}, {}, {upsert: true}, function(err, userCart) { //
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
-                        if (err) res.status(500).send(err);
-                        console.log('userCart: ', userCart);
                         userCart.merge(sessionCart);
-                        res.status(200).end();
-                    })
-
+                        console.log('userCart: ', userCart);
+                        // res.json(userCart);
+                        res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
+                    });
                 });
+
+                // CartModel.findOne({userId: req.session.passport.user}, function(err, userCart) { //
+                //     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
+                //         if (err) res.status(500).send(err);
+                //         console.log('userCart: ', userCart);
+                //         userCart.merge(sessionCart);
+                //         res.status(200).end();
+                //     })
+
+                // });
 
                 // q.all(cartPromises)
                 // .then(function (results) {

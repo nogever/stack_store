@@ -50,8 +50,17 @@ schema.methods.merge = function( anonCart ) {
 	if (anonCart !== null) {
 		this.products = this.products.concat( anonCart.products );
 		this.save();
-		console.log('after merge products', this.products);
+		// console.log('after merge products', this.products);
+		console.log("ANON Cart before", anonCart);
+
 		anonCart.remove();
+		// anonCart.products = [];
+
+		// console.log("ANON Cart after", anonCart);
+		// CartModel.create({session: req.sessionID}, function (err, cart) {
+		// 	console.log("New ANON Cart created", cart);
+		// });
+		
 	}
 	// return; 
 };
