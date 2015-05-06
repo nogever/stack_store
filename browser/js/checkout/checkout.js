@@ -1,4 +1,7 @@
 'use strict';
+var stripe = require("stripe")(
+  "sk_test_nHFUXc5ELdKZCqA6bU6qlAIr"
+);
 
 app.config(function ($stateProvider) {
 
@@ -19,24 +22,16 @@ app.controller('CheckoutController', function ($scope) {
 	    return new Array(num);   
 	};
 
-	$scope.purchase = function () {
-
-		// console.log("Purchase function executed");
-		
-		var handler = StripeCheckout.configure({
-		    key: 'pk_test_HBre0jms0WDRFGRuDzUzwVyE',
-		    image: '/img/documentation/checkout/marketplace.png',
-		    token: function(token) {
-		      // Use the token to create the charge with a server-side script.
-		      // You can access the token ID with `token.id`
-				 // This is the callback 
-		    }
-		  });
-
-		handler.open({
-	    	name: 'Demo Site',
-	    	description: '2 widgets',
-	    	amount: 2000
+	$scope.charge = function () {
+		stripe.charges.create({
+		  amount: 400,
+		  currency: "usd",
+		  source: "tok_15zEPPL5vWGrXymrbUhkH4bL", // obtained with Stripe.js
+		  description: "Charge for test@example.com"
+		}).then(function(charge){
+		  	console.log("Stripe Successful: ", charge);
+		}, function(err) {
+			console.log("Stripe Error: ", err);
 		});
 	};
 
