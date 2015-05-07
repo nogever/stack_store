@@ -24,7 +24,7 @@ router.post('/', function(req, res, next) {
 
 	var amount = req.body.params.amount;
 	var source = req.body.params.token;
-	var	description = "Cart Number: " + "12345";
+	var	description = "Cart ID Number: " + req.body.params.description;
 	var idempotency_key = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 	    return v.toString(16);

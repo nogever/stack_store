@@ -20,9 +20,9 @@ app.factory('StripeFactory', function($http) {
 				return response.data;
 			}).catch(function(err) {
 				console.log("Stripe Post Failed: ", err);
-			})
+			});
 		}
-	}
+	};
 });
 
 app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory) {
@@ -64,9 +64,11 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 			if(response) {
 				StripeFactory.postCharge({
 					amount: numberToSubmit,
-					token: token
+					token: token,
+					description: $scope.cartInfo._id
 				}).then(function(charge) {
 					console.log("Stripe Processed on FrontEnd: ", charge);
+					//consider a STATE Redirect here upon success.
 				}).then(null, function(err) {
 					console.log("Stripe Failed on FrontEnd: ", err.error.code);
 				});
