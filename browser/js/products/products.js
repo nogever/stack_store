@@ -93,6 +93,17 @@ app.factory('DrinkProducts', function ($http, $stateParams) {
                  .then(function(response) {
             return response.data;
         });
+    },
+    filterAll: function() {
+        return $http.get('/api/products')
+                  .then(function(response) {
+            return response.data;
+        });
+    },
+    filterTest: function(string){
+        return '(' 
+                + string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1").trim().split(/\s+/).join('|') 
+                + ')';
     }
   };
 });
@@ -123,7 +134,7 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory) {
+app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory, DrinkProducts) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
@@ -153,6 +164,17 @@ app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, a
       }
     });
 
+  };
+  
+  $scope.search = '';
+  var regex;
+  $scope.$watch('search', function(value) {
+      regex = new RegExp('\\b' + DrinkProducts.filterTest(value), 'i');
+  });
+  
+  $scope.filterBySearch = function(name) {
+      if (!$scope.search) return true;
+      return regex.test(name);
   };
 
   // mini cart
@@ -187,7 +209,7 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'coffee';
+  $scope.typeName = 'Coffee';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -197,7 +219,6 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
           console.log('err');
     });
   };
-
   $scope.animationsEnabled = true;
 
   $scope.open = function (size, productId) {
@@ -229,7 +250,7 @@ app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategor
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'tea';
+  $scope.typeName = 'Tea';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -387,3 +408,17 @@ app.controller('ModalInstanceCtrl', function ($rootScope, $scope, $modalInstance
 
   };
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
