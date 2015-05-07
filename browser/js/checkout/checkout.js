@@ -43,7 +43,6 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 	};
 
 	var publishedKey = 'pk_test_HBre0jms0WDRFGRuDzUzwVyE';
-
 	Stripe.setPublishableKey(publishedKey);
 
 	$scope.submitForToken = function () {
@@ -59,9 +58,13 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 			console.log("Stripe.js Token: ", token);
 			console.log("Stripe.js Response: ", response);
 
+			// Stripe will throw an error if not given an integer amount to charge
+			var numberToSubmit = Math.floor($scope.cartInfo.total * 100);
+
 			if(response) {
 				StripeFactory.postCharge({
-					amount: 400
+					amount: numberToSubmit,
+					token: token
 				}).then(function(charge) {
 					console.log("Stripe Processed on FrontEnd: ", charge);
 				}).then(null, function(err) {
@@ -72,21 +75,5 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 		});
 
 	};
-
-
-
-
-	// $scope.charge = function () {
-	// 	stripe.charges.create({
-	// 	  amount: $scope.cartInfo.total,
-	// 	  currency: "usd",
-	// 	  source: "tok_15zEPPL5vWGrXymrbUhkH4bL", // obtained with Stripe.js
-	// 	  description: "Charge for test@example.com"
-	// 	}).then(function(charge){
-	// 	  	console.log("Stripe Successful: ", charge);
-	// 	}, function(err) {
-	// 		console.log("Stripe Error: ", err);
-	// 	});
-	// };
 
 });
