@@ -46,3 +46,27 @@
 
 	</div>
 </div>
+
+<div class="cart-mini-container" ng-show="showMiniCart">
+	<div class="cart-mini-header">
+		Your Cart
+		<span class="glyphicon glyphicon-remove pull-right" aria-hidden="true" ng-click="hideMiniCart()"></span>
+	</div>
+	<div class="cart-mini-body">
+		<div ng-repeat="(productIndex, product) in cartInfo.products">
+			<div class="group cart-mini-item">
+				<img ng-src="{{product.productId.photo}}" alt="" class="img-responsive">
+				<div class="info">
+				  	<p>{{ product.productId.title }}</p>
+				  	<p>{{ product.options.size }}</p>
+				  	<p>Quantity: {{ product.quantity }}</p>
+				  	<p>Price: {{ product.price / 100 | currency }}</p>
+			  		<button type="button" class="btn btn-default btn-xs borderOnHover pull-right" ng-click="deleteRow(product._id)">
+			  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+			  		</button>
+			  	</div>
+		  	</div>
+		</div>
+		<a class="btn btn-info pull-right" role="button" ng-click="">Checkout</a>
+	</div>
+</div>
