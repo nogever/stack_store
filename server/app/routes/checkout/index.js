@@ -2,7 +2,7 @@
 
 var router = require('express').Router();
 var stripe = require("stripe")(
-	"sk_test_nHFUXc5ELdKZCqA6bU6qlAIr"
+	"sk_test_FpTywm0HoJRW9wQvn2jeTrkh"
 );
 
 var mongoose = require('mongoose');
@@ -20,8 +20,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 
-	var amount = req.body.amount;
-	var source = 'tok_15zEPPL5vWGrXymrbUhkH4bL';
+	// var amount = req.body.amount;
+	var source = 'sk_test_FpTywm0HoJRW9wQvn2jeTrkh';
 	var	description = "Cart Number: " + "12345";
 	var idempotency_key = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
     console.log("ID_KEY: ", idempotency_key);
 
 	stripe.charges.create({
-		amount: amount,
+		amount: 400,
 		currency: 'usd',
 		source: source,
 		description: description

@@ -45,16 +45,11 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 	var publishedKey = 'pk_test_HBre0jms0WDRFGRuDzUzwVyE';
 
 	Stripe.setPublishableKey(publishedKey);
-	// $scope.setKey = function(publishedKey)  {
-		
-		
-	// 	$scope.submitForToken();
-	// }
 
 	$scope.submitForToken = function () {
 
 		Stripe.card.createToken({
-			num: $scope.card.ccNum,
+			number: $scope.card.ccNum,
 			exp_month: $scope.card.ccExpMonth,
 			exp_year: $scope.card.ccExpYear
 		}, function(status, response) {
@@ -62,14 +57,15 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 
 			console.log("Stripe.js Error: ", status);
 			console.log("Stripe.js Token: ", token);
+			console.log("Stripe.js Response: ", response);
 
 			if(response) {
 				StripeFactory.postCharge({
 					amount: 400
 				}).then(function(charge) {
 					console.log("Stripe Processed on FrontEnd: ", charge);
-				}).catch(function(err) {
-					console.log("Stripe Failed on FrontEnd: ", err);
+				}).then(null, function(err) {
+					console.log("Stripe Failed on FrontEnd: ", err.error.code);
 				});
 			};
 
