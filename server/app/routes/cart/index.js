@@ -10,6 +10,22 @@ var OptionsModel = mongoose.model('Options');
 
 module.exports = router;
 
+var checkAndCreateCart = function(req, res, next) {
+
+	if(!req.user) {
+		CartModel.findOneAndUpdate({session: req.sessionID}, {}, {upsert:true}, function(err, anonCart) {
+			console.log('Middleware Executed: Anon Cart = ', anonCart);
+			next();
+		});
+	} else {
+		next();
+	}
+
+};
+
+router.use(checkAndCreateCart);
+
+
 //get cart 
 //uri: api/cart
 router.get('/', function (req, res, next) {
@@ -20,13 +36,15 @@ router.get('/', function (req, res, next) {
 	// console.log(typeof req.sessionID);
 	// console.log("req.SessionID = ", req.sessionID);
 	// console.log('START of Cart GET', Date.now());
+	console.log('req.sessionID', req.sessionID);
 
 	if(req.user) {
 		CartModel.findOne({userId: req.user._id})
-			.populate('productId')
+			// .populate('products.productId')
 			.exec()
 			.then(function(cart) {
 				// if (err) return next(err);
+
 				console.log('Cart GET Success Handler: ', cart);
 				
 				cart.calculateCartAmounts();
@@ -44,10 +62,16 @@ router.get('/', function (req, res, next) {
 				console.log('Cart GET Success Handler: ', cart);
 				// console.log('req.sessionID', req.session);
 				cart.calculateCartAmounts();
+				console.log("Post Cart Calculate");
 				res.status(201).json(cart);
 			}, function(err) {
 				console.log('Cart GET Error Handler: ', err);
 				res.status(501).next(err);
+			})
+			.then(function(success) {
+				console.log("get success");
+			}, function(err) {
+				console.log("get errrrr", err.stack);
 			});	
 	}
 
@@ -69,20 +93,8 @@ router.get('/options', function (req, res, next) {
 
 });
 
-var checkAndCreateCart = function(req, res, next) {
 
-	if(!req.user) {
-		CartModel.findOneAndUpdate({session: req.sessionID}, {}, {upsert:true}, function(err, anonCart) {
-			console.log('Middleware Executed: Anon Cart = ', anonCart);
-			next();
-		})
-	} else {
-		next();
-	}
-
-};
-
-router.put('/', checkAndCreateCart, function(req, res, next) {
+router.put('/', function(req, res, next) {
 
 	var productDetails = req.body;
 	// console.log("PUT req.user: ", req.user);
