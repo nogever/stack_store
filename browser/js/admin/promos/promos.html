@@ -1,20 +1,17 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3>Types</h3>
-		<div class="admin-pm-heading">
-			<span class="admin-pm-name">Name</span>
-		</div>
-		<div class="admin-pm-heading">
-			<span class="admin-pm-code">Code</span>
+		<h3>Promotions</h3>
+		<div class="admin-pm-heading row">
+			<span class="admin-pm-name col-sm-2">Name</span><span class="admin-pm-code col-sm-2">Code</span>
 		</div>
 	</div>
 	<div class="panel-body">
-		<div class="admin-pm-rows" ng-repeat="promo in promos">
+		<div class="admin-pm-rows row" ng-repeat="promo in promos">
 			<form name="promo-{{ promo.name }}" class="form-inline">
-				<div class="form-group form-group-sm">
+				<div class="form-group form-group-sm col-sm-2">
 					<input type="text" class="form-control" id="promo-name-{{ promo.name }}" value="{{ promo.name }}" disabled>
 				</div>
-				<div class="form-group form-group-sm">
+				<div class="form-group form-group-sm col-sm-2">
 					<input type="text" class="form-control" id="promo-code-{{ promo.code }}" value="{{ promo.code }}" disabled>
 				</div>
 				<button class="btn btn-default edit-{{ promo.name }}" ng-click="editPromo()">Edit</button>
@@ -32,7 +29,7 @@
 			<h3 class="panel-title">Add New Promotion</h3>
 		</div>
 		<div class="panel-body">
-			<form name="newPromoForm" class="form-inline" ng-submit="newPromoForm.$valid && addPromo()" novalidate>
+			<form name="newPromoForm" class="col-sm-4" ng-submit="newPromoForm.$valid && addPromo()" novalidate>
 			  <div class="form-group form-group-sm">
 			    <label for="adminPromoName">Promo Name</label>
 			    <input ng-model="newPromo.name" type="text" class="form-control" id="adminPromoName" placeholder="Enter Name">
