@@ -14,6 +14,9 @@ app.config(function ($stateProvider) {
       },
       allTypes: function(TypesFactory) {
         return TypesFactory.getTypes();
+      },
+      cartInfo: function (CartFactory) {
+        return CartFactory.getCartInfo(); 
       }
     }
   })
@@ -90,6 +93,17 @@ app.factory('DrinkProducts', function ($http, $stateParams) {
                  .then(function(response) {
             return response.data;
         });
+    },
+    filterAll: function() {
+        return $http.get('/api/products')
+                  .then(function(response) {
+            return response.data;
+        });
+    },
+    filterTest: function(string){
+        return '(' 
+                + string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1").trim().split(/\s+/).join('|') 
+                + ')';
     }
   };
 });
@@ -113,7 +127,6 @@ app.factory('OptionsDropdowns', function ($http) {
     getOptions: function () {
       return $http.get('/api/cart/options')
         .then(function(response) {
-          // console.log("dropdown data", response.data);
           return response.data;
         });
     }
@@ -121,21 +134,12 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal) {
+app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory, DrinkProducts) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
   $scope.cat = $stateParams.name;
-
-  $scope.quickView = function() {
-    $http.post('api/reviews', $scope.newReview)
-      .then (function(response) {
-          $scope.reviews.push(response.data);
-      }).catch(function(err) {
-          console.log('err');
-    });
-  };
 
   $scope.animationsEnabled = true;
 
@@ -146,6 +150,7 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
       templateUrl: 'js/products/product-modal.html',
       controller: 'ModalInstanceCtrl',
       size: size,
+      // scope: $scope,
       resolve: {
         allOptions: function(OptionsDropdowns) {
           return OptionsDropdowns.getOptions();
@@ -160,6 +165,42 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
     });
 
   };
+  
+  $scope.search = '';
+  var regex;
+  $scope.$watch('search', function(value) {
+      regex = new RegExp('\\b' + DrinkProducts.filterTest(value), 'i');
+  });
+  
+  $scope.filterBySearch = function(name) {
+      if (!$scope.search) return true;
+      return regex.test(name);
+  };
+
+  // mini cart
+  $rootScope.showMiniCart = false;
+  $rootScope.cartInfo = cartInfo;
+
+  $scope.hideMiniCart = function(){
+    $rootScope.showMiniCart = false;
+  };
+
+  $scope.removeRow = function (productIndex) {
+    $scope.cartInfo.products.splice(productIndex, 1);
+  };
+
+  $scope.deleteRow = function(productId) {
+
+      $http.delete('api/cart/product/' + productId)
+          .then(function(response) {
+              CartFactory.getCartInfo().then(function(cartInfo) {
+                  $rootScope.cartInfo = cartInfo;
+              });
+          }).catch(function(err) {
+              console.log('delete product in cart returned err');
+          });
+
+    };
 
 });
 
@@ -168,7 +209,7 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'coffee';
+  $scope.typeName = 'Coffee';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -178,7 +219,6 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
           console.log('err');
     });
   };
-
   $scope.animationsEnabled = true;
 
   $scope.open = function (size, productId) {
@@ -210,7 +250,7 @@ app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategor
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'tea';
+  $scope.typeName = 'Tea';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -314,24 +354,22 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
 
   $scope.addToCart = function() {
 
-      console.log("Starting API/CART PUT request", Date.now());
+    console.log("Product to be added to cart", $scope.newProduct);
       $http.put("api/cart", $scope.newProduct)
-      .then(function(response) {
-          // display the current cart in popup window
-          console.log("new product response", response);
-          console.log("received API/CART PUT request", Date.now());
-          $state.go('home');
-      }).catch(function(err) {
-          console.log("ERROR from API/CART PUT request", Date.now());
-          console.log('add to cart returned err', err);
-          $state.go('home');
-      });
+        .success(function(response) {
+            // display the current cart in popup window
+            console.log("FRONT-END: PUT response", response);
+            $state.go('^');
+        }).error(function(err) {
+            console.log("FRONT-END, ERROR from API/CART PUT", err);
+            $state.go('^');
+        });
 
   };
 
 });
 
-app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduct, allOptions, $http) {
+app.controller('ModalInstanceCtrl', function ($rootScope, $scope, $modalInstance, viewProduct, allOptions, $http, CartFactory) {
 
   $scope.product = viewProduct;
   $scope.dropdowns = allOptions;
@@ -357,8 +395,12 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduc
 
   $scope.addToCart = function() {
 
+    $rootScope.showMiniCart = true;
     $http.put("api/cart", $scope.newProduct)
     .then(function(response) {
+        CartFactory.getCartInfo().then(function(cartInfo) {
+          $rootScope.cartInfo = cartInfo;
+        });
         $modalInstance.close($scope.product);
     }).catch(function(err) {
         console.log(err);
@@ -366,3 +408,17 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduc
 
   };
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+

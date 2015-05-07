@@ -8,7 +8,7 @@
 	</pre> -->
     <div masonry>
 		<div class="col-md-4 masonry-brick"
-			ng-repeat="product in products | Category:cat">
+			ng-repeat="product in products | Category:cat | filter:query">
 			<div class="thumbnail" >
 				<img ng-src="{{product.photo}}" alt="">
 				<div class="caption text-center">
@@ -18,7 +18,7 @@
 							  ng-repeat="category in product.categories">{{ category.name }}</span>
 					</h5>
 					<h5>{{ product.description }}</h5>
-					<a class="btn btn-info" role="button" ng-click="open('lg', product._id)">Quick View</a>
+					<a class="btn btn-info" role="button" ng-click="open('md', product._id)">Quick View</a>
 					<a ui-sref="products.product({ id: product._id })" class="btn btn-info" role="button">More Info</a>
 				</div>
 			</div>
