@@ -1,5 +1,5 @@
 'use strict';
-
+var auth = require('../auth');
 var router = require('express').Router();
 var mongoose = require('mongoose');
 
@@ -9,9 +9,9 @@ var ReviewModel = mongoose.model('Review');
 var OrderModel = mongoose.model('Order');
 
 module.exports = router;
-
+// auth.isAdmin,
 // get all users
-router.get('/', function (req, res, next) {
+router.get('/',  function (req, res, next) {
 	UserModel.find()
 		.exec(function(err, users) {
 			// if an error happened, pass the error to 'next'
