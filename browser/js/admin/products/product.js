@@ -8,12 +8,28 @@ app.config(function ($stateProvider) {
     .state('administrator.newProduct', {
         url: '/product',
         controller: 'AddProductController',
-        templateUrl: 'js/admin/products/product.html'
+        templateUrl: 'js/admin/products/product.html',
+        resolve: {
+            allCategories: function (CategoriesFactory) {
+                return CategoriesFactory.getCategories();
+            },
+            allTypes: function (TypesFactory) {
+                return TypesFactory.getTypes();
+            }
+        }
     })
     .state('administrator.product', {
         url: '/product/:id',
         controller: 'ProductController',
-        templateUrl: 'js/admin/products/product.html'
+        templateUrl: 'js/admin/products/product.html',
+        resolve: {
+            allCategories: function (CategoriesFactory) {
+                return CategoriesFactory.getCategories();
+            },
+            allTypes: function (TypesFactory) {
+                return TypesFactory.getTypes();
+            }
+        }
     });
 });
 
@@ -25,38 +41,54 @@ app.factory('ProductFactory', function ($http, $stateParams) {
                      .then(function(response) {
                 return response.data;
             });
-        }
+        },
+
     };
 
 });
 
-app.controller('AddProductController', function($scope, $http) {
+app.controller('AddProductController', function($scope, $state, $http, allCategories, allTypes, CategoriesFactory, TypesFactory) {
+    
+    $scope.categories = allCategories;
+
+    $scope.types = allTypes;
 
     $scope.newProduct = {
         title: null,
         price: 0,
         description: null,
-        category: [null],
+        type: null,
+        categories: null,
         photo: 'http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg',
         stock: 0,
         cost: 0
     };
 
-    $scope.submit = function() {
-        console.log('new product: ', $scope.newProduct);
+    $scope.addProduct = function() {
+
+        var _idCategories = [];
+        $scope.newProduct.categories.forEach(function(category, index) {
+            _idCategories.push(category._id);
+        });
+        $scope.newProduct.categories = _idCategories;
+        $scope.newProduct.type = $scope.newProduct.type._id;
 
         $http.post("api/products", $scope.newProduct)
         .then(function(response) {
             console.log('hi');
+            $state.go('administrator.products');
         }).catch(function(err) {
             console.log('err');
         });
 
-    }
+    };
 
 });
 
-app.controller('ProductController', function ($scope, $http, ProductFactory) {
+app.controller('ProductController', function ($scope, $http, allCategories, allTypes, ProductFactory, CategoriesFactory, TypesFactory) {
+
+    $scope.categories = allCategories; 
+    $scope.types = allTypes;
 
     ProductFactory.getProduct().then(function(data) {
 
@@ -66,23 +98,31 @@ app.controller('ProductController', function ($scope, $http, ProductFactory) {
             title: data.title,
             price: data.price,
             description: data.description,
-            category: [data.category],
+            type: data.type,
+            categories: data.categories,
             photo: data.photo,
             stock: data.stock,
             cost: data.cost,
         };
+            // console.log('new product: ', $scope.newProduct);
 
-        $scope.submit = function() {
-            console.log('new product: ', $scope.newProduct);
+        $scope.updateProduct = function() {
 
-            $http.put("api/products/" + data.id, $scope.newProduct)
+            var _idCategories = [];
+            $scope.newProduct.categories.forEach(function(category, index) {
+                _idCategories.push(category._id);
+            });
+            $scope.newProduct.categories = _idCategories;
+            $scope.newProduct.type = $scope.newProduct.type._id;
+
+            $http.put("api/products/" + data._id, $scope.newProduct)
             .then (function(response) {
                 console.log('hi');
             }).catch(function(err) {
                 console.log('err');
             });
 
-        }
+        };
 
     });
     

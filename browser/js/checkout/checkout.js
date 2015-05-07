@@ -17,6 +17,6 @@ app.controller('CheckoutController', function ($scope) {
 
 	$scope.getNumber = function(num) {
 	    return new Array(num);   
-	}
+	};
 
 });

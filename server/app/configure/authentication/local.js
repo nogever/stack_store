@@ -54,10 +54,12 @@ module.exports = function (app) {
                 //     // console.log('userCart after login', cart);
                 //     // return cart;
                 // });
+
                 CartModel.findOneAndUpdate({userId: req.session.passport.user}, {}, {upsert: true}, function(err, userCart) { //
                     CartModel.findOne({session: req.sessionID}, function(err, sessionCart) {
                         userCart.merge(sessionCart);
                         console.log('userCart: ', userCart);
+                        
                         // res.json(userCart);
                         res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
                     });

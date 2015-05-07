@@ -8,34 +8,41 @@ app.config(function ($stateProvider) {
         controller: 'ProductsController',
         templateUrl: 'js/admin/products/products.html',
         resolve: {
-            allProducts: function (ProductsFactory) {
-                return ProductsFactory.getProducts();
+            allProducts: function (DrinkProducts) {
+                return DrinkProducts.getAll();
             }
         }
     });
 
 });
 
-app.factory('ProductsFactory', function ($http) {
-    return {
-        getProducts: function() {
-            return $http.get('/api/products')
-                     .then(function(response) {
-                return response.data;
-            });
-        }
-    };
-});
+// app.factory('ProductsFactory', function ($http) {
+//     return {
 
-app.controller('ProductsController', function ($scope, allProducts) {
+//         getProducts: function() {
+//             return $http.get('/api/products')
+//                     .then(function(response) {
+//                 return response.data;
+//             });
+//         }
+//     };
+// });
+
+app.controller('ProductsController', function ($scope, $http,  allProducts, DrinkProducts) {
 
     $scope.products = allProducts;
 
+    $scope.delete = function(id) {
+        $http.delete('api/products/' + id)
+        .then(DrinkProducts.getAll)
+        .then(function(products) {
+            $scope.products = products;    
+        }).catch(function(err) {
+            console.log('delete product returned err');
+        });
+    };
+
 });
-
-
-
-
 
 
 

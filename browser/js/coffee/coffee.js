@@ -27,7 +27,7 @@ app.controller('CoffeeCtrl', function ($scope, $http) {
   var queryParams = {
     category: null,
     typeName: 'coffee'
-  }
+  };
   $http.get('/api/products', {
           params: queryParams
         }).then(function(response) {
@@ -57,11 +57,9 @@ app.controller('CoffeeListCtrl', function ($scope, DrinkProductsFactory, $stateP
 
 });
 
-app.controller('CoffeeProductCtrl', function ($scope, DrinkProductFactory, ProductReviewsFactory, $stateParams) {
+app.controller('CoffeeProductCtrl', function ($scope, $http, DrinkProductFactory, ProductReviewsFactory, $stateParams) {
   DrinkProductFactory.getProduct().then(function(data) {
-
         $scope.product = data;
-
     });
 
     ProductReviewsFactory.getReviews().then(function(data) {
@@ -78,13 +76,12 @@ app.controller('CoffeeProductCtrl', function ($scope, DrinkProductFactory, Produ
     };
 
     $scope.submit = function() {
-        console.log('new options: ', $scope.newOptions);
 
-        $http.put("api/products/" + data.id, $scope.newOption)
+        $http.put("api/products/" + $scope.product._id, $scope.newOption)
         .then (function(response) {
             console.log('hi');
         }).catch(function(err) {
             console.log('err');
         });
-    }
+    };
 });

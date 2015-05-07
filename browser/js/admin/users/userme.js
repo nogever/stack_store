@@ -6,11 +6,11 @@ app.config(function ($stateProvider) {
         url: '/userme',
         controller: 'UserMeController',
         templateUrl: 'js/admin/users/user.html'
-    })
+    });
 
 });
 
-app.controller('UserMeController', function ($scope, AuthService) {
+app.controller('UserMeController', function ($scope, AuthService, $http) {
 
     $scope.user = {};
 
@@ -40,7 +40,7 @@ app.controller('UserMeController', function ($scope, AuthService) {
             console.log('err');
         });
 
-    }
+    };
 
 });
 

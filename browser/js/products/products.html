@@ -28,12 +28,12 @@
 		        </div>
 		        <div class="navbar-collapse collapse sidebar-navbar-collapse">
 		          <ul class="nav navbar-nav">
- 					<li ng-repeat="tea in teas | unique: 'category'"
- 						><a ui-sref="tea.products({ categoryName: tea })">{{ tea }}</a>
- 					</li>
- 					<li ng-repeat="coffee in coffees | unique: 'category'"
- 						><a ui-sref="coffee.products({ categoryName: coffee })">{{ coffee }}</a>
- 					</li>
+		          	<!-- <li ng-repeat="type in types">
+			 						<a ui-sref="products.type({name: type.name})">{{ type.name }}</a>
+			 					</li> -->
+			 					<li ng-repeat="category in categories">
+			 						<a ui-sref="products.category({name: category.name})">{{ category.name }}</a>
+			 					</li>
 		          </ul>
 		        </div><!--/.nav-collapse -->
 		      </div>
@@ -44,5 +44,29 @@
 			<div ui-view></div>
 		</div>
 
+	</div>
+</div>
+
+<div class="cart-mini-container" ng-show="showMiniCart">
+	<div class="cart-mini-header">
+		Your Cart
+		<span class="glyphicon glyphicon-remove pull-right" aria-hidden="true" ng-click="hideMiniCart()"></span>
+	</div>
+	<div class="cart-mini-body">
+		<div ng-repeat="(productIndex, product) in cartInfo.products">
+			<div class="group cart-mini-item">
+				<img ng-src="{{product.productId.photo}}" alt="" class="img-responsive">
+				<div class="info">
+				  	<p>{{ product.productId.title }}</p>
+				  	<p>{{ product.options.size }}</p>
+				  	<p>Quantity: {{ product.quantity }}</p>
+				  	<p>Price: {{ product.price / 100 | currency }}</p>
+			  		<button type="button" class="btn btn-default btn-xs borderOnHover pull-right" ng-click="deleteRow(product._id)">
+			  		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+			  		</button>
+			  	</div>
+		  	</div>
+		</div>
+		<a class="btn btn-info pull-right" role="button" ng-click="">Checkout</a>
 	</div>
 </div>

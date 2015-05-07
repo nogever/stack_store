@@ -4,63 +4,100 @@ app.config(function ($stateProvider) {
   $stateProvider.state('products', {
     url:'/products',
     templateUrl: 'js/products/products.html',
+    controller: 'ProductsCtrl',
+    resolve: {
+      allDrinks: function(DrinkProducts) {
+        return DrinkProducts.getAll();
+      },
+      allCategories: function(CategoriesFactory) {
+        return CategoriesFactory.getCategories();
+      },
+      allTypes: function(TypesFactory) {
+        return TypesFactory.getTypes();
+      },
+      cartInfo: function (CartFactory) {
+        return CartFactory.getCartInfo(); 
+      }
+    }
+  })
+  .state('products.category', {
+    url:'/category/:name',
+    templateUrl: 'js/products/products-list.html',
     controller: 'ProductsCtrl'
-  });
-  $stateProvider.state('products.category', {
-      url:'/category/:categoryName',
-      templateUrl: 'js/products/products-list.html',
-      controller: 'ProductByCategoryCtrl'
-    });
-  $stateProvider.state('products.home', {
+  })
+  .state('products.coffee', {
+    url:'/type/coffee',
+    templateUrl: 'js/products/products-list-type.html',
+    controller: 'ProductsCoffeeCtrl',
+    resolve: {
+      allDrinks: function(DrinkProducts) {
+        return DrinkProducts.getAll();
+      },
+      allCategories: function(CategoriesFactory) {
+        return CategoriesFactory.getCategories();
+      },
+      allTypes: function(TypesFactory) {
+        return TypesFactory.getTypes();
+      },
+      allOptions: function(OptionsDropdowns) {
+        return OptionsDropdowns.getOptions();
+      }
+    }
+  })
+  .state('products.tea', {
+    url:'/type/tea',
+    templateUrl: 'js/products/products-list-type.html',
+    controller: 'ProductsTeaCtrl',
+    resolve: {
+      allDrinks: function(DrinkProducts) {
+        return DrinkProducts.getAll();
+      },
+      allCategories: function(CategoriesFactory) {
+        return CategoriesFactory.getCategories();
+      },
+      allTypes: function(TypesFactory) {
+        return TypesFactory.getTypes();
+      },
+      allOptions: function(OptionsDropdowns) {
+        return OptionsDropdowns.getOptions();
+      }
+    }
+  })
+  .state('products.home', {
     url: '/home',
     templateUrl: 'js/products/home.html',
     controller: 'ProductsHomeCtrl'
+  })
+  .state('products.product', {
+    url: '/product/:id',
+    templateUrl: 'js/products/product.html',
+    controller: 'ProductCtrl',
+    resolve: {
+      allOptions: function(OptionsDropdowns) {
+        return OptionsDropdowns.getOptions();
+      }
+    }
   });
-    $stateProvider.state('products.product', {
-      url: '/product/:id',
-      templateUrl: 'js/products/product.html',
-      controller: 'ProductCtrl'
-    });
 });
 
-app.factory('DrinkProductsFactory', function ($http) {
+app.factory('DrinkProducts', function ($http, $stateParams) {
 
   return {
-    getProducts: function(category, typeName) {
-
-      var queryParams = {};
-      if (category) {
-        queryParams.category = category;
-      }
-
-      if (typeName) {
-        queryParams.typeName = typeName;
-      }
-
-      return $http.get('/api/products', {
-          params: queryParams
-        }).then(function(response) {
-          console.log("RESOLVED PRODUCTS", response.data);
+    getAll: function() {
+      return $http.get('/api/products').then(function(response) {
           return response.data;
+        });
+    },
+    getOne: function() {
+        return $http.get('/api/products/' + $stateParams.id)
+                 .then(function(response) {
+            return response.data;
         });
     }
   };
 });
 
-app.factory('DrinkProductFactory', function ($http, $stateParams) {
-
-    return {
-        getProduct: function() {
-            return $http.get('/api/products/' + $stateParams.id)
-                     .then(function(response) {
-                return response.data;
-            });
-        }
-    };
-
-});
-
-app.factory('ProductReviewsFactory', function ($http, $stateParams) {
+app.factory('ProductReviews', function ($http, $stateParams) {
 
     return {
         getReviews: function() {
@@ -79,64 +116,153 @@ app.factory('OptionsDropdowns', function ($http) {
     getOptions: function () {
       return $http.get('/api/cart/options')
         .then(function(response) {
-          // console.log("dropdown data", response.data);
           return response.data;
         });
     }
-  }
+  };
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http) {
-  // var teaCategories = ['tea', 'decaf', 'ice', 'green tea', 'black tea'];
-  // var coffeeCategories = ['coffee', 'decaf', 'ice', 'americano', 'espresso', 'freshly brewed coffee'];
+app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory) {
 
-  // $scope.teaCategories = teaCategories;
-  // $scope.coffeeCategories = coffeeCategories;
+  $scope.products = allDrinks;
+  $scope.categories = allCategories;
+  $scope.types = allTypes;
+  $scope.cat = $stateParams.name;
 
-  var teaQueryParams = {
-    category: null,
-    typeName: 'tea'
-  }
+  $scope.animationsEnabled = true;
 
-  $http.get('/api/products', {
-          params: teaQueryParams
-        }).then(function(response) {
-          $scope.teas = response.data;
-        });
-        
-  var coffeeQueryParams = {
-    category: null,
-    typeName: 'coffee'
-  }
+  $scope.open = function (size, productId) {
 
-  $http.get('/api/products', {
-          params: coffeeQueryParams
-        }).then(function(response) {
-          $scope.coffees = response.data;
-        });
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'js/products/product-modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      // scope: $scope,
+      resolve: {
+        allOptions: function(OptionsDropdowns) {
+          return OptionsDropdowns.getOptions();
+        },
+        viewProduct: function() {
+          return $http.get('/api/products/' + productId)
+                 .then(function(response) {
+            return response.data;
+          });
+        }
+      }
+    });
 
-  var queryParams = {
-    category: null,
-    typeName: null
-  }
+  };
 
-  $http.get('/api/products', {
-          params: queryParams
-        }).then(function(response) {
-          $scope.products = response.data;
-        });
+  // mini cart
+  $rootScope.showMiniCart = false;
+  $rootScope.cartInfo = cartInfo;
+
+  $scope.hideMiniCart = function(){
+    $rootScope.showMiniCart = false;
+  };
+
+  $scope.removeRow = function (productIndex) {
+    $scope.cartInfo.products.splice(productIndex, 1);
+  };
+
+  $scope.deleteRow = function(productId) {
+
+      $http.delete('api/cart/product/' + productId)
+          .then(function(response) {
+              CartFactory.getCartInfo().then(function(cartInfo) {
+                  $rootScope.cartInfo = cartInfo;
+              });
+          }).catch(function(err) {
+              console.log('delete product in cart returned err');
+          });
+
+    };
+
 });
 
+app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
 
-app.controller('ProductByCategoryCtrl', function ($scope, DrinkProductsFactory, $stateParams) {
+  $scope.products = allDrinks;
+  $scope.categories = allCategories;
+  $scope.types = allTypes;
+  $scope.typeName = 'coffee';
 
-  var categoryName = $stateParams.categoryName;
-  DrinkProductsFactory.getProducts(categoryName).then(function (products) {
-    $scope.products = products;
-  }).catch(function(err) {
-    $scope.error = err;
-  });
+  $scope.quickView = function() {
+    $http.post('api/reviews', $scope.newReview)
+      .then (function(response) {
+          $scope.reviews.push(response.data);
+      }).catch(function(err) {
+          console.log('err');
+    });
+  };
+
+  $scope.animationsEnabled = true;
+
+  $scope.open = function (size, productId) {
+
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'js/products/product-modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        allOptions: function(OptionsDropdowns) {
+          return OptionsDropdowns.getOptions();
+        },
+        viewProduct: function() {
+          return $http.get('/api/products/' + productId)
+                 .then(function(response) {
+            return response.data;
+          });
+        }
+      }
+    });
+
+  };
+
+});
+
+app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
+  
+  $scope.products = allDrinks;
+  $scope.categories = allCategories;
+  $scope.types = allTypes;
+  $scope.typeName = 'tea';
+
+  $scope.quickView = function() {
+    $http.post('api/reviews', $scope.newReview)
+      .then (function(response) {
+          $scope.reviews.push(response.data);
+      }).catch(function(err) {
+          console.log('err');
+    });
+  };
+
+  $scope.animationsEnabled = true;
+
+  $scope.open = function (size, productId) {
+
+    var modalInstance = $modal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'js/products/product-modal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        allOptions: function(OptionsDropdowns) {
+          return OptionsDropdowns.getOptions();
+        },
+        viewProduct: function() {
+          return $http.get('/api/products/' + productId)
+                 .then(function(response) {
+            return response.data;
+          });
+        }
+      }
+    });
+
+  };
 
 });
 
@@ -144,14 +270,10 @@ app.controller('ProductsHomeCtrl', function ($scope) {
 
 });
 
-app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory, ProductReviewsFactory, OptionsDropdowns, $stateParams, $http, $state) {
+app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, DrinkProducts, allOptions, $http, $state) {
 
   $scope.reviews = {};
-
-  OptionsDropdowns.getOptions()
-    .then(function(options) {
-      $scope.dropdowns = options;
-  });
+  $scope.dropdowns = allOptions;
 
   if (AuthService.isAuthenticated()) {
 
@@ -160,8 +282,6 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
 
         $scope.user = user;
         
-        // if (user._id) {
-
         $scope.newReview = {
           user: user._id, 
           rating: null,
@@ -169,39 +289,34 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
           title: null
         };
 
-        // }
-
       })
-      .then(DrinkProductFactory.getProduct)
+      .then(DrinkProducts.getOne)
       .then(function(product) {
         $scope.newReview.product = product._id;
       }
     );
     
   }
-
+  
+  ProductReviews.getReviews().then(function(data) {
+    $scope.reviews = data;
+  });
 
   $scope.addReview = function() {
-    // console.log('new review: ', $scope.newReview);
     $http.post('api/reviews', $scope.newReview)
       .then (function(response) {
-          // console.log('reviews: ', response.data);
           $scope.reviews.push(response.data);
       }).catch(function(err) {
           console.log('err');
     });
   };
 
-  DrinkProductFactory.getProduct()
+  DrinkProducts.getOne()
     .then(function(data) {
         $scope.product = data;
         $scope.newProduct.productId = data._id;
         $scope.newProduct.price = data.price;
     });
-
-  ProductReviewsFactory.getReviews().then(function(data) {
-    $scope.reviews = data;
-  });
 
   $scope.newOptions = {
     sweets: null,
@@ -214,7 +329,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
   $scope.newProduct = {
     options: $scope.newOptions,
     quantity: 1
-  }
+  };
 
   $scope.addToCart = function() {
 
@@ -229,6 +344,46 @@ app.controller('ProductCtrl', function ($scope, AuthService, DrinkProductFactory
             $state.go('^');
         });
 
-  }
+  };
 
+});
+
+app.controller('ModalInstanceCtrl', function ($rootScope, $scope, $modalInstance, viewProduct, allOptions, $http, CartFactory) {
+
+  $scope.product = viewProduct;
+  $scope.dropdowns = allOptions;
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+
+  $scope.newOptions = {
+    sweets: null,
+    milk: null,
+    flavors: null, 
+    size: null,
+    toppings: null,
+  };
+
+  $scope.newProduct = {
+    productId: viewProduct._id,
+    price: viewProduct.price,
+    options: $scope.newOptions,
+    quantity: 1
+  };
+
+  $scope.addToCart = function() {
+
+    $rootScope.showMiniCart = true;
+    $http.put("api/cart", $scope.newProduct)
+    .then(function(response) {
+        CartFactory.getCartInfo().then(function(cartInfo) {
+          $rootScope.cartInfo = cartInfo;
+        });
+        $modalInstance.close($scope.product);
+    }).catch(function(err) {
+        console.log(err);
+    });
+
+  };
 });

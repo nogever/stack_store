@@ -35,11 +35,6 @@ schema.methods.calculateCartAmounts = function() {
     this.tax = subTotal*nyTax;
     this.total = subTotal*(nyTax + 1);
     this.save();
-    // this.save(function(err){
-    // 	if (err) throw err;
-    // });
-    
-    // return;
 };
 
 schema.methods.merge = function( anonCart ) {
@@ -55,14 +50,7 @@ schema.methods.merge = function( anonCart ) {
 
 		anonCart.remove();
 		// anonCart.products = [];
-
-		// console.log("ANON Cart after", anonCart);
-		// CartModel.create({session: req.sessionID}, function (err, cart) {
-		// 	console.log("New ANON Cart created", cart);
-		// });
-		
 	}
-	// return; 
 };
 
 // module.exports = schema;

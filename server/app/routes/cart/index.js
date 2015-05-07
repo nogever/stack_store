@@ -12,7 +12,6 @@ module.exports = router;
 
 //get cart 
 //uri: api/cart
-
 router.get('/', function (req, res, next) {
 
 	// // var currentUserId = req.user._id;
@@ -56,7 +55,6 @@ router.get('/', function (req, res, next) {
 
 //get options
 //uri: api/cart/options
-
 router.get('/options', function (req, res, next) {
 
 	var dropdowns = {
@@ -123,7 +121,7 @@ router.put('/', checkAndCreateCart, function(req, res, next) {
 			{$push: { products: productDetails }},
 			{upsert: true})
 		.exec()
-		.then(function(err, cart) {
+		.then(function(cart) {
 			// if(err) return next(err);
 			cart.calculateCartAmounts();
 			console.log('Logged Out: PUT Request Success: Anon Cart ', cart);
@@ -132,7 +130,6 @@ router.put('/', checkAndCreateCart, function(req, res, next) {
 			console.log('Cart PUT Error Handler (Logged Out): ', err);
 			res.status(501).end();
 		});
-
 	}
 
 });

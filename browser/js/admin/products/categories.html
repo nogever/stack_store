@@ -1,0 +1,50 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3>Categories</h3>
+		<div class="admin-ps-heading">
+			<span class="admin-c-price">Name</span>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="admin-c-rows" ng-repeat="category in categories">
+			<form name="type-{{ category.name }}" class="form-inline">
+				<div class="form-group form-group-sm">
+					<input type="text" class="form-control" id="category-{{ category.name }}" value="{{ category.name }}" disabled>
+				</div>
+				<button class="btn btn-default edit-{{ category.name }}" ng-click="editCategory()">Edit</button>
+				<button class="btn btn-success update-{{ category.name }}" ng-click="updateCategory()" disabled>Save</button>
+				<button class="btn btn-danger delete-{{ category.name }}" ng-click="deleteCategory()">Delete</button>	
+			</form>
+		</div>
+	</div>
+
+</div>
+
+<div class="panel panel-default">
+
+	<div class="panel-heading">
+		<h3 class="panel-title">Add New Category</h3>
+	</div>
+	<div class="panel-body">
+
+		<form name="newCategoryForm" class="form-inline" ng-submit="newCategoryForm.$valid && addCategory()" novalidate>
+		  <div class="form-group form-group-sm">
+		    <label for="adminCategoryName">Name</label>
+		    <input ng-model="newCategory.name" category="text" class="form-control" id="adminCategoryName" placeholder="Enter Category">
+		  </div>
+		  <button id="add-new-category" class="btn btn-default" ng-disabled="newCategoryForm.$invalid">Submit</button>
+	  </form>
+
+	</div>
+</div>  
+
+
+
+
+
+
+
+
+
+
+

@@ -15,6 +15,8 @@ module.exports = router;
 // uri: api/orders
 router.get('/', function (req, res, next) {
 	OrderModel.find()
+		.populate( '_user' )
+		.populate( 'products.productId' )
 		.exec(function(err, orders) {
 			// if an error happened, pass the error to 'next'
 			if (err) return next(err);
@@ -35,10 +37,13 @@ router.post('/', function (req, res, next) {
 // retrieve a single order
 // uri: api/orders/id
 router.get('/:id', function (req, res, next) {
-	OrderModel.findById(req.params.id, function(err, order) {
-		if (err) return next(err);
-		res.json(order);
-	});
+	OrderModel.findById(req.params.id)
+		.populate( '_user' )
+		.populate( 'products.productId' )
+		.exec(function(err, order) {
+			if (err) return next(err);
+			res.json(order);
+		});
 });
 
 // update an existing order
@@ -54,6 +59,19 @@ router.put('/:id', function (req, res, next) {
 // delete a order
 // uri: api/orders/id
 router.delete('/:id', function (req, res, next) {
-	OrderModel.findByIdAndRemove(req.params.id);
-	res.status(200).end();
+	OrderModel.findByIdAndRemove(req.params.id, function(err, doc) {
+		if (err) res.status(500).send(err);
+		res.status(200).end();
+	});
 });
+
+
+
+
+
+
+
+
+
+
+
