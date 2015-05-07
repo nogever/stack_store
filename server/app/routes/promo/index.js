@@ -8,7 +8,6 @@ var PromoModel = mongoose.model('Promo');
 
 module.exports = router;
 
-// get all promo
 // uri: api/promos
 router.get('/', function (req, res, next) {
 	PromoModel.find()
@@ -20,7 +19,6 @@ router.get('/', function (req, res, next) {
 		});
 });
 
-// get one promo
 // uri: api/promos/id
 router.get('/:id', function (req, res, next) {
 	PromoModel.findById(req.params.id)
@@ -32,14 +30,32 @@ router.get('/:id', function (req, res, next) {
 	});
 });
 
-// post a new promo
 // uri: api/promos
 router.post('/', function (req, res, next) {
+	console.log('promo post request');
 	PromoModel.create(req.body, function(err, promo) {
 			if (err) return next(err);
 			res.json(promo);
 	});
 });
+
+// uri: api/promo/id
+router.put('/:id', function (req, res, next) {
+	PromoModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, promo) {
+			if (err) return next(err);
+			res.json(promo);
+		});
+});
+
+// uri: api/promo/id
+router.delete('/:id', function (req, res, next) {
+	PromoModel.findByIdAndRemove(req.params.id, function(err, doc) {
+		if (err) res.status(500).send(err);
+		res.status(200).end();
+	});
+});
+
+
 // // get all reviews for one product - defined in product model already??
 // // uri: api/promo/id/reviews
 // router.get('/:id/reviews', function (req, res, next) {
@@ -57,23 +73,6 @@ router.post('/', function (req, res, next) {
 
 
 
-// // update an existing order
-// // uri: api/promo/id
-// router.put('/:id', function (req, res, next) {
-// 	PromoModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, product) {
-// 			if (err) return next(err);
-// 			res.json(product);
-// 		});
-// });
-
-// // delete a product
-// // uri: api/promo/id
-// router.delete('/:id', function (req, res, next) {
-// 	PromoModel.findByIdAndRemove(req.params.id, function(err, doc) {
-// 		if (err) res.status(500).send(err);
-// 		res.status(200).end();
-// 	});
-// });
 
 
 
