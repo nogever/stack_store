@@ -16,52 +16,41 @@ var schema = new mongoose.Schema({
 	total: Number
 });
 
-// schema.methods.getPrice = function() {
-// 	if (this.products.length) {
-// 		this.products.forEach(function(product) {
-// 			ProductModel.findById(product.productId, function(err, p) {
-// 				product.price = p.price;
-// 			});
-// 		});
-// 	}
-// };
+schema.methods.calculateCartAmounts = function() {
+    var subTotal = 0;
+    var nyTax = 0.0875;
 
-schema.methods.testing = function(cb) {
-	console.log('testing');
+    if (this.products.length) {
+
+        this.products.forEach(function(product) {
+            subTotal += ( product.price * product.quantity );
+        });
+
+        this.subTotal = subTotal;
+  
+    } else {
+    	this.subTotal = 0;
+    }
+    
+    this.tax = subTotal*nyTax;
+    this.total = subTotal*(nyTax + 1);
+    this.save();
 };
 
 schema.methods.merge = function( anonCart ) {
 	// console.log('before merge products anonCart', anonCart.products);
-	// console.log('this: ', this);
+	console.log('MERGE this: ', this);
 	// console.log('anonCart: ', anonCart);
+
 	if (anonCart !== null) {
 		this.products = this.products.concat( anonCart.products );
 		this.save();
-		console.log('after merge products', this.products);
+		// console.log('after merge products', this.products);
+		console.log("ANON Cart before", anonCart);
+
 		anonCart.remove();
+		// anonCart.products = [];
 	}
-	// return; 
-};
-
-// schema.methods.getSubTotal = function() {
-// 	var productsTotal = 0;
-// 	if (this.products.length) {
-// 		this.products.forEach(function(product) {
-// 			ProductModel.findById(product.productId, function(err, p) {
-// 				productsTotal += p.price;
-// 			});
-// 		});
-// 	}
-// 	this.subTotal = productsTotal;
-// };
-
-schema.methods.calculateTax = function() {
-// calculate tax based on tax table
-};
-
-schema.methods.calculateTotal = function() {
-	var cartTotal = this.subTotal + this.tax;
-	this.total = cartTotal;
 };
 
 // module.exports = schema;
