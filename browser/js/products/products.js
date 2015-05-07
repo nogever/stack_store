@@ -96,6 +96,11 @@ app.factory('DrinkProducts', function ($http, $stateParams) {
                   .then(function(response) {
             return response.data;
         });
+    },
+    filterTest: function(string){
+        return '(' 
+                + string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1").trim().split(/\s+/).join('|') 
+                + ')';
     }
   };
 });
@@ -127,7 +132,7 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal) {
+app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, DrinkProducts) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
@@ -166,10 +171,20 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
     });
 
   };
-
+  
+  $scope.search = '';
+  var regex;
+  $scope.$watch('search', function(value) {
+      regex = new RegExp('\\b' + DrinkProducts.filterTest(value), 'i');
+  });
+  
+  $scope.filterBySearch = function(name) {
+      if (!$scope.search) return true;
+      return regex.test(name);
+  };
 });
 
-app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions, DrinkProducts) {
+app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
@@ -207,14 +222,6 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
     });
 
   };
-
-  $scope.filterProducts = function() {
-                            DrinkProducts.filterAll().then(function(products) {
-                              $scope.products = products;
-                            }).catch(function(err) {
-                              console.log('filterProducts errrr');
-                            });
-                          }
 
 });
 
@@ -380,17 +387,6 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduc
   };
 });
 
-// search form
-app.directive('searchFilter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function(event) {            
-                scope.$apply(function (){
-                    scope.$eval(attrs.ngEnter);
-                });
-                event.preventDefault();
-        });
-    };
-});
 
 
 
