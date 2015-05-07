@@ -27,6 +27,8 @@ var Product = mongoose.model('Product');
 var Store = mongoose.model('Store');
 var Review = mongoose.model('Review');
 var Cart = mongoose.model('Cart');
+var Type = mongoose.model('Type');
+var Categories = mongoose.model('Categories');
 var Address = require('./server/db/models/address');
 var Options = require('./server/db/models/options');
 
@@ -38,6 +40,14 @@ var getCurrentUserData = function () {
     return q.ninvoke(User, 'find', {});
 };
 
+var getCurrentTypeData = function () {
+    return q.ninvoke(Type, 'find', {});
+};
+
+var getCurrentCategoryData = function () {
+    return q.ninvoke(Categories, 'find', {});
+};
+
 var getCurrentReviewData = function () {
     return q.ninvoke(Review, 'find', {});
 };
@@ -45,10 +55,6 @@ var getCurrentReviewData = function () {
 var getCurrentProductData = function () {
     return q.ninvoke(Product, 'find', {});
 };
-
-// var getCurrentCartData = function () {
-//     return q.ninvoke(Cart, 'find', {});
-// };
 
 var getCurrentStoreData = function () {
     return q.ninvoke(Store, 'find', {});
@@ -117,16 +123,39 @@ var reviews = [
         {rating:1, text:"Please close your business down", title:"Embarrassing!"},
         {rating:4, text:"Great drink, very tasty.", title:"Super taste"},
         {rating:3, text:"Could be better.", title:"Going to give it another shot"}
-        // {rating:5, text:"Excellent product! Great service too!", title:"Will buy again soon."},
-        // {rating:1, text:"Please close your business down", title:"Embarrassing!"},
-        // {rating:4, text:"Great drink, very tasty.", title:"Super taste"},
-        // {rating:1, text:"Please close your business down",  title:"Embarrassing!"},
-        // {rating:1, text:"Please close your business down", title:"Embarrassing!"}
     ];
 
 var seedReviews = function () {
 
     return q.invoke(Review, 'create', reviews);
+
+}
+
+var seedTypes = function () {
+
+    var types = [
+        {name: "Tea"},
+        {name: "Coffee"}
+    ];
+
+    return q.invoke(Type, 'create', types);
+
+}
+
+var seedCategories = function () {
+
+    var categories = [
+        {name: "iced"},
+        {name: "hot"},
+        {name: "international"},
+        {name: "domestic"},
+        {name: "spicy"},
+        {name: "decaf"},
+        {name: "Asian"},
+        {name: "American"}
+    ];
+
+    return q.invoke(Categories, 'create', categories);
 
 }
 
@@ -372,14 +401,71 @@ connectToDb.then(function () {
             // process.kill(0);
         }
     })
-    // .then(getCurrentCartData)
-    // .then(function(carts) {
-    //     if(carts.length === 0) {
-    //         return seedCart();
-    //     } else {
-    //         console.log(chalk.magenta('Cart data already exists, exiting!'));
-    //     }
-    // })
+    .then(getCurrentTypeData)
+    .then(function (types) {
+        if (types.length === 0) {
+            return seedTypes();
+        } else {
+            console.log(chalk.magenta('Type data already exists, exiting!'));
+            // process.kill(0);
+        }
+    })
+    .then(getCurrentCategoryData)
+    .then(function (categories) {
+        if (categories.length === 0) {
+            return seedCategories();
+        } else {
+            console.log(chalk.magenta('Categories data already exists, exiting!'));
+            // process.kill(0);
+        }
+    })
+    .then(function () {
+        return Product.find().exec(function(err, products) {
+                console.log(chalk.green('seed types and categories to products'));
+
+                    Type.find().exec(function(err, types) {
+
+                        // console.log(chalk.green('here are the types: ', types));
+
+                        // Categories.find().exec(function(err, categories) {
+
+                        // console.log(chalk.green('here are the categories: ', categories));
+
+                            products.forEach(function(product, index) {
+                                // console.log(chalk.green('user id', users[index]));
+                                
+                                var product = products[index];
+                                product.type = types[0]._id;
+                                // product.categories.push(categories[0]._id);
+                                // product.categories = categories[Math.floor(Math.random() * 8) + 1]._id;
+                                product.save();
+                            });
+
+                        // });
+
+                    });
+        });
+    })
+    .then(function () {
+        return Product.find().exec(function(err, products) {
+
+                    Categories.find().exec(function(err, categories) {
+
+                        console.log(chalk.green('here are the categories: ', categories));
+
+                        products.forEach(function(product, index) {
+                            
+                            var product = products[index];
+
+                            product.categories.push(categories[0]._id);
+                            product.save();
+
+                        });
+
+                    });
+
+        });
+    })
     .then(getCurrentStoreData)
     .then(function(stores) {
         // console.log(stores);
@@ -399,33 +485,4 @@ connectToDb.then(function () {
         // process.kill(1);
     });
 
-    // getCurrentProductData().then(function (products) {
-    //     if (products.length === 0) {
-    //         return seedProducts();
-    //     } else {
-    //         console.log(chalk.magenta('Product data already exists, exiting!'));
-    //         process.kill(0);
-    //     }
-    // }).then(function () {
-    //     console.log(chalk.green('Seed successful!'));
-    //     process.kill(0);
-    // }).catch(function (err) {
-    //     console.error(err);
-    //     // process.kill(1);
-    // });
-
-    // getCurrentStoreData().then(function (stores) {
-    //     if (stores.length === 0) {
-    //         return seedStores();
-    //     } else {
-    //         console.log(chalk.magenta('Store data already exists, exiting!'));
-    //         // process.kill(0);
-    //     }
-    // }).then(function () {
-    //     console.log(chalk.green('Seed successful!'));
-    //     // process.kill(0);
-    // }).catch(function (err) {
-    //     console.error(err);
-    //     // process.kill(1);
-    // });
 });
