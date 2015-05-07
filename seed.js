@@ -46,9 +46,9 @@ var getCurrentProductData = function () {
     return q.ninvoke(Product, 'find', {});
 };
 
-var getCurrentCartData = function () {
-    return q.ninvoke(Cart, 'find', {});
-};
+// var getCurrentCartData = function () {
+//     return q.ninvoke(Cart, 'find', {});
+// };
 
 var getCurrentStoreData = function () {
     return q.ninvoke(Store, 'find', {});
@@ -137,8 +137,6 @@ var seedProducts = function () {
             title:"Caffè Americano", 
             price:500, 
             description:"Caffè Americano or simply Americano (the name is also spelled with varying capitalization and use of diacritics: e.g. Café Americano, Cafe Americano, etc.) is a style of coffee prepared by adding hot water to espresso, giving a similar strength to but different flavor from regular drip coffee. ", 
-            type: "coffee", 
-            category: ["americano", "ice coffee", "decaf", "freshly brewed coffee"], 
             photo:"http://upload.wikimedia.org/wikipedia/commons/0/09/Hokitika_Cheese_and_Deli%2C_Hokitika_%283526706594%29.jpg", 
             reviews:null, 
             stock:2, 
@@ -148,8 +146,6 @@ var seedProducts = function () {
             title:"Café Cubano", 
             price:700, 
             description:"Espresso which originated in Cuba after espresso machines were first imported there from Italy. Specifically, it refers to an espresso shot which is sweetened with demerara sugar as it is being brewed.", 
-            type: "coffee", 
-            category: ["espresso", "decaf", "ice", "freshly brewed coffee"], 
             photo:"http://upload.wikimedia.org/wikipedia/commons/f/f7/Linea_doubleespresso.jpg", 
             reviews:null, 
             stock:12, 
@@ -159,8 +155,6 @@ var seedProducts = function () {
             title:"Caffè crema", 
             price:700, 
             description:"A long espresso drink primarily served in Switzerland and Austria and northern Italy", 
-            type: "coffee", 
-            category: ["espresso", "ice", "freshly brewed coffee"], 
             photo:"http://www.blogto.com/listings/cafes/upload/2010/10/201011015-crema_04.jpg", 
             reviews:null, 
             stock:1, 
@@ -170,8 +164,6 @@ var seedProducts = function () {
             title:"Ristretto", 
             price:700, 
             description:"Short shot of espresso made with the normal amount of ground coffee but extracted with about half the amount of water.", 
-            type: "coffee", 
-            category: ["espresso", "decaf", "freshly brewed coffee"], 
             photo:"http://ineedcoffee.com/wp-content/uploads/2007/09/IMG_9259.jpg", 
             reviews:null, 
             stock:36, 
@@ -181,8 +173,6 @@ var seedProducts = function () {
             title:"Mocha", 
             price:700, 
             description:"Typically one third espresso and two thirds steamed milk, but a portion of chocolate is added, typically in the form of a chocolate syrup, although other vending systems use instant chocolate powder.", 
-            type: "coffee", 
-            category: ["Mocha", "decaf", "ice", "freshly brewed coffee"], 
             photo:"http://upload.wikimedia.org/wikipedia/commons/5/58/Mocha_Latte_Costa_Rica.JPG", 
             reviews:null, 
             stock:6, 
@@ -192,8 +182,6 @@ var seedProducts = function () {
             title:"Frappé", 
             price:500, 
             description:"Foam-covered iced coffee drink made from spray-dried instant coffee. It is very popular in Greece especially during summer, but has now spread on to other countries.", 
-            type: "coffee", 
-            category: ["Frappé", "freshly brewed coffee"], 
             photo:"http://upload.wikimedia.org/wikipedia/commons/7/73/Cafe-frape-glas-holztisch-unscharf.jpg", 
             reviews:null, 
             stock:12, 
@@ -203,8 +191,6 @@ var seedProducts = function () {
             title:"Green Tea", 
             price:500, 
             description:"Green tea is made from the leaves from Camellia sinensis that have undergone minimal oxidation during processing.", 
-            type: "tea", 
-            category: ["green tea", "decaf", "ice"],
             photo:"http://upload.wikimedia.org/wikipedia/commons/c/cb/Tea_leaves_steeping_in_a_zhong_%C4%8Daj_05.jpg", 
             reviews:null, 
             stock:32, 
@@ -214,8 +200,6 @@ var seedProducts = function () {
             title:"Black Tea", 
             price:300, 
             description:"Tea that is more oxidized than oolong, green and white teas. All four types are made from leaves of the shrub Camellia sinensis. Black tea is generally stronger in flavor than the less oxidized teas.", 
-            type: "tea", 
-            category: ["black tea", "decaf", "ice"],
             photo:"http://www.motherearthliving.com/~/media/Images/MEL/Editorial/Articles/Magazine%20Articles/2011/12-01/Winter%20Drinks%20Turmeric-Black%20Tea%20Brew/black-tea.jpg", 
             reviews:null, 
             stock:20, 
@@ -225,8 +209,6 @@ var seedProducts = function () {
             title:"Lotus Tea", 
             price:300, 
             description:"High-quality green tea leaves are placed within lotus flowers for a day to acquire the scent, then the tea leaves are removed and packaged.", 
-            type: "tea", 
-            category: ["Lotus Tea"],
             photo:"http://upload.wikimedia.org/wikipedia/commons/3/35/Vietnameselotustea.jpg", 
             reviews:null, 
             stock:16, 
@@ -236,8 +218,6 @@ var seedProducts = function () {
             title:"Darjeeling Tea", 
             price:300, 
             description:"Yields a thin-bodied, light-coloured infusion with a floral aroma. The flavour can include a tinge of astringent tannic characteristics, and a musky spiciness sometimes described as ", 
-            type: "tea", 
-            category: ["Darjeeling Tea"],
             photo:"http://upload.wikimedia.org/wikipedia/commons/1/14/Darjeeling-tea-first-flush-in-cup.jpg", 
             reviews:null, 
             stock:38, 
@@ -247,8 +227,6 @@ var seedProducts = function () {
             title:"Flowering Tea", 
             price:300, 
             description:"Consist each of a bundle of dried tea leaves wrapped around one or more dried flowers. These are made by binding tea leaves and flowers together into a bulb and are then set to dry.", 
-            type: "tea", 
-            category: ["Flowering Tea", "decaf"],
             photo:"http://upload.wikimedia.org/wikipedia/commons/e/ea/ExoticFlame.JPG", 
             reviews:null, 
             stock:37, 
@@ -258,8 +236,6 @@ var seedProducts = function () {
             title:"Morroccan Menthe Tea", 
             price:300, 
             description:"A green tea prepared with spearmint leaves and sugar, traditional to the Maghreb region (Northwest Africa: Morocco, Algeria, and Tunisia).", 
-            type: "tea", 
-            category: ["Morroccan Menthe Tea"],
             photo:"http://upload.wikimedia.org/wikipedia/commons/6/6c/The_menthe.jpg", 
             reviews:null, 
             stock:23, 
@@ -270,39 +246,39 @@ var seedProducts = function () {
     return q.invoke(Product, 'create', products);
 }
 
-var seedCart = function () {
+// var seedCart = function () {
 
-    var carts = [
-        { 
-            products: [
-                {  
-                    productId: 01234567,  
-                    options: [{ sweets: "honey", size: "fullstack"}], 
-                    quantity: 1,
-                    price: 500
-                },
-                {  
-                    productId: 98765432,  
-                    options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
-                    quantity: 1,
-                    price: 250
-                },
-                {  
-                    productId: 99992221,  
-                    options: [{ sweets: "splenda", size: "mediumstack", toppings: "cocoa powder"}], 
-                    quantity: 1,
-                    price: 475
-                },
-            ],
-            subTotal:1000,
-            tax:825, 
-            total:1083
-        }
-    ]
+//     var carts = [
+//         { 
+//             products: [
+//                 {  
+//                     productId: 01234567,  
+//                     options: [{ sweets: "honey", size: "fullstack"}], 
+//                     quantity: 1,
+//                     price: 500
+//                 },
+//                 {  
+//                     productId: 98765432,  
+//                     options: [{ sweets: "raw sugar", milk: "soy", size: "smallstack"}], 
+//                     quantity: 1,
+//                     price: 250
+//                 },
+//                 {  
+//                     productId: 99992221,  
+//                     options: [{ sweets: "splenda", size: "mediumstack", toppings: "cocoa powder"}], 
+//                     quantity: 1,
+//                     price: 475
+//                 },
+//             ],
+//             subTotal:1000,
+//             tax:825, 
+//             total:1083
+//         }
+//     ]
 
-    return q.invoke(Cart, 'create', carts);
+//     return q.invoke(Cart, 'create', carts);
 
-};
+// };
 
 var seedStores = function () {
 
@@ -396,14 +372,14 @@ connectToDb.then(function () {
             // process.kill(0);
         }
     })
-    .then(getCurrentCartData)
-    .then(function(carts) {
-        if(carts.length === 0) {
-            return seedCart();
-        } else {
-            console.log(chalk.magenta('Cart data already exists, exiting!'));
-        }
-    })
+    // .then(getCurrentCartData)
+    // .then(function(carts) {
+    //     if(carts.length === 0) {
+    //         return seedCart();
+    //     } else {
+    //         console.log(chalk.magenta('Cart data already exists, exiting!'));
+    //     }
+    // })
     .then(getCurrentStoreData)
     .then(function(stores) {
         // console.log(stores);
