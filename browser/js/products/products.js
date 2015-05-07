@@ -90,6 +90,12 @@ app.factory('DrinkProducts', function ($http, $stateParams) {
                  .then(function(response) {
             return response.data;
         });
+    },
+    filterAll: function() {
+        return $http.get('/api/products')
+                  .then(function(response) {
+            return response.data;
+        });
     }
   };
 });
@@ -163,12 +169,12 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
 
 });
 
-app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
+app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions, DrinkProducts) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'coffee';
+  $scope.typeName = 'Coffee';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -178,7 +184,6 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
           console.log('err');
     });
   };
-
   $scope.animationsEnabled = true;
 
   $scope.open = function (size, productId) {
@@ -203,6 +208,14 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
 
   };
 
+  $scope.filterProducts = function() {
+                            DrinkProducts.filterAll().then(function(products) {
+                              $scope.products = products;
+                            }).catch(function(err) {
+                              console.log('filterProducts errrr');
+                            });
+                          }
+
 });
 
 app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $modal, allOptions) {
@@ -210,7 +223,7 @@ app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategor
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'tea';
+  $scope.typeName = 'Tea';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -366,3 +379,28 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduc
 
   };
 });
+
+// search form
+app.directive('searchFilter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {            
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+                event.preventDefault();
+        });
+    };
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
