@@ -12,7 +12,7 @@ router.use('/reviews', require('./reviews'));
 router.use('/categories', require('./categories'));
 router.use('/types', require('./types'));
 router.use('/checkout', require('./checkout'));
-
+router.use('/promos', require('./promo'));
 
 // Make sure this is after all of
 // the registered routes!

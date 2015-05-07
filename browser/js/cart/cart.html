@@ -31,12 +31,20 @@
 	</div>
 
 	<div id="cart-subtotal" class="table-responsive">
-		<table class="table table-hover">
-		  <!-- table header -->
-		  <td>Subtotal</td>
-		  <td>{{ cartInfo.subTotal / 100 | currency }}</td>
-		</table>
-	</div>
+        <table class="table table-hover">
+            <tr>
+                <th></th>
+                <th>Subtotal</th>
+                <th>NY Tax</th>
+                <th>Total</th>
+            </tr>
+          <!-- table header -->
+          <td></td>
+          <td>{{ cartInfo.subTotal / 100 | currency }}</td>
+          <td>{{ cartInfo.tax / 100 | currency }}</td>
+          <td><b>{{ cartInfo.total / 100 | currency }}<b></td>
+        </table>
+    </div>
 
 	<div class="btn-group" role="group" aria-label="...">
 		<div class="btn-group" role="group">

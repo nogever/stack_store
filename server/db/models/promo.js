@@ -1,12 +1,14 @@
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
+	name: String,
 	whiteList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
-	blacklist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
-	discountAmount: Number,
+	blackList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product'}],
+	discount: Number,
 	expires: Date,
-	revenueGenerated: Number
+	revenueGenerated: Number, 
+	code: String
 });
 
 
-mongoose.model('Discount', schema);
+mongoose.model('Promo', schema);
