@@ -141,7 +141,7 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
       controller: 'ModalInstanceCtrl',
       size: size,
       scope: $scope,
-      resolve: 
+      resolve: {
         allOptions: function(OptionsDropdowns) {
           return OptionsDropdowns.getOptions();
         },
