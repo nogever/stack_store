@@ -116,7 +116,6 @@ app.factory('OptionsDropdowns', function ($http) {
     getOptions: function () {
       return $http.get('/api/cart/options')
         .then(function(response) {
-          // console.log("dropdown data", response.data);
           return response.data;
         });
     }
@@ -124,7 +123,7 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory) {
+app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
@@ -140,7 +139,7 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
       templateUrl: 'js/products/product-modal.html',
       controller: 'ModalInstanceCtrl',
       size: size,
-      scope: $scope,
+      // scope: $scope,
       resolve: {
         allOptions: function(OptionsDropdowns) {
           return OptionsDropdowns.getOptions();
@@ -157,12 +156,11 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
   };
 
   // mini cart
-  $scope.showMiniCart = true;
-  $scope.cartInfo = cartInfo;
+  $rootScope.showMiniCart = false;
+  $rootScope.cartInfo = cartInfo;
 
   $scope.hideMiniCart = function(){
-    $scope.showMiniCart = false;
-    console.log('hiding mini cart!', $scope.showMiniCart);
+    $rootScope.showMiniCart = false;
   };
 
   $scope.removeRow = function (productIndex) {
@@ -170,13 +168,11 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
   };
 
   $scope.deleteRow = function(productId) {
-    console.log('productId', productId);
 
       $http.delete('api/cart/product/' + productId)
           .then(function(response) {
-            console.log('deleting product');
               CartFactory.getCartInfo().then(function(cartInfo) {
-                  $scope.cartInfo = cartInfo;
+                  $rootScope.cartInfo = cartInfo;
               });
           }).catch(function(err) {
               console.log('delete product in cart returned err');
@@ -354,7 +350,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
 
 });
 
-app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduct, allOptions, $http, CartFactory) {
+app.controller('ModalInstanceCtrl', function ($rootScope, $scope, $modalInstance, viewProduct, allOptions, $http, CartFactory) {
 
   $scope.product = viewProduct;
   $scope.dropdowns = allOptions;
@@ -380,12 +376,11 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduc
 
   $scope.addToCart = function() {
 
+    $rootScope.showMiniCart = true;
     $http.put("api/cart", $scope.newProduct)
     .then(function(response) {
-        // $scope.$parent.showMiniCart = true;
-        console.log('show mini cart ', $scope);
         CartFactory.getCartInfo().then(function(cartInfo) {
-          $scope.cartInfo = cartInfo;
+          $rootScope.cartInfo = cartInfo;
         });
         $modalInstance.close($scope.product);
     }).catch(function(err) {
