@@ -11,6 +11,8 @@ router.use('/users', require('./users'));
 router.use('/reviews', require('./reviews'));
 router.use('/categories', require('./categories'));
 router.use('/types', require('./types'));
+router.use('/checkout', require('./checkout'));
+
 
 // Make sure this is after all of
 // the registered routes!

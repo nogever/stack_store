@@ -1,6 +1,6 @@
 <h2> Purchase your Cart! </h2>
 <br>
-<form name="checkoutForm" ng-submit="checkoutForm.$valid && purchase()" novalidate>
+<form name="checkoutForm" ng-submit="checkoutForm.$valid && submitForToken()" novalidate>
     <span class="error" ng-show="checkoutForm.question.$invalid && checkoutForm.$submitted">Question is not valid.</span>
     <label>Credit Cart Number:</label>
     <input 
@@ -12,6 +12,16 @@
     	type="number" 
     	ng-model="card.ccNum"
     	placeholder="Card Number..."/>
+    <br>
+    <label>CVC</label>
+    <input 
+        name="cvcNum"
+        ng-minlength="3"
+        ng-maxlength="4"
+        type="number"
+        data-ng-pattern="/^[0-9]+$/"
+        ng-model="card.cvcNum"
+        placeholder="CVC"/>
     <br>
     <label>CC Provider:</label>
     <select required ng-model="card.ccProvider">
@@ -39,6 +49,13 @@
     	placeholder="00">
         <option ng-repeat="i in getNumber(day) track by $index">{{ $index + 1 }}</option>
     </select>
+    <label>Year</label>
+    <select 
+        required 
+        ng-model="card.ccExpYear"
+        placeholder="00">
+        <option ng-repeat="i in getNumber(year) track by $index">{{ $index + thisYear }}</option>
+    </select>
     <br><br>
     <div class="btn-group" role="group" aria-label="...">
       <button type="submit" class="btn btn-success" ng-disabled="checkoutForm.$invalid">Purchase Cart</button>
@@ -49,4 +66,8 @@
 <br>
 <pre>
 {{ card | json }}
+</pre>
+<h4>Checkout Cart appears here...</h4>
+<pre>
+{{ cartInfo | json }}
 </pre>
