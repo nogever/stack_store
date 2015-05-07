@@ -10,7 +10,22 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('CheckoutController', function ($scope, CartFactory) {
+app.factory('StripeFactory', function($http) {
+	return {
+		postCharge: function(chargeParams) {
+			return $http.post('/api/checkout', {
+				params: chargeParams
+			}).then(function(response) {
+				console.log("Stripe Processed: ", response.data);
+				return response.data;
+			}).catch(function(err) {
+				console.log("Stripe Post Failed: ", err);
+			})
+		}
+	}
+});
+
+app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory) {
 
 	$scope.month = 12;
 	$scope.day = 31;
@@ -18,7 +33,7 @@ app.controller('CheckoutController', function ($scope, CartFactory) {
 
 	var today = new Date();
 	$scope.thisYear = today.getFullYear();
-	console.log("This Year is: ", $scope.thisYear);
+	// console.log("This Year is: ", $scope.thisYear);
 
 	// Nested Controller has an inherited scope from the CartController.
 	// cartInfo is available here!
@@ -44,9 +59,22 @@ app.controller('CheckoutController', function ($scope, CartFactory) {
 			exp_year: $scope.card.ccExpYear
 		}, function(status, response) {
 			var token = response.id;
+
 			console.log("Stripe.js Error: ", status);
 			console.log("Stripe.js Token: ", token);
+
+			if(response) {
+				StripeFactory.postCharge({
+					amount: 400
+				}).then(function(charge) {
+					console.log("Stripe Processed on FrontEnd: ", charge);
+				}).catch(function(err) {
+					console.log("Stripe Failed on FrontEnd: ", err);
+				});
+			};
+
 		});
+
 	};
 
 

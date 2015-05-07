@@ -14,11 +14,15 @@ var OrderModel = mongoose.model('Order');
 
 module.exports = router;
 
+router.get('/', function(req, res, next) {
+	console.log("api/checkout root route operational");
+});
+
 router.post('/', function(req, res, next) {
 
 	var amount = req.body.amount;
 	var source = 'tok_15zEPPL5vWGrXymrbUhkH4bL';
-	var	description = "Cart Number: " + req.body._id;
+	var	description = "Cart Number: " + "12345";
 	var idempotency_key = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 	    return v.toString(16);
