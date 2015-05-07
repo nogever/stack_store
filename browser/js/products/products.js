@@ -14,6 +14,9 @@ app.config(function ($stateProvider) {
       },
       allTypes: function(TypesFactory) {
         return TypesFactory.getTypes();
+      },
+      cartInfo: function (CartFactory) {
+        return CartFactory.getCartInfo(); 
       }
     }
   })
@@ -121,21 +124,12 @@ app.factory('OptionsDropdowns', function ($http) {
 
 });
 
-app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal) {
+app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories, allTypes, $stateParams, $modal, cartInfo, CartFactory) {
 
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
   $scope.cat = $stateParams.name;
-
-  $scope.quickView = function() {
-    $http.post('api/reviews', $scope.newReview)
-      .then (function(response) {
-          $scope.reviews.push(response.data);
-      }).catch(function(err) {
-          console.log('err');
-    });
-  };
 
   $scope.animationsEnabled = true;
 
@@ -146,7 +140,8 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
       templateUrl: 'js/products/product-modal.html',
       controller: 'ModalInstanceCtrl',
       size: size,
-      resolve: {
+      scope: $scope,
+      resolve: 
         allOptions: function(OptionsDropdowns) {
           return OptionsDropdowns.getOptions();
         },
@@ -160,6 +155,34 @@ app.controller('ProductsCtrl', function ($scope, $http, allDrinks, allCategories
     });
 
   };
+
+  // mini cart
+  $scope.showMiniCart = true;
+  $scope.cartInfo = cartInfo;
+
+  $scope.hideMiniCart = function(){
+    $scope.showMiniCart = false;
+    console.log('hiding mini cart!', $scope.showMiniCart);
+  };
+
+  $scope.removeRow = function (productIndex) {
+    $scope.cartInfo.products.splice(productIndex, 1);
+  };
+
+  $scope.deleteRow = function(productId) {
+    console.log('productId', productId);
+
+      $http.delete('api/cart/product/' + productId)
+          .then(function(response) {
+            console.log('deleting product');
+              CartFactory.getCartInfo().then(function(cartInfo) {
+                  $scope.cartInfo = cartInfo;
+              });
+          }).catch(function(err) {
+              console.log('delete product in cart returned err');
+          });
+
+    };
 
 });
 
@@ -331,7 +354,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
 
 });
 
-app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduct, allOptions, $http) {
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduct, allOptions, $http, CartFactory) {
 
   $scope.product = viewProduct;
   $scope.dropdowns = allOptions;
@@ -359,6 +382,11 @@ app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, viewProduc
 
     $http.put("api/cart", $scope.newProduct)
     .then(function(response) {
+        // $scope.$parent.showMiniCart = true;
+        console.log('show mini cart ', $scope);
+        CartFactory.getCartInfo().then(function(cartInfo) {
+          $scope.cartInfo = cartInfo;
+        });
         $modalInstance.close($scope.product);
     }).catch(function(err) {
         console.log(err);
