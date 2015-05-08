@@ -52,6 +52,11 @@ router.get('/', function (req, res, next) {
 			}, function(err) {
 				console.log('Cart GET Error Handler: ', err);
 				res.status(501).next(err);
+			})
+			.then(function(success) {
+				console.log("get LOGGED IN success");
+			}, function(err) {
+				console.log("get LOGGED OUT errrrr", err.stack);
 			});	
 	} else {
 		CartModel.findOne({session: req.sessionID})
@@ -153,20 +158,81 @@ router.delete('/product/:id', function (req, res, next) {
 
 	// var currentUserId = req.user;
 	console.log('deleting a product from server route');
-	CartModel.findOne(
-		{$or: [{userId: req.user._id}, {session: req.sessionID}]})
-		.exec()
-		.then(function(cart) {
-			// if (err) res.status(500).send(err);
-			cart.products.pull({_id: req.params.id});
-			console.log('find cart to delete product', cart.products);
-			cart.calculateCartAmounts();
-			cart.save();
-			res.status(201).json(cart);
-		}, function(err) {
-			console.log("Cart DELETE error", err);
-			res.status(501).end();
-		});
+	
+	if(req.user) {
+		CartModel.findOne({userId: req.user._id})
+			.exec()
+			.then(function(cart) {
+				// if (err) res.status(500).send(err);
+				cart.products.pull({_id: req.params.id});
+				console.log('find cart to delete product', cart.products);
+				cart.calculateCartAmounts();
+				cart.save();
+				res.status(201).json(cart);
+			}, function(err) {
+				console.log("Cart DELETE error", err);
+				res.status(501).end();
+			})
+			.then(function(success) {
+				console.log("delete product success");
+			}, function(err) {
+				console.log("delete product errrrr", err.stack);
+			});
+	} else {
+		CartModel.findOne({session: req.sessionID})
+			.exec()
+			.then(function(cart) {
+				// if (err) res.status(500).send(err);
+				cart.products.pull({_id: req.params.id});
+				console.log('find cart to delete product', cart.products);
+				cart.calculateCartAmounts();
+				cart.save();
+				res.status(201).json(cart);
+			}, function(err) {
+				console.log("Cart DELETE error", err);
+				res.status(501).end();
+			})
+			.then(function(success) {
+				console.log("delete product success");
+			}, function(err) {
+				console.log("delete product errrrr", err.stack);
+			});
+	}
+
+});
+
+// destroy a cart
+// uri: api/cart/destroy
+router.delete('/destroy', function (req, res, next) {
+
+	// var currentUserId = req.user;
+	console.log('cart delete route in server');
+
+	if (req.user) {
+		CartModel.findOneAndRemove({userId: req.user._id})
+			.exec()
+			.then(function(deletedCart) {
+				// if (err) res.status(500).send(err);
+				console.log('Cart Deletion Executed Successfully', deletedCart);
+				res.status(201).end();
+			})
+			.then(null, function(err) {
+				console.log("Cart Deletion Did NOT succeed", err);
+				res.status(501).end();
+			});
+	} else {
+		CartModel.findOneAndRemove({session: req.sessionID})
+			.exec()
+			.then(function(deletedCart) {
+				// if (err) res.status(500).send(err);
+				console.log('Cart Deletion Executed Successfully', deletedCart);
+				res.status(201).end();
+			})
+			.then(null, function(err) {
+				console.log("Cart Deletion Did NOT succeed", err);
+				res.status(501).end();
+			});
+	}
 
 });
 

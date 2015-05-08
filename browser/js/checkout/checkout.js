@@ -18,8 +18,6 @@ app.factory('StripeFactory', function($http) {
 			}).then(function(response) {
 				console.log("Stripe Processed: ", response.data);
 				return response.data;
-			}).catch(function(err) {
-				console.log("Stripe Post Failed: ", err);
 			});
 		}
 	};
@@ -28,13 +26,19 @@ app.factory('StripeFactory', function($http) {
 app.factory('PostOrder', function($http) {
 	return {
 		createOrder: function (newOrder) {
-			return $http.post('api/orders', newOrder)
-			.then(function(response) {
+			return $http.post('api/orders', newOrder).then(function(response) {
 				console.log("Order Created: ", response.data);
 				return response.data;
 			});
+		},
+
+		destroyCart: function () {
+			return $http.delete('api/cart/destroy').then(function(response) {
+				console.log	("Cart was Destroyed: ", response.data);
+				response.data;
+			});
 		}
-	};
+	}
 });
 
 app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder) {
@@ -86,14 +90,22 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 					PostOrder.createOrder($scope.cartInfo)
 						.then(function(order) {
 							console.log("Order from backend: ", order);
+							
+							PostOrder.destroyCart()
+								.then(function(cart) {
+									console.log("Cart has been destroyed, control returned to Front End", cart);
+								}).catch(function(err) {
+									console.log("Cart destroy failed, control returned to Front", err.stack);
+								});
+
 						}).catch(function(err) {
 							console.log("Order from backend failed", err);
 						});
 
 				}).then(null, function(err) {
-					console.log("Stripe Failed on FrontEnd: ", err.error.code);
+					console.log("Stripe POST Failed on FrontEnd: ", err.error.code);
 				});
-			};
+			}
 
 		});
 
