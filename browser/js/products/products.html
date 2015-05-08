@@ -69,6 +69,9 @@
 			  	</div>
 		  	</div>
 		</div>
+		<div class="cart-mini-subtotal">
+			Subtotal: {{ cartInfo.subTotal / 100 | currency }}
+		</div>
 		<a class="btn btn-info pull-right" ui-sref="cart.checkout" role="button" ng-click="">Checkout</a>
 	</div>
 </div>
