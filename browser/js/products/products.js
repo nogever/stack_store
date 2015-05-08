@@ -209,7 +209,7 @@ app.controller('ProductsCoffeeCtrl', function ($scope, $http, allDrinks, allCate
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'Coffee';
+  $scope.typeName = 'coffee';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
@@ -250,7 +250,7 @@ app.controller('ProductsTeaCtrl', function ($scope, $http, allDrinks, allCategor
   $scope.products = allDrinks;
   $scope.categories = allCategories;
   $scope.types = allTypes;
-  $scope.typeName = 'Tea';
+  $scope.typeName = 'tea';
 
   $scope.quickView = function() {
     $http.post('api/reviews', $scope.newReview)
