@@ -160,51 +160,8 @@
   	}
 }
 
-.cart-mini-container {
-	position: fixed;
-	right: 10px;
-	top: 10px;
-	width: 300px;
-	background: #fff;
-	border:1px solid #ccc;
-	z-index:1000;
-	.cart-mini-header {
-		padding: 10px;
-		color:#fff;
-		background:#000;
-		font-weight:300;
-		font-size: 18px;
-	}
-	.cart-mini-body {
-		max-height: 300px;
-		padding: 10px;
-		overflow: auto;
-		.cart-mini-item {
-			border-bottom: 1px solid #eee;
-			margin-bottom: 10px;
-			padding-bottom: 10px;
-			img {
-				width: 100px;
-				margin-right: 10px;
-				float: left;
-	  			display: inline-block;
-			}
-			.info {
-				position: relative;
-				width:165px;
-				float: left;
-	  			display: inline-block;
-	  			p {
-	  				margin: 0 0 5px 0;
-	  			}
-	  			.btn {
-	  				position: absolute;
-	  				top: 0;
-	  				right: 0;
-	  			}
-			}
-		}
-	}
+.form-control {
+	border-radius: 0;
 }
 
 
