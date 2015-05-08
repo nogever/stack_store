@@ -9,7 +9,9 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/admin/users/users.html',
         resolve: {
             allUsers: function(UsersFactory) {
-                return UsersFactory.getUser();
+                return UsersFactory.getUser().catch(function(err){
+                    console.log('Err!', err);
+                });
             }
         }
     });
@@ -19,7 +21,9 @@ app.config(function ($stateProvider) {
 app.factory('UsersFactory', function ($http) {
     return {
         getUser: function() {
+            console.log('asking for users…');
             return $http.get('/api/users').then(function(response) {
+                console.log('asked for users:', response);
                 return response.data;
             });
         }

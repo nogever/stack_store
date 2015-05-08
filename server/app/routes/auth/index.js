@@ -15,10 +15,11 @@ var isAuthenticated = function(req, res, next) {
 }
 
 var isAdmin = function(req, res, next) {
-	if ((isAuthenticated(req, res, next) && req.user.role === 'admin'))
+	// console.log('user role ', req.user.role);
+	if ((req.isAuthenticated() && req.user.role === 'admin'))
 		next();
 	else
-		res.status(401).end();
+		res.status(345).end();
 
 	// IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
 	// console.log('Not admin!');

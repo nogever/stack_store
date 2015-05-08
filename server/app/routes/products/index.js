@@ -52,6 +52,7 @@ router.get('/:id/reviews', function (req, res, next) {
 		});
 });
 
+
 // post a new product
 // uri: api/products
 router.post('/', function (req, res, next) {
