@@ -12,8 +12,8 @@ module.exports = {
     "callbackURL": "INSERT_FACEBOOK_CALLBACK_HERE"
   },
   "GOOGLE": {
-    "clientID": "INSERT_GOOGLE_CLIENTID_HERE",
-    "clientSecret": "INSERT_GOOGLE_CLIENT_SECRET_HERE",
-    "callbackURL": "INSERT_GOOGLE_CALLBACK_HERE"
+    "clientID": "339257991441-if75dbod572auj8lrbv7ca7nruh8g88n.apps.googleusercontent.com",
+    "clientSecret": "Z0nMFoFyhLr-Brx9JgfMEXBs",
+    "callbackURL": "https://cafestack.herokuapp.com"
   }
 };
