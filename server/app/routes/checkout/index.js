@@ -45,7 +45,7 @@ router.post('/', function(req, res, next) {
 		} else {
 			console.log("Stripe POST Success: ", charge);
 			res.status(201).json(charge);
-		};
+		}
 	});
 
 });
