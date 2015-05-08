@@ -7,6 +7,10 @@
     	name="ccNum" 
     	ng-minlength="15" 
     	ng-maxlength="19"
+        form-control 
+        ng-pristine 
+        ng-untouched 
+        ng-valid
     	data-ng-pattern="/^[0-9]+$/" 
     	required 
     	type="number" 
@@ -18,13 +22,23 @@
         name="cvcNum"
         ng-minlength="3"
         ng-maxlength="4"
+        form-control 
+        ng-pristine 
+        ng-untouched 
+        ng-valid
         type="number"
         data-ng-pattern="/^[0-9]+$/"
         ng-model="card.cvcNum"
         placeholder="CVC"/>
     <br>
     <label>CC Provider:</label>
-    <select required ng-model="card.ccProvider">
+    <select 
+        required 
+        form-control 
+        ng-pristine 
+        ng-untouched 
+        ng-valid
+        ng-model="card.ccProvider">
         <option value="">...</option>
             <option value="visa">Visa</option>
             <option value="discover">Discover</option>
@@ -38,6 +52,10 @@
     <label>Month</label>
     <select 
     	required 
+        form-control 
+        ng-pristine 
+        ng-untouched 
+        ng-valid
     	ng-model="card.ccExpMonth"
     	placeholder="00">
         <option ng-repeat="i in getNumber(month) track by $index">{{ $index + 1 }}</option>
@@ -45,6 +63,10 @@
     <label>Day</label>
     <select 
     	required 
+        form-control 
+        ng-pristine 
+        ng-untouched
+        ng-valid
     	ng-model="card.ccExpDay"
     	placeholder="00">
         <option ng-repeat="i in getNumber(day) track by $index">{{ $index + 1 }}</option>
@@ -52,6 +74,10 @@
     <label>Year</label>
     <select 
         required 
+        form-control 
+        ng-pristine 
+        ng-untouched 
+        ng-valid
         ng-model="card.ccExpYear"
         placeholder="00">
         <option ng-repeat="i in getNumber(year) track by $index">{{ $index + thisYear }}</option>
@@ -60,15 +86,6 @@
     <div class="btn-group" role="group" aria-label="...">
       <button type="submit" class="btn btn-success" ng-disabled="checkoutForm.$invalid">Purchase Cart</button>
     </div>
-    <div><h5 id="ccError" class="cc-error" ng-show="ccProcessingError">The transaction has failed unfortunately, please try again.</h5>
+    <div id="ccSuccess" class="alert alert-success" ng-show="ccProcessingSuccess" role="alert">Purchase Successful!</div>
+    <div id="ccError" class="alert alert-warning" ng-show="ccProcessingError" role="alert">The transaction has failed unfortunately, please try again.</div>
 </form>
-<br>
-<h4>Credit Card object displayed for testing here...</h4>
-<br>
-<pre>
-{{ card | json }}
-</pre>
-<h4>Checkout Cart appears here...</h4>
-<pre>
-{{ cartInfo | json }}
-</pre>

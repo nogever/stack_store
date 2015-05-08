@@ -49,6 +49,7 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
         // otherwise, if no user is logged in, go to "login" state.
         if (user) {
 			$scope.ccProcessingError = false;
+			$scope.ccProcessSuccessful = false;
 
 			$scope.month = 12;
 			$scope.day = 31;
@@ -101,7 +102,11 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 									PostOrder.destroyCart()
 										.then(function(cart) {
 											console.log("Cart has been destroyed, control returned to Front End", cart);
-											$state.go('products.coffee');
+											
+											$scope.ccProcessSuccessful = true;
+											setTimeout(function() {
+												$state.go('products.coffee');
+											}, 4000);
 										}).catch(function(err) {
 											console.log("Cart destroy failed, control returned to Front", err.stack);
 										});
