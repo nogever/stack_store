@@ -25,7 +25,19 @@ app.factory('StripeFactory', function($http) {
 	};
 });
 
-app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory) {
+app.factory('PostOrder', function($http) {
+	return {
+		createOrder: function (newOrder) {
+			return $http.post('api/orders', newOrder)
+			.then(function(response) {
+				console.log("Order Created: ", response.data);
+				return response.data;
+			});
+		}
+	};
+});
+
+app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder) {
 
 	$scope.month = 12;
 	$scope.day = 31;
@@ -54,10 +66,6 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 		}, function(status, response) {
 			var token = response.id;
 
-			console.log("Stripe.js Error: ", status);
-			console.log("Stripe.js Token: ", token);
-			console.log("Stripe.js Response: ", response);
-
 			// Stripe will throw an error if not given an integer amount to charge
 			var numberToSubmit = Math.floor($scope.cartInfo.total * 100);
 
@@ -69,6 +77,19 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 				}).then(function(charge) {
 					console.log("Stripe Processed on FrontEnd: ", charge);
 					//consider a STATE Redirect here upon success.
+					$scope.cartInfo.products.forEach(function(product, index) {
+						$scope.cartInfo.products[index].productId = product.productId._id;
+					});
+
+					delete $scope.cartInfo['_id'];
+
+					PostOrder.createOrder($scope.cartInfo)
+						.then(function(order) {
+							console.log("Order from backend: ", order);
+						}).catch(function(err) {
+							console.log("Order from backend failed", err);
+						});
+
 				}).then(null, function(err) {
 					console.log("Stripe Failed on FrontEnd: ", err.error.code);
 				});

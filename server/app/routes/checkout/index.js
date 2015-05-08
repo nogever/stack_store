@@ -44,6 +44,7 @@ router.post('/', function(req, res, next) {
 			console.log("Stripe POST failed: ", err);
 		} else {
 			console.log("Stripe POST Success: ", charge);
+			res.status(201).json(charge);
 		};
 	});
 

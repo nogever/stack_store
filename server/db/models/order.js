@@ -5,7 +5,7 @@ var optionsSchema = require('./options');
 var ProductModel = mongoose.model('Product');
 
 var schema = new mongoose.Schema({
-	orderNumber: {type: Number, unique: true, index: true},
+	orderNumber: {type: Number, index: true},
 	products: [{
 		productId: { 
 			type: mongoose.Schema.Types.ObjectId, 

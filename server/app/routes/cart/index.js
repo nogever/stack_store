@@ -40,7 +40,7 @@ router.get('/', function (req, res, next) {
 
 	if(req.user) {
 		CartModel.findOne({userId: req.user._id})
-			// .populate('products.productId')
+			.populate('products.productId')
 			.exec()
 			.then(function(cart) {
 				// if (err) return next(err);
@@ -55,7 +55,7 @@ router.get('/', function (req, res, next) {
 			});	
 	} else {
 		CartModel.findOne({session: req.sessionID})
-			.populate('productId')
+			.populate('products.productId')
 			.exec()
 			.then(function(cart) {
 				// if (err) return next(err);
@@ -116,7 +116,7 @@ router.put('/', function(req, res, next) {
 		.then(function(cart) {
 			// if(err) return next(err);
 			// if you do not explicitly run res.json or res.send, this will hang for long periods of time.
-			// cart.calculateCartAmounts();
+			cart.calculateCartAmounts();
 			console.log('Logged in: PUT Request Success: User Cart ', cart);
 			res.status(201).json(cart);
 		}, function(err) {
