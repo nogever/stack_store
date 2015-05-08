@@ -37,66 +37,75 @@ app.factory('PostOrder', function($http) {
 	};
 });
 
-app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder) {
+app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder, AuthService, $state) {
 
-	$scope.month = 12;
-	$scope.day = 31;
-	$scope.year = 10;
+	AuthService.getLoggedInUser().then(function (user) {
+        // If a user is retrieved, then renavigate to the destination
+        // (the second time, AuthService.isAuthenticated() will work)
+        // otherwise, if no user is logged in, go to "login" state.
+        if (user) {
+            $scope.month = 12;
+			$scope.day = 31;
+			$scope.year = 10;
 
-	var today = new Date();
-	$scope.thisYear = today.getFullYear();
-	// console.log("This Year is: ", $scope.thisYear);
+			var today = new Date();
+			$scope.thisYear = today.getFullYear();
+			// console.log("This Year is: ", $scope.thisYear);
 
-	// Nested Controller has an inherited scope from the CartController.
-	// cartInfo is available here!
+			// Nested Controller has an inherited scope from the CartController.
+			// cartInfo is available here!
 
-	$scope.getNumber = function(num) {
-	    return new Array(num);   
-	};
-
-	var publishedKey = 'pk_test_HBre0jms0WDRFGRuDzUzwVyE';
-	Stripe.setPublishableKey(publishedKey);
-
-	$scope.submitForToken = function () {
-
-		Stripe.card.createToken({
-			number: $scope.card.ccNum,
-			exp_month: $scope.card.ccExpMonth,
-			exp_year: $scope.card.ccExpYear
-		}, function(status, response) {
-			var token = response.id;
-
-			// Stripe will throw an error if not given an integer amount to charge
-			var numberToSubmit = Math.floor($scope.cartInfo.total * 100);
-
-			if(response) {
-				StripeFactory.postCharge({
-					amount: numberToSubmit,
-					token: token,
-					description: $scope.cartInfo._id
-				}).then(function(charge) {
-					console.log("Stripe Processed on FrontEnd: ", charge);
-					//consider a STATE Redirect here upon success.
-					$scope.cartInfo.products.forEach(function(product, index) {
-						$scope.cartInfo.products[index].productId = product.productId._id;
-					});
-
-					delete $scope.cartInfo['_id'];
-
-					PostOrder.createOrder($scope.cartInfo)
-						.then(function(order) {
-							console.log("Order from backend: ", order);
-						}).catch(function(err) {
-							console.log("Order from backend failed", err);
-						});
-
-				}).then(null, function(err) {
-					console.log("Stripe Failed on FrontEnd: ", err.error.code);
-				});
+			$scope.getNumber = function(num) {
+			    return new Array(num);   
 			};
 
-		});
+			var publishedKey = 'pk_test_HBre0jms0WDRFGRuDzUzwVyE';
+			Stripe.setPublishableKey(publishedKey);
 
-	};
+			$scope.submitForToken = function () {
+
+				Stripe.card.createToken({
+					number: $scope.card.ccNum,
+					exp_month: $scope.card.ccExpMonth,
+					exp_year: $scope.card.ccExpYear
+				}, function(status, response) {
+					var token = response.id;
+
+					// Stripe will throw an error if not given an integer amount to charge
+					var numberToSubmit = Math.floor($scope.cartInfo.total * 100);
+
+					if(response) {
+						StripeFactory.postCharge({
+							amount: numberToSubmit,
+							token: token,
+							description: $scope.cartInfo._id
+						}).then(function(charge) {
+							console.log("Stripe Processed on FrontEnd: ", charge);
+							//consider a STATE Redirect here upon success.
+							$scope.cartInfo.products.forEach(function(product, index) {
+								$scope.cartInfo.products[index].productId = product.productId._id;
+							});
+
+							delete $scope.cartInfo['_id'];
+
+							PostOrder.createOrder($scope.cartInfo)
+								.then(function(order) {
+									console.log("Order from backend: ", order);
+								}).catch(function(err) {
+									console.log("Order from backend failed", err);
+								});
+
+						}).then(null, function(err) {
+							console.log("Stripe Failed on FrontEnd: ", err.error.code);
+						});
+					};
+
+				});
+
+			};
+        } else {
+            $state.go('login');
+        }
+    });
 
 });
