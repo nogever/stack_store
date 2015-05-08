@@ -29,11 +29,11 @@ app.config(function ($stateProvider) {
 //     };
 // });
 
-// app.controller('AdminController', function ($scope, AuthService) {
+app.controller('AdminController', function ($scope, AuthService) {
 
 //     $scope.userAccount = userAccount;
 
-// });
+});
 
 
 
