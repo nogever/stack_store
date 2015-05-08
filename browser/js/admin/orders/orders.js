@@ -1,30 +1,55 @@
 'use strict';
 app.config(function ($stateProvider) {
 
-    $stateProvider.state('administrator.orders', {
+    $stateProvider
+    .state('administrator.orders', {
         url: '/orders',
         controller: 'OrdersController',
         templateUrl: 'js/admin/orders/orders.html',
         resolve: {
             allOrders: function(Order) {
-                return Order.getAll();
+                return Order.getAll().catch(function(err) {console.log('err');});
             }
         }
-    }).state('administrator.addOrder', {
+    })
+    .state('administrator.order', {
+        url: '/order/:id',
+        controller: 'OrderController',
+        templateUrl: 'js/admin/orders/order.html',
+        resolve: {
+            allDrinks: function(DrinkProducts) {
+                return DrinkProducts.getAll();
+            },
+            currentUser: ['AuthService', function(AuthService) {
+                return AuthService.getLoggedInUser();
+            }]
+        }
+    })
+    .state('administrator.addOrder', {
         url: '/add-order',
         controller: 'OrderController',
         templateUrl: 'js/admin/orders/order.html',
         resolve: {
             allDrinks: function(DrinkProducts) {
                 return DrinkProducts.getAll();
-            }
+            },
+            currentUser: ['AuthService', function(AuthService) {
+                return AuthService.getLoggedInUser();
+            }]
         }
     });
 
 });
 
 app.factory('Order', function ($http, $state) {
+
     return {
+        getOne: function(id) {
+            return $http.get('/api/orders/' + id)
+                .then(function(response) {
+                    return response.data;
+            });
+        },
         getAll: function() {
             return $http.get('/api/orders')
                      .then(function(response) {
@@ -50,105 +75,69 @@ app.factory('Order', function ($http, $state) {
             toppings: ['none', 'cinnamon', 'JAVAscript', 'cocoa powder', 'whip cream']
         },
         save: function(newOrder) {
-            
             newOrder.products.forEach(function(product, index) {
-                product.productId = product.productId._id;
+                newOrder.products[index].productId = product.productId._id;
             });
-
+            newOrder._user = newOrder._user._id;
             return $http.post('/api/orders', newOrder)
                     .then(function(response) {
                         console.log('response from save()', response);
                         // return response.data;
                         $state.go('administrator.orders');
+                    }).catch(function(err) {
+                        console.log('errrr');
                     });
         }
-        // options: [
-        //     {
-        //         name: sweets,
-        //         choices: [
-        //             'none',
-        //             'sugar', 
-        //             'splenda', 
-        //             'raw sugar', 
-        //             'honey'
-        //         ]
-        //     }, {
-        //         name: milk,
-        //         choices: [
-        //             'none',
-        //             'whole milk', 
-        //             'half and half', 
-        //             'reduced fat', 
-        //             'skim', 
-        //             'soy'
-        //         ]
-        //     }, {
-        //         name: flavors,
-        //         choices: [
-        //             'none',
-        //             'hazelnut', 
-        //             'vanilla', 
-        //             'chocolate'
-        //         ]
-        //     }, {
-        //         name: size,
-        //         choices: [
-        //             'fullstack', 
-        //             'mediumstack', 
-        //             'smallstack'
-        //         ]
-        //     }, {
-        //         name: toppings,
-        //         choices: [
-        //             'none',
-        //             'cinnamon', 
-        //             'JAVAscript', 
-        //             'cocoa powder', 
-        //             'whip cream'
-        //         ]
-        //     }
-        // ] // <-- folded: 'options' in json format
     };
+
 });
 
 app.controller('OrdersController', function ($scope, allOrders) {
-
     $scope.orders = allOrders;
-
 });
 
-app.controller('OrderController', function ($scope, $state, Order, AuthService, allDrinks) {
+app.controller('OrderController', function ($scope, $stateParams, $filter, Order, currentUser, allDrinks) {
 
     $scope.status = Order.status();
     $scope.products = allDrinks;
-    $scope.options = Order.options; 
-    var today = new Date();    
+    $scope.options = Order.options;   
 
-    $scope.tempOptions = {sweets:'none',flavors:'none',milk:'none',size:'fullstack',toppings:'none'};
-    $scope.tempProduct = {productId: null, options: $scope.newOptions, quantity: null};
-
-    $scope.newOrder = {
-        orderNumber: null,
-        products: [],
-        date: today,
-        orderStatus: 'paid',
-        _user: null
-    };
-
-    AuthService.getLoggedInUser().then(function(user) {
-        $scope.newOrder._user = user._id;
-    });
-
+    if ($stateParams.id) {
+        Order.getOne($stateParams.id).then(function(order) {
+            $scope.order = order;
+            var ngDate = new Date(order.date);
+            $scope.newOrder = {
+                orderNumber: order.orderNumber,
+                products: order.products,
+                date: ngDate,
+                orderStatus: order.status,
+                _user: order._user
+            };
+        });
+    } else {
+        $scope.newOrder = {
+            orderNumber: null,
+            products: [],
+            date: new Date(),
+            orderStatus: 'paid',
+            _user: currentUser
+        };
+    }
+    var tmpOptions = {sweets:'none',flavors:'none',milk:'none',size:'fullstack',toppings:'none'};
+    var tmpProduct = {productId: null, options: $scope.newOptions, quantity: 1};
+    $scope.tempOptions = tmpOptions;
+    $scope.tempProduct = tmpProduct;
 
     $scope.addProductToOrder = function() {
         $scope.newOptions = $scope.tempOptions;
         $scope.newProduct = $scope.tempProduct;
+        $scope.newProduct.options = $scope.newOptions;
         $scope.newProduct.price = $scope.tempProduct.productId.price;
 
         $scope.newOrder.products.push($scope.newProduct);
 
-        $scope.tempOptions = {sweets:'none',flavors:'none',milk:'none',size:'fullstack',toppings:'none'};
-        $scope.tempProduct = {productId: null, options: $scope.newOptions, quantity: null};
+        $scope.tempOptions = tmpOptions;
+        $scope.tempProduct = tmpProduct;
     };
 
     $scope.submit = function() {

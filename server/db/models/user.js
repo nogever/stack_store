@@ -7,8 +7,8 @@ var Cart = mongoose.model('Cart');
 var schema = new mongoose.Schema({
     name: {type: String, required: true},
     username: {type: String, required: true},
-    pastOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
-    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Wishlist'}],
+    // pastOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
+    // wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Wishlist'}],
     billingAddress: [addressSchema],
     deliveryAddress: [addressSchema],
     role: {type: String, enum: ['admin', 'shop manager', 'subscriber']},

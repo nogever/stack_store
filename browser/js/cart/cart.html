@@ -15,7 +15,7 @@
 		  <!-- Repeat rows all products in the cart -->
 		  <tr ng-repeat="(productIndex, product) in cartInfo.products">
 		  	<td>{{ product.productId.title }}</td>
-		  	<td>{{ product.options }}</td>
+		  	<td><span class="cart-options" ng-repeat="(key, value) in product.options">{{ value }}</span></td>
 		  	<td>{{ product.options.size }}</td>
 		  	<td>{{ product.quantity }}</td>
 		  	<td>{{ product.price / 100 | currency }}</td>
@@ -65,11 +65,14 @@
 	<div ui-view></div>
 </div>
 
-<br>
-<br>
-<br>
 
-<h4>Cart Data Object for reference: Remove Later</h4>
-<pre>
-{{ cartInfo | json }}
-</pre>
+
+
+
+
+
+
+
+
+
+

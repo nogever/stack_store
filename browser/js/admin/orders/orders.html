@@ -4,26 +4,25 @@
 		<h3 class="admin-title">All Orders</h3>
 		<div class="admin-os-heading row">
 			<span class="admin-o-order col-sm-2 text-center">Number</span>
-			<span class="admin-o-name col-sm-2 text-center">Name</span>
+			<span class="admin-o-name col-sm-2 text-center">User</span>
 			<span class="admin-o-date col-sm-2 text-center">Date</span>
 			<span class="admin-o-status col-sm-2 text-center">Status</span>
 		</div>
 
 	</div>
 	<div class="panel-body">
-	<pre>{{orders | json}}</pre>
-		<div class="admin-o-rows" ng-repeat="order in orders">
+		<div class="admin-o-rows row" ng-repeat="order in orders">
 			<div class="admin-o-info">
 				<span class="admin-o-order col-sm-2 text-center"><a ui-sref="administrator.order({id: order._id})">{{ order.orderNumber }}</a></span>
 				<span class="admin-o-name col-sm-2 text-center">{{ order._user.name }}</span>
-				<span class="admin-o-date col-sm-2 text-center">{{ order.date }}</span>
+				<span class="admin-o-date col-sm-2 text-center">{{ order.date | date }}</span>
 				<span class="admin-o-status col-sm-2 text-center">{{ order.orderStatus }}</span>
 			</div>
 			<div class="admin-o-menu">
 				<a ui-sref="administrator.order({id: order._id})">Edit</a>
 			</div>
-		</div>
 
+		</div>
 	</div>
 </div>
 

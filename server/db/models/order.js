@@ -5,7 +5,7 @@ var optionsSchema = require('./options');
 var ProductModel = mongoose.model('Product');
 
 var schema = new mongoose.Schema({
-	orderNumber: {type: Number, index: true},
+	orderNumber: {type: Number, unique: true, index: true},
 	products: [{
 		productId: { 
 			type: mongoose.Schema.Types.ObjectId, 
@@ -31,25 +31,10 @@ var schema = new mongoose.Schema({
  //, { autoIndex: false } recommended to be added in production by the Mongoose document
  );
 
-// schema.methods.getPrice = function() {
-// 	if (this.products.length) {
-// 		this.products.forEach(function(product) {
-// 			ProductModel.findById(product.productId, function(err, p) {
-// 				product.price = p.price;
-// 			});
-// 		});
-// 	}
-// };
-
-schema.methods.populateOrders = function() {
-	//return mongoose.model('Products').find(...).exec()   ????
-};
-
 schema.methods.populateProducts = function(order) {
 	var thisOrder = this;
 
 	var ids = _.pluck(this.products, 'productId');
-	// ['sadfsdfsdfsdf', 'asdfsdfsdfsdfsd', 'sdfsdfsdfsdfsdf']
 
 	return mongoose.model('Product').find({ _id: { $in: ids }}).exec().then(function(products) {
 		products.forEach(function(p, index){
@@ -91,7 +76,6 @@ function sequenceGenerator(name){
 }
 
 var sequence = sequenceGenerator('order');
-
 
 schema.pre('save', function(next) {
 	var currentDate = new Date();
