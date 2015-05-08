@@ -146,34 +146,6 @@ app.controller('OrderController', function ($scope, $stateParams, $filter, Order
 
 });
 
-app.filter('Type', function() {
-    return function(items, typeName) {
-        var filtered = [];
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            if (item.type.name === typeName) {
-                filtered.push(item);
-            }
-        }
-        return filtered;
-    };
-});
-
-app.filter('Category', function() {
-    return function(items, cat) {
-        var filtered = [];
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            for (var j = 0; j < item.categories.length; j++){
-                if (item.categories[j].name === cat) {
-                    filtered.push(item);
-                }
-            }
-        }
-        return filtered;
-    };
-});
-
 
 
 

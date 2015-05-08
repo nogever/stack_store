@@ -17,11 +17,11 @@
 			<img src="{{ product.photo }}" class="admin-thumb-list col-sm-2" />
 			<div class="admin-p-info">
 				<div class="admin-p-title col-sm-3"><a ui-sref="administrator.product({id: product._id})">{{ product.title }}</a></div>
-				<div class="admin-p-price col-sm-2 text-center">{{ product.price | currency }}</div>
+				<div class="admin-p-price col-sm-2 text-center">{{ product.price/100 | currency }}</div>
 				<div class="admin-p-category col-sm-2 text-center">
-					<span ng-repeat="category in product.categories">{{ category.name }}</span>
+					<span class="category" ng-repeat="category in product.categories">{{ category.name | capitalize }}</span>
 				</div>
-				<div class="admin-p-stock col-sm-2 text-center">{{ product.stock }}</div>
+				<div class="admin-p-stock col-sm-2 text-center">{{ product.stock | number }}</div>
 			</div>
 			<div class="admin-p-menu">
 				<div class="col-sm-1">
