@@ -18,7 +18,10 @@ var checkAndCreateCart = function(req, res, next) {
 			next();
 		});
 	} else {
-		next();
+		CartModel.findOneAndUpdate({userId: req.user._id}, {}, {upsert:true}, function(err, anonCart) {
+			console.log('Middleware Executed: Anon Cart = ', anonCart);
+			next();
+		});
 	}
 
 };
