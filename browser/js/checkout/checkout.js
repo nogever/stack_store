@@ -41,7 +41,9 @@ app.factory('PostOrder', function($http) {
 	}
 });
 
-app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder) {
+app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder, $state) {
+
+	$scope.ccProcessingError = false;
 
 	$scope.month = 12;
 	$scope.day = 31;
@@ -94,6 +96,7 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 							PostOrder.destroyCart()
 								.then(function(cart) {
 									console.log("Cart has been destroyed, control returned to Front End", cart);
+									$state.go('products.coffee');
 								}).catch(function(err) {
 									console.log("Cart destroy failed, control returned to Front", err.stack);
 								});
@@ -104,6 +107,7 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 
 				}).then(null, function(err) {
 					console.log("Stripe POST Failed on FrontEnd: ", err.error.code);
+					$scope.ccProcessingError = true;
 				});
 			}
 
