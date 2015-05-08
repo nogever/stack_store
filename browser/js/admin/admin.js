@@ -1,6 +1,4 @@
 'use strict';
-var Session = {};
-
 app.config(function ($stateProvider) {
 
     // Register our *admin* state.
@@ -31,8 +29,24 @@ app.config(function ($stateProvider) {
 //     };
 // });
 
-app.controller('AdminController', function ($scope) {
+// app.controller('AdminController', function ($scope, AuthService) {
 
-    // $scope.userAccount = userAccount;
+//     $scope.userAccount = userAccount;
 
-});
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

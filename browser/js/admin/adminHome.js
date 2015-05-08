@@ -4,7 +4,7 @@ var Session = {};
 app.config(function ($stateProvider) {
 
     // Register our *admin* state.
-    $stateProvider.state('admin.home', {
+    $stateProvider.state('administrator.home', {
         url: '/admin/home',
         controller: 'AdminController',
         templateUrl: 'js/admin/adminHome.html',
