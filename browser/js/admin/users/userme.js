@@ -10,9 +10,10 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('UserMeController', function ($scope, AuthService, $http) {
+app.controller('UserMeController', function ($scope, AuthService, $http, UserFactory) {
 
     $scope.user = {};
+    $scope.roles = UserFactory.roles();
 
     AuthService.getLoggedInUser().then(function(user) {
 
@@ -22,7 +23,7 @@ app.controller('UserMeController', function ($scope, AuthService, $http) {
             name: $scope.user.name,
             email: $scope.user.email,
             username: $scope.user.username,
-            role: $scope.user.roles,
+            role: $scope.user.role,
             password: $scope.user.password,
             twitter: $scope.user.twitter,
             facebook: $scope.user.facebook,
