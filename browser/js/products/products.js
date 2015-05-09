@@ -200,7 +200,7 @@ app.controller('ProductsCtrl', function ($rootScope, $scope, $http, allDrinks, a
               console.log('delete product in cart returned err');
           });
 
-    };
+  };
 
 });
 
@@ -305,7 +305,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
         
         $scope.newReview = {
           user: user._id, 
-          rating: null,
+          rating: 7,
           text: null,
           title: null
         };
@@ -322,6 +322,20 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
   ProductReviews.getReviews().then(function(data) {
     $scope.reviews = data;
   });
+
+  $scope.newReviewMax = 10;
+  $scope.newReviewisReadonly = false;
+  $scope.isReadonly = false;
+
+  $scope.newReviewHoveringOver = function(value) {
+    $scope.newReviewOverStar = value;
+    $scope.newReviewPercent = 100 * (value / $scope.newReviewMax);
+  };
+
+  $scope.ratingStates = [
+    {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+    {stateOff: 'glyphicon-off'}
+  ];
 
   $scope.addReview = function() {
     $http.post('api/reviews', $scope.newReview)

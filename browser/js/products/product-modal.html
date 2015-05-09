@@ -49,9 +49,9 @@
                     <option ng-repeat="topping in dropdowns.toppings" value="{{topping}}">{{ topping }}</option>
                 </select>
               </div>
-              <div class="form-group form-group-sm form-inline">
+              <div class="form-group form-group-xsm form-inline">
                 <label for="quantity">Quantity</label>
-                <input ng-model="newProduct.quantity" type="number" min="0" class="form-control" id="toppings" placeholder="Number of Drinks">
+                <input ng-model="newProduct.quantity" type="number" min="0" class="form-control quantity" id="toppings" placeholder="Number of Drinks">
               </div>
               <button type="submit" class="btn btn-info" ng-disabled="buildDrink.$invalid">Add to Cart</button>
               </div>

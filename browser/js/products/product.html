@@ -7,13 +7,13 @@
 </pre> -->
 
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-8">
 		<div class="thumbnail" >
 			<img src="{{product.photo}}" alt="">
 		</div>
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<div>
 			<h3>{{ product.title }}</h3>
 			<h5>
@@ -23,41 +23,77 @@
 			<h5>{{ product.description }}</h5>
 			<h3>Add Options</h3>
 			<form name="buildDrink" ng-submit="buildDrink.$valid && addToCart()" novalidate>
-			  <div class="form-group form-group-sm">
-			    <label for="sweets">Sweets</label>
-			    <select ng-model="newProduct.options.sweets" class="form-control">
-			    	<option ng-repeat="sweet in dropdowns.sweets">{{ sweet }}</option>
-			    </select>
+			  <div class="form-group form-group-sm-product form-inline">
+			  	<div class="row">
+			  		<div class="col-sm-3">
+				    	<label for="sweets">Sweets</label>
+					</div>
+					<div class="col-sm-9">
+					    <select ng-model="newProduct.options.sweets" class="form-control">
+					    	<option ng-repeat="sweet in dropdowns.sweets">{{ sweet }}</option>
+					    </select>
+					</div>
+				</div>
 			  </div>
-			  <div class="form-group form-group-sm">
-			    <label for="milk">Milk</label>
-			    <select ng-model="newProduct.options.milk" class="form-control">
-			    	<option ng-repeat="milk in dropdowns.milk">{{ milk }}</option>
-			    </select>
+			  <div class="form-group form-group-sm-product form-inline">
+			  	<div class="row">
+			  		<div class="col-sm-3">
+					    <label for="milk">Milk</label>
+					</div>
+					<div class="col-sm-9">
+					    <select ng-model="newProduct.options.milk" class="form-control">
+					    	<option ng-repeat="milk in dropdowns.milk">{{ milk }}</option>
+					    </select>
+					</div>
+				</div>
 			  </div>
-			  <div class="form-group form-group-sm">
-			    <label for="flavors">Flavors</label>
-			    <select ng-model="newProduct.options.flavors" class="form-control">
-			    	<option ng-repeat="flavor in dropdowns.flavors">{{ flavor }}</option>
-			    </select>
+			  <div class="form-group form-group-sm-product form-inline">
+			  	<div class="row">
+			  		<div class="col-sm-3">
+					    <label for="flavors">Flavors</label>
+					</div>
+					<div class="col-sm-9">
+					    <select ng-model="newProduct.options.flavors" class="form-control">
+					    	<option ng-repeat="flavor in dropdowns.flavors">{{ flavor }}</option>
+					    </select>
+					</div>
+				</div>
 			  </div>
-			  <div class="form-group form-group-sm">
-			    <label for="size">Size</label>
-			    <select ng-model="newProduct.options.size" class="form-control">
-			    	<option ng-repeat="size in dropdowns.size">{{ size }}</option>
-			    </select>
+			  <div class="form-group form-group-sm-product form-inline">
+			  	<div class="row">
+			  		<div class="col-sm-3">
+					    <label for="size">Size</label>
+					</div>
+					<div class="col-sm-9">
+					    <select ng-model="newProduct.options.size" class="form-control">
+					    	<option ng-repeat="size in dropdowns.size">{{ size }}</option>
+					    </select>
+					</div>
+				</div>
 			  </div>
-			  <div class="form-group form-group-sm">
-			    <label for="sweets">Toppings</label>
-			    <select ng-model="newProduct.options.toppings" class="form-control">
-			    	<option ng-repeat="topping in dropdowns.toppings">{{ topping }}</option>
-			    </select>
+			  <div class="form-group form-group-sm-product form-inline">
+			  	<div class="row">
+			  		<div class="col-sm-3">
+					    <label for="sweets">Toppings</label>
+					</div>
+					<div class="col-sm-9">
+					    <select ng-model="newProduct.options.toppings" class="form-control">
+					    	<option ng-repeat="topping in dropdowns.toppings">{{ topping }}</option>
+					    </select>
+					</div>
+				</div>
 			  </div>
-			  <div class="form-group form-group-sm">
-			    <label for="quantity">Quantity</label>
-			    <input ng-model="newProduct.quantity" type="number" class="form-control" id="toppings" placeholder="Number of Drinks">
+			  <div class="form-group form-group-sm form-inline">
+			  	<div class="row">
+			  		<div class="col-sm-3">
+					    <label for="quantity">Quantity</label>
+					</div>
+					<div class="col-sm-4">
+					    <input ng-model="newProduct.quantity" type="number" class="form-control quantity" id="toppings" placeholder="Number of Drinks">
+					</div>
+				</div>
 			  </div>
-			  <button type="submit" class="btn btn-default" ng-disabled="buildDrink.$invalid">Add to Cart</button>
+			  <button type="submit" class="btn btn-info pull-right" ng-disabled="buildDrink.$invalid">Add to Cart</button>
 			  </div>
 			</form>
 	</div>
@@ -65,38 +101,45 @@
 
 <!-- <pre>
 {{ newReview | json }}
-</pre> -->
-
+</pre>
+ -->
 <div class="row">
-	<h3>Add Review</h3>
-		<form name="addNewReview" ng-submit="addReview()" novalidate>
-		  <div class="form-group form-group-sm">
-		    <label for="title">Title</label>
-		    <input ng-model="newReview.title" type="text" class="form-control" id="title" placeholder="Enter Title">
-		  </div>
-		  <div class="form-group form-group-sm">
-		    <label for="rating">Rating</label>
-		    <input ng-model="newReview.rating" type="text" class="form-control" id="size" placeholder="Enter Rating 1 to 5">
-		  </div>
-		  <div class="form-group form-group-sm">
-		    <label for="text">Review</label>
-		    <textarea ng-model="newReview.text" class="form-control" rows="3" id="text" placeholder="Enter Comments"></textarea>
-		   <!--  <input ng-model="newReview.text" type="text" class="form-control" id="text" placeholder="Enter Comments"> -->
-		  </div>
-		  <button type="submit" class="btn btn-default">Add New Review</button>
-		  </div>
-		</form>
-	<h3>Reviews</h3>
-	<div class="col-md-12">
+	<div class="col-md-8">
+		<h3>Product Reviews</h3>
 		<div 
 			ng-repeat="review in reviews" 
 			class="product-review">
 			<h4>{{ review.title }}</h4>
 			<span>{{review.date}}</span>
 			<span>{{review.user.name}}</span>
-			<span>{{review.rating}}</span>
+			<p>Rating: {{review.rating}}</p>
 			<p>{{ review.text }}</p>
 
 		</div>
+
+		<h3>Add Review</h3>
+		<form name="addNewReview" ng-submit="addReview()" novalidate>
+		  <div class="form-group form-group-sm">
+		    <label for="title">Title</label>
+		    <input ng-model="newReview.title" type="text" class="form-control" id="title" placeholder="Enter Title">
+		  </div>
+		  <div class="form-group form-group-sm">
+		  	<label for="rating">Rating: </label>
+		  	<rating ng-model="newReview.rating" max="newReviewMax" readonly="isReadonly" on-hover="newReviewHoveringOver(value)" on-leave="newReviewOverStar = null"></rating>
+    		<span class="label" ng-class="{'label-warning': newReviewPercent<30, 'label-info': newReviewPercent>=30 && newReviewPercent<70, 'label-success': newReviewPercent>=70}" ng-show="newReviewOverStar && !isReadonly">{{newReviewPercent}}%</span>
+
+		    <!-- <label for="rating">Rating</label>
+		    <input ng-model="newReview.rating" type="text" class="form-control" id="size" placeholder="Enter Rating 1 to 5"> -->
+		  </div>
+		  <div class="form-group form-group-sm">
+		    <label for="text">Review</label>
+		    <textarea ng-model="newReview.text" class="form-control" rows="3" id="text" placeholder="Enter Comments"></textarea>
+		  </div>
+		  <button type="submit" class="btn btn-default">Add New Review</button>
+		  </div>
+		</form>
 	</div>
+	<div class="col-md-offset-4">
+	</div>
+	
 </div>
