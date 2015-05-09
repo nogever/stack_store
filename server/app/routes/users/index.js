@@ -9,9 +9,12 @@ var ReviewModel = mongoose.model('Review');
 var OrderModel = mongoose.model('Order');
 
 module.exports = router;
+
+
+
 // auth.isAdmin,
 // get all users
-router.get('/', auth.isAdmin, function (req, res, next) {
+router.get('/', function (req, res, next) {
 	UserModel.find()
 		.exec(function(err, users) {
 			// if an error happened, pass the error to 'next'

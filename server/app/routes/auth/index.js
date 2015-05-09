@@ -16,16 +16,18 @@ var isAuthenticated = function(req, res, next) {
 
 var isAdmin = function(req, res, next) {
 	// console.log('user role ', req.user.role);
-	if ((req.isAuthenticated() && req.user.role === 'admin'))
+	if ((isAuthenticated(req, res, next) && req.user.role === 'admin')) {
+		console.log('is admin ');
 		next();
+	}
 	else
-		res.status(345).end();
+		res.status(401).next();
 
 	// IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
 	// console.log('Not admin!');
  //    res.redirect('/');
 
-}
+};
 
 var isShopManager = function(req, res, next) {
 	if ((isAuthenticated(req, res, next) && req.user.role === 'shop manager'))

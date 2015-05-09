@@ -2,6 +2,7 @@
 var path = require('path');
 var express = require('express');
 var app = express();
+
 module.exports = app;
 
 // Pass our express application pipeline into the configuration
@@ -10,8 +11,22 @@ require('./configure')(app);
 
 // Routes that will be accessed via AJAX should be prepended with
 // /api so they are isolated from our GET /* wildcard.
+
 app.use('/api', require('./routes'));
 
+var isAdmin = function(req, res, next) {
+    console.log(req.user);
+    if (req.user && req.user.role === "admin") {
+        console.log('hi hi hi');
+        next();
+    }
+    res.redirect('/login');
+};
+
+app.use('/administrator', isAdmin, function(req, res) {
+    // next();
+    res.redirect('/');
+});
 
 /*
     This middleware will catch any URLs resembling a file extension
