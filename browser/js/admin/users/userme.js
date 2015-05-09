@@ -10,33 +10,42 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('UserMeController', function ($scope, AuthService, $http, UserFactory) {
+app.controller('UserMeController', function ($scope, AuthService, $http, User) {
 
     $scope.user = {};
-    $scope.roles = UserFactory.roles();
+    $scope.roles = User.roles();
+    $scope.newUser = {};
 
-    AuthService.getLoggedInUser().then(function(user) {
-        console.log(user);
-        $scope.user = user;
-    
+    AuthService.getLoggedInUser()
+    .then(function(user) {
+        return $scope.user = user;
+    })
+    .then(function(user) {
+        return $http.get('/api/users/' + user._id)
+    })
+    .then(function(value) {
         $scope.newUser = {
-            name: $scope.user.name,
-            email: $scope.user.email,
-            username: $scope.user.username,
-            role: $scope.user.role,
-            password: $scope.user.password,
-            twitter: $scope.user.twitter,
-            facebook: $scope.user.facebook,
-            google: $scope.user.google
+            _id: value.data.user._id,
+            name: value.data.user.name,
+            email: value.data.user.email,
+            username: value.data.user.username,
+            role: value.data.user.role,
+            password: value.data.user.password,
+            twitter: value.data.user.twitter,
+            facebook: value.data.user.facebook,
+            google: value.data.user.google
         };
-
+    })
+    .catch(function(err) {
+        console.log('errrrrrr', err);
     });
-    
+
     $scope.submit = function() {
 
         $http.put("api/users/" + $scope.user.id, $scope.newUser)
         .then (function(response) {
             console.log('hi');
+
         }).catch(function(err) {
             console.log('err');
         });

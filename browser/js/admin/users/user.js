@@ -15,9 +15,9 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('AddUserController', function($scope, $state, $http, UserFactory) {
+app.controller('AddUserController', function($scope, $state, $http, User) {
 
-    $scope.roles = UserFactory.roles();
+    $scope.roles = User.roles();
 
     $scope.newUser = {
         name: null,
@@ -43,13 +43,16 @@ app.controller('AddUserController', function($scope, $state, $http, UserFactory)
 
 });
 
-app.factory('UserFactory', function ($http, $stateParams) {
+app.factory('User', function ($http, AuthService) {
     return {
-        getUser: function() {
-            return $http.get('/api/users/' + $stateParams.id)
+        getOne: function(id) {
+            return $http.get('/api/users/' + id)
                      .then(function(response) {
                 return response.data;
             });
+        },
+        getMe: function(id) {
+
         },
         roles: function() {
             return ['admin', 'shop manager', 'subscriber'];
@@ -58,28 +61,30 @@ app.factory('UserFactory', function ($http, $stateParams) {
     };
 });
 
-app.controller('UserController', function ($scope, $http, UserFactory) {
+app.controller('UserController', function ($scope, $http, $stateParams, User) {
 
-    $scope.roles = UserFactory.roles();
+    $scope.roles = User.roles();
+    $scope.newUser = {};
 
-    UserFactory.getUser().then(function(data) {
+    User.getOne($stateParams.id).then(function(data) {
 
-        $scope.user = data;
+        $scope.user = data.user;
 
         $scope.newUser = {
-            name: data.name,
-            email: data.email,
-            username: data.username,
-            role: data.role,
-            password: data.password,
-            twitter: data.twitter,
-            facebook: data.facebook,
-            google: data.google
+            _id: data.user._id,
+            name: data.user.name,
+            email: data.user.email,
+            username: data.user.username,
+            role: data.user.role,
+            password: data.user.password,
+            twitter: data.user.twitter,
+            facebook: data.user.facebook,
+            google: data.user.google
         };
 
         $scope.submit = function() {
 
-            $http.put("api/users/" + data._id, $scope.newUser)
+            $http.put("api/users/" + data.user._id, $scope.newUser)
             .then (function(response) {
                 console.log('hi');
             }).catch(function(err) {
@@ -88,6 +93,8 @@ app.controller('UserController', function ($scope, $http, UserFactory) {
 
         };
 
+    }).catch(function(err) {
+        console.log('errrr', err);
     });
 
 });

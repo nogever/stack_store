@@ -84,7 +84,7 @@ mongoose.model('User', schema);
 
 // var User = mongoose.model('User', schema);
 
-// var user = new User({name: "Lei", username: 'clearsky', email: 'lei@gmail.com', roles: ['admin'], password: 'password'});
+// var user = new User({name: "Lei", username: 'clearsky', email: 'lei@gmail.com', role: 'admin', password: 'password'});
 
 // user.save(function(err) {
 //   if(err) {

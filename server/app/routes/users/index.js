@@ -28,16 +28,10 @@ router.get('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
 	UserModel.findById(req.params.id, function(err, user) {
 		if (err) return next(err);
-		// var orders = user.pastOrders();
-		// res.json(orders);
 		user.getOrders().then(function(orders) {
-		// 	console.log('before ', user, orders);
-		var data = {};
-		data.orders = orders;
-		data.user = user;
-			// user.pastOrders = orders;
-			// console.log('after', user);
-		console.log('dataaaaaaaaaaa ', data);
+			var data = {};
+			data.orders = orders;
+			data.user = user;
 		res.json(data);
 		}).then(null, function(err) {
 			res.status(500).end();
@@ -49,10 +43,20 @@ router.get('/:id', function (req, res, next) {
 // update one user
 // uri: api/users/id
 router.put('/:id', function (req, res, next) {
-	UserModel.findByIdAndUpdate(req.params.id, { $set: req.body }, function(err, user) {
+	UserModel.findById(req.body._id, function(err, user) {
 		if (err) return next(err);
-		//res.redirect();
-		res.json(user);
+		user.name = req.body.name;
+		user.password = req.body.password;
+		user.email = req.body.email;
+		user.role = req.body.role;
+		user.google = req.body.google;
+		user.facebook = req.body.facebook;
+		user.twitter = req.body.twitter;
+		
+		user.save(function(err, user) {
+			if (err) return next(err);
+			res.json(user);
+		})
 	});
 });
 

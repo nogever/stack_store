@@ -8,8 +8,8 @@ app.config(function ($stateProvider) {
         controller: 'UsersController',
         templateUrl: 'js/admin/users/users.html',
         resolve: {
-            allUsers: function(UsersFactory) {
-                return UsersFactory.getUser().catch(function(err){
+            allUsers: function(Users) {
+                return Users.getAll().catch(function(err){
                     console.log('Err!', err);
                 });
             }
@@ -18,26 +18,24 @@ app.config(function ($stateProvider) {
 
 });
 
-app.factory('UsersFactory', function ($http) {
+app.factory('Users', function ($http) {
     return {
-        getUser: function() {
-            console.log('asking for users…');
+        getAll: function() {
             return $http.get('/api/users').then(function(response) {
-                console.log('asked for users:', response);
                 return response.data;
             });
         }
     };
 });
 
-app.controller('UsersController', function ($scope, $http, allUsers, UsersFactory) {
+app.controller('UsersController', function ($scope, $http, allUsers, Users) {
 
     $scope.users = allUsers;
 
     $scope.delete = function(id) {
 
         $http.delete('api/users/' + id)
-        .then(UsersFactory.getUser)
+        .then(UsersFactory.getAll)
         .then(function(users) {
             $scope.users = users;
         }).catch(function(err) {
