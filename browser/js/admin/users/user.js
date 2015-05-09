@@ -43,13 +43,16 @@ app.controller('AddUserController', function($scope, $state, $http, User) {
 
 });
 
-app.factory('User', function ($http, $stateParams) {
+app.factory('User', function ($http, AuthService) {
     return {
-        getOne: function() {
-            return $http.get('/api/users/' + $stateParams.id)
+        getOne: function(id) {
+            return $http.get('/api/users/' + id)
                      .then(function(response) {
                 return response.data;
             });
+        },
+        getMe: function(id) {
+
         },
         roles: function() {
             return ['admin', 'shop manager', 'subscriber'];
@@ -58,12 +61,12 @@ app.factory('User', function ($http, $stateParams) {
     };
 });
 
-app.controller('UserController', function ($scope, $http, User) {
+app.controller('UserController', function ($scope, $http, $stateParams, User) {
 
     $scope.roles = User.roles();
     $scope.newUser = {};
 
-    User.getOne().then(function(data) {
+    User.getOne($stateParams.id).then(function(data) {
 
         $scope.user = data.user;
 
