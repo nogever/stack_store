@@ -29,6 +29,7 @@ router.get('/:id', function (req, res, next) {
 	UserModel.findById(req.params.id, function(err, user) {
 		if (err) return next(err);
 		user.getOrders().then(function(orders) {
+			// var userObj = user.toObject();  conver Mongoose obj to vanilla obj
 			var data = {};
 			data.orders = orders;
 			data.user = user;
