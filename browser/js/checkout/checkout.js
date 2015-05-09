@@ -43,12 +43,15 @@ app.factory('PostOrder', function($http) {
 
 app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder, AuthService, $state) {
 
+	$scope.ccProcessingError = false;
+	$scope.ccProcessingSuccess = false;
+	$scope.ccLoading = false;
+
 	AuthService.getLoggedInUser().then(function (user) {
         // If a user is retrieved, then renavigate to the destination
         // (the second time, AuthService.isAuthenticated() will work)
         // otherwise, if no user is logged in, go to "login" state.
         if (user) {
-			$scope.ccProcessingError = false;
 
 			$scope.month = 12;
 			$scope.day = 31;
@@ -70,6 +73,8 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 
 			$scope.submitForToken = function () {
 
+				$scope.ccLoading = true;
+
 				Stripe.card.createToken({
 					number: $scope.card.ccNum,
 					exp_month: $scope.card.ccExpMonth,
@@ -86,6 +91,9 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 							token: token,
 							description: $scope.cartInfo._id
 						}).then(function(charge) {
+							
+							$scope.ccLoading = false;
+
 							console.log("Stripe Processed on FrontEnd: ", charge);
 							//consider a STATE Redirect here upon success.
 							$scope.cartInfo.products.forEach(function(product, index) {
@@ -94,14 +102,25 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 
 							delete $scope.cartInfo['_id'];
 
+							$scope.cartInfo._user = user._id;
+							$scope.cartInfo.orderStatus = 'ordered';
+
+
+							console.log("PREP _USER ID", $scope.cartInfo);
+
 							PostOrder.createOrder($scope.cartInfo)
 								.then(function(order) {
 									console.log("Order from backend: ", order);
+									$scope.ccProcessingSuccess = true;
 									
 									PostOrder.destroyCart()
 										.then(function(cart) {
 											console.log("Cart has been destroyed, control returned to Front End", cart);
-											$state.go('products.coffee');
+											
+											// $scope.ccProcessingSuccess = true;
+											setTimeout(function() {
+												$state.go('products.coffee');
+											}, 4000);
 										}).catch(function(err) {
 											console.log("Cart destroy failed, control returned to Front", err.stack);
 										});
@@ -112,6 +131,9 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 						}).then(null, function(err) {
 							console.log("Stripe POST Failed on FrontEnd: ", err.error.code);
 							$scope.ccProcessingError = true;
+							setTimeout(function() {
+								$state.go('products.coffee');
+							}, 3000);
 						});
 					}
 
