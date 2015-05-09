@@ -12,7 +12,8 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 { label: 'Tea', state: 'products.tea', type: 'tea' },
                 { label: 'About Us', state: 'about' },
                 { label: 'My Cart', state: 'cart'},
-                { label: 'Administrator', state: 'administrator', auth: true }
+                { label: 'My Account', state: 'account', auth: true },
+                { label: 'Administrator', state: 'administrator', auth: true, admin: true }
             ];
 
             scope.user = null;
@@ -24,6 +25,12 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             scope.logout = function () {
                 AuthService.logout().then(function () {
                    $state.go('home');
+                });
+            };
+
+            scope.isAdmin = function() {
+                return AuthService.getLoggedInUser().then(function (user) {
+                    return scope.user.role === 'admin';
                 });
             };
 

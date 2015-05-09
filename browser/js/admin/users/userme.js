@@ -16,7 +16,7 @@ app.controller('UserMeController', function ($scope, AuthService, $http, UserFac
     $scope.roles = UserFactory.roles();
 
     AuthService.getLoggedInUser().then(function(user) {
-
+        console.log(user);
         $scope.user = user;
     
         $scope.newUser = {

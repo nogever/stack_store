@@ -43,11 +43,11 @@ schema.methods.getReviews = function() {
 
 schema.methods.getOrders = function () {
     return mongoose.model('Order').find({ _user: this._id }).exec();
-}
+};
 
 schema.methods.getWishlist = function () {
     return mongoose.model('Wishlist').find({ _user: this._id }).exec();
-}
+};
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
 // are all used for local authentication security.

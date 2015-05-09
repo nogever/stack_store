@@ -31,7 +31,7 @@
 
     <div class="">
       <p class="form-label">Add Coffee</p>
-      <label ng-repeat="product in products | Type:'Coffee'" class="radio-inline">
+      <label ng-repeat="product in products | type:'Coffee'" class="radio-inline">
         <input
           type="radio" 
           name="newOrderProduct" 
@@ -40,7 +40,7 @@
         >{{product.title}}
       </label>
       <p class="form-label">Add Tea</p>
-      <label ng-repeat="product in products | Type:'Tea'" class="radio-inline">
+      <label ng-repeat="product in products | type:'Tea'" class="radio-inline">
         <input
           type="radio" 
           name="newOrderProduct"
@@ -85,8 +85,10 @@
   </div>
 </form>
 
-
-
+<pre>
+  
+  {{ newOrder | json }}
+</pre>
 
 
 

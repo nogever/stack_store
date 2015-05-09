@@ -25,7 +25,21 @@ router.get('/', auth.isAdmin, function (req, res, next) {
 router.get('/:id', function (req, res, next) {
 	UserModel.findById(req.params.id, function(err, user) {
 		if (err) return next(err);
-		res.json(user);
+		// var orders = user.pastOrders();
+		// res.json(orders);
+		user.getOrders().then(function(orders) {
+		// 	console.log('before ', user, orders);
+		var data = {};
+		data.orders = orders;
+		data.user = user;
+			// user.pastOrders = orders;
+			// console.log('after', user);
+		console.log('dataaaaaaaaaaa ', data);
+		res.json(data);
+		}).then(null, function(err) {
+			res.status(500).end();
+		});
+		
 	});
 });
 

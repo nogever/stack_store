@@ -1,5 +1,8 @@
 <h1>My Account</h1>
-
+<!-- <pre> -->
+	<!-- {{ userAccount | json }} -->
+	<!-- {{ pastOrders | json }} -->
+<!-- </pre> -->
 <h3>Profile</h3>
 <dl>
 	<dt>Name</dt><dd>{{ userAccount.name }}</dd>
@@ -15,10 +18,12 @@
 </dl>
 
 <h3>Order History</h3>
-<orderHistory ng-repeat></orderHistory>
-
+<ul>
+<li ng-repeat="order in pastOrders">{{ order.orderNumber }}
+</li>
+<ul>
 <h3>Wishlist</h3>
-<wishlist ng-repeat></wishlist>
+<!-- <wishlist ng-repeat></wishlist> -->
 
 
 
