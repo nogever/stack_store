@@ -102,6 +102,10 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 
 							delete $scope.cartInfo['_id'];
 
+							$scope.cartInfo._user = user._id;
+							$scope.cartInfo.orderStatus = 'ordered';
+
+
 							console.log("PREP _USER ID", $scope.cartInfo);
 
 							PostOrder.createOrder($scope.cartInfo)
