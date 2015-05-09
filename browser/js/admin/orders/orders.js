@@ -47,6 +47,7 @@ app.factory('Order', function ($http, $state) {
         getOne: function(id) {
             return $http.get('/api/orders/' + id)
                 .then(function(response) {
+                    console.log('getOne factory', response.data);
                     return response.data;
             });
         },
@@ -79,10 +80,9 @@ app.factory('Order', function ($http, $state) {
                 newOrder.products[index].productId = product.productId._id;
             });
             newOrder._user = newOrder._user._id;
+            console.log('saving', newOrder);
             return $http.post('/api/orders', newOrder)
                     .then(function(response) {
-                        console.log('response from save()', response);
-                        // return response.data;
                         $state.go('administrator.orders');
                     }).catch(function(err) {
                         console.log('errrr');
@@ -110,9 +110,10 @@ app.controller('OrderController', function ($scope, $stateParams, $filter, Order
                 orderNumber: order.orderNumber,
                 products: order.products,
                 date: ngDate,
-                orderStatus: order.status,
+                orderStatus: order.orderStatus,
                 _user: order._user
             };
+            console.log($scope.newOrder);
         });
     } else {
         $scope.newOrder = {

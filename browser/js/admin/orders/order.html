@@ -31,7 +31,7 @@
 
     <div class="">
       <p class="form-label">Add Coffee</p>
-      <label ng-repeat="product in products | type:'Coffee'" class="radio-inline">
+      <label ng-repeat="product in products | type:'coffee'" class="radio-inline">
         <input
           type="radio" 
           name="newOrderProduct" 
@@ -40,7 +40,7 @@
         >{{product.title}}
       </label>
       <p class="form-label">Add Tea</p>
-      <label ng-repeat="product in products | type:'Tea'" class="radio-inline">
+      <label ng-repeat="product in products | type:'tea'" class="radio-inline">
         <input
           type="radio" 
           name="newOrderProduct"
@@ -71,13 +71,14 @@
         <select ng-model="tempOptions.toppings"><option ng-repeat="option in options.toppings" value="{{option}}">{{option}}</option></select>
       </div>
     </div>
-    <div class="form-group form-group-sm form-inline">
+    <div class="form-group form-group-sm col-xs-2">
       <label for="orderProductQuantity">Quantity</label>
       <input type="number" class="form-control" name="orderProductQuantity" id="orderProductQuantity" ng-model="tempProduct.quantity"/>
     </div>
 
-    <button type="button" class="btn btn-default btn-sm" ng-click="addProductToOrder()">Add Product</button>
-
+    <div class="form-group">
+      <button type="button" class="btn btn-primary btn-sm" ng-click="addProductToOrder()">Add Product</button>
+    </div>
   </div>
 
   <button type="submit" class="btn btn-success" ng-disabled="singleOrder.$invalid">Add Order</button>
@@ -85,12 +86,9 @@
   </div>
 </form>
 
-<pre>
-  
-  {{ newOrder | json }}
-</pre>
 
 
+<pre>{{ newOrder | json }}</pre>
 
 
 
