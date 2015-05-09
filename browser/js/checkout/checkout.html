@@ -1,87 +1,92 @@
 <h2> Purchase your Cart! </h2>
 <br>
-<form name="checkoutForm" ng-submit="checkoutForm.$valid && submitForToken()" novalidate>
-    <span class="error" ng-show="checkoutForm.question.$invalid && checkoutForm.$submitted">Question is not valid.</span>
-    <label>Credit Cart Number:</label>
-    <input 
-    	name="ccNum" 
-    	ng-minlength="15" 
-    	ng-maxlength="19"
-        form-control 
-        ng-pristine 
-        ng-untouched 
-        ng-valid
-    	data-ng-pattern="/^[0-9]+$/" 
-    	required 
-    	type="number" 
-    	ng-model="card.ccNum"
-    	placeholder="Card Number..."/>
-    <br>
-    <label>CVC</label>
-    <input 
-        name="cvcNum"
-        ng-minlength="3"
-        ng-maxlength="4"
-        form-control 
-        ng-pristine 
-        ng-untouched 
-        ng-valid
-        type="number"
-        data-ng-pattern="/^[0-9]+$/"
-        ng-model="card.cvcNum"
-        placeholder="CVC"/>
-    <br>
-    <label>CC Provider:</label>
-    <select 
-        required 
-        form-control 
-        ng-pristine 
-        ng-untouched 
-        ng-valid
-        ng-model="card.ccProvider">
-        <option value="">...</option>
-            <option value="visa">Visa</option>
-            <option value="discover">Discover</option>
-            <option value="mastercard">MasterCard</option>
-            <option value="maestro">Maestro</option>
-            <option value="amex">American Express</option>
-            <option value="dinersclub">Diners Club</option>
-    </select>
-    <br><br>
-    <label>Expiration:</label><br>
-    <label>Month</label>
-    <select 
-    	required 
-        form-control 
-        ng-pristine 
-        ng-untouched 
-        ng-valid
-    	ng-model="card.ccExpMonth"
-    	placeholder="00">
-        <option ng-repeat="i in getNumber(month) track by $index">{{ $index + 1 }}</option>
-    </select>
-    <label>Day</label>
-    <select 
-    	required 
-        form-control 
-        ng-pristine 
-        ng-untouched
-        ng-valid
-    	ng-model="card.ccExpDay"
-    	placeholder="00">
-        <option ng-repeat="i in getNumber(day) track by $index">{{ $index + 1 }}</option>
-    </select>
-    <label>Year</label>
-    <select 
-        required 
-        form-control 
-        ng-pristine 
-        ng-untouched 
-        ng-valid
-        ng-model="card.ccExpYear"
-        placeholder="00">
-        <option ng-repeat="i in getNumber(year) track by $index">{{ $index + thisYear }}</option>
-    </select>
+<form name="checkoutForm" class="form-horizontal" ng-submit="checkoutForm.$valid && submitForToken()" novalidate>
+    <div class="form-group">
+        <span class="error" ng-show="checkoutForm.question.$invalid && checkoutForm.$submitted">Question is not valid.</span>
+        <label class="col-sm-4">Card Number:</label>
+        <input class="col-sm-8"
+        	name="ccNum" 
+        	ng-minlength="15" 
+        	ng-maxlength="19"
+            form-control 
+            ng-pristine 
+            ng-untouched 
+            ng-valid
+        	data-ng-pattern="/^[0-9]+$/" 
+        	required 
+        	type="number" 
+        	ng-model="card.ccNum"
+        	placeholder="Card Number..."/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4">CVC</label>
+        <input class="col-sm-8"
+            name="cvcNum"
+            ng-minlength="3"
+            ng-maxlength="4"
+            form-control 
+            ng-pristine 
+            ng-untouched 
+            ng-valid
+            type="number"
+            data-ng-pattern="/^[0-9]+$/"
+            ng-model="card.cvcNum"
+            placeholder="CVC"/>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4">CC Provider:</label>
+        <select class="col-sm-8"
+            required 
+            form-control 
+            ng-pristine 
+            ng-untouched 
+            ng-valid
+            ng-model="card.ccProvider">
+            <option value="">...</option>
+                <option value="visa">Visa</option>
+                <option value="discover">Discover</option>
+                <option value="mastercard">MasterCard</option>
+                <option value="maestro">Maestro</option>
+                <option value="amex">American Express</option>
+                <option value="dinersclub">Diners Club</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-12">Expiration:</label><br>
+        <label class="col-sm-2 text-right">Month</label>
+        <select class="col-sm-2" 
+        	required 
+            form-control 
+            ng-pristine 
+            ng-untouched 
+            ng-valid
+        	ng-model="card.ccExpMonth"
+        	placeholder="00">
+            <option ng-repeat="i in getNumber(month) track by $index">{{ $index + 1 }}</option>
+        </select>
+        <label class="col-sm-2 text-right">Day</label>
+        <select class="col-sm-2"
+        	required 
+            form-control 
+            ng-pristine 
+            ng-untouched
+            ng-valid
+        	ng-model="card.ccExpDay"
+        	placeholder="00">
+            <option ng-repeat="i in getNumber(day) track by $index">{{ $index + 1 }}</option>
+        </select>
+        <label class="col-sm-2 text-right">Year</label>
+        <select class="col-sm-2"
+            required 
+            form-control 
+            ng-pristine 
+            ng-untouched 
+            ng-valid
+            ng-model="card.ccExpYear"
+            placeholder="00">
+            <option ng-repeat="i in getNumber(year) track by $index">{{ $index + thisYear }}</option>
+        </select>
+    </div>
     <br><br>
     <div class="btn-group" role="group" aria-label="...">
       <button type="submit" class="btn btn-success" ng-disabled="checkoutForm.$invalid">Purchase Cart</button>

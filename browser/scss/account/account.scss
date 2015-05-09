@@ -1,0 +1,14 @@
+.account {
+	font-size: 18px;
+	font-weight: 300;
+	dt, dd {
+		line-height: 30px;
+	}
+	dt:after {
+		content: ":";
+	}
+	h3 {
+		border-bottom: 1px solid #eee;
+		padding-bottom:5px;
+	}
+}

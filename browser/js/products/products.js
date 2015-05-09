@@ -357,7 +357,7 @@ app.controller('ProductCtrl', function ($scope, AuthService, ProductReviews, Dri
     sweets: null,
     milk: null,
     flavors: null, 
-    size: null,
+    size: 'fullstack',
     toppings: null,
   };
 
@@ -396,7 +396,7 @@ app.controller('ModalInstanceCtrl', function ($rootScope, $scope, $modalInstance
     sweets: null,
     milk: null,
     flavors: null, 
-    size: null,
+    size: 'fullstack',
     toppings: null,
   };
 

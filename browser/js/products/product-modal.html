@@ -14,8 +14,9 @@
 <!--             <h3>{{ product.title }}</h3>
  -->            <h5>
                 <span class="label label-danger"
-                      ng-repeat="category in product.category">{{ category }}</span>
+                      ng-repeat="category in product.categories">{{ category.name }}</span>
             </h5>
+            <h4>{{ product.price / 100 | currency }}</h4>
             <h5>{{ product.description }}</h5>
             <h4>Add Options</h4>
             <form name="buildDrink" ng-submit="buildDrink.$valid && addToCart()" novalidate>
