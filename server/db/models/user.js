@@ -6,7 +6,9 @@ var Cart = mongoose.model('Cart');
 
 var schema = new mongoose.Schema({
     name: {type: String, required: true},
-    username: {type: String, required: true},
+    username: {
+        type: String
+    },
     // pastOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order'}],
     // wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Wishlist'}],
     billingAddress: [addressSchema],

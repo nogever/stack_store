@@ -25,8 +25,11 @@ module.exports = function (app) {
                 done(null, user);
             } else {
                 UserModel.create({
+                    role: 'subscriber',
+                    name: profile._json.name,
+                    email: profile._json.email,
                     google: {
-                        id: profile.id
+                        id: profile.id,
                     }
                 }).then(function (user) {
                     done(null, user);
@@ -52,7 +55,12 @@ module.exports = function (app) {
     app.get('/auth/google/callback',
         passport.authenticate('google', { failureRedirect: '/login' }),
         function (req, res) {
+            console.log('/auth/google/callback')
             res.redirect('/');
         });
 
 };
+
+
+
+

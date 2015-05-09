@@ -14,6 +14,6 @@ module.exports = {
   "GOOGLE": {
     "clientID": "339257991441-if75dbod572auj8lrbv7ca7nruh8g88n.apps.googleusercontent.com",
     "clientSecret": "Z0nMFoFyhLr-Brx9JgfMEXBs",
-    "callbackURL": "https://cafestack.herokuapp.com"
+    "callbackURL": "http://localhost:1337/auth/google/callback"
   }
 };
