@@ -43,14 +43,15 @@ app.factory('PostOrder', function($http) {
 
 app.controller('CheckoutController', function ($scope, CartFactory, StripeFactory, PostOrder, AuthService, $state) {
 
+	$scope.ccProcessingError = false;
+	$scope.ccProcessingSuccess = false;
+	$scope.ccLoading = false;
+
 	AuthService.getLoggedInUser().then(function (user) {
         // If a user is retrieved, then renavigate to the destination
         // (the second time, AuthService.isAuthenticated() will work)
         // otherwise, if no user is logged in, go to "login" state.
         if (user) {
-			$scope.ccProcessingError = false;
-			$scope.ccProcessSuccessful = false;
-			$scope.ccLoading = false;
 
 			$scope.month = 12;
 			$scope.day = 31;
@@ -92,7 +93,6 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 						}).then(function(charge) {
 							
 							$scope.ccLoading = false;
-							$scope.ccProcessSuccessful = true;
 
 							console.log("Stripe Processed on FrontEnd: ", charge);
 							//consider a STATE Redirect here upon success.
@@ -107,12 +107,13 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 							PostOrder.createOrder($scope.cartInfo)
 								.then(function(order) {
 									console.log("Order from backend: ", order);
+									$scope.ccProcessingSuccess = true;
 									
 									PostOrder.destroyCart()
 										.then(function(cart) {
 											console.log("Cart has been destroyed, control returned to Front End", cart);
 											
-											// $scope.ccProcessSuccessful = true;
+											// $scope.ccProcessingSuccess = true;
 											setTimeout(function() {
 												$state.go('products.coffee');
 											}, 4000);
@@ -128,7 +129,7 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 							$scope.ccProcessingError = true;
 							setTimeout(function() {
 								$state.go('products.coffee');
-							}, 4000);
+							}, 3000);
 						});
 					}
 

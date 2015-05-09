@@ -86,7 +86,7 @@
     <div class="btn-group" role="group" aria-label="...">
       <button type="submit" class="btn btn-success" ng-disabled="checkoutForm.$invalid">Purchase Cart</button>
     </div>
-    <div ng-if="ccProcessingSuccess"><ccloader></ccloader></div>
-    <div id="ccSuccess" class="alert alert-success" ng-if="ccProcessingSuccess" role="alert">Purchase Successful!</div>
-    <div id="ccError" class="alert alert-warning" ng-if="ccProcessingError" role="alert">The transaction has failed unfortunately, please try again.</div>
+    <div ng-show="ccProcessingSuccess"><ccloader></ccloader></div>
+    <div id="ccSuccess" class="alert alert-success" ng-show="ccProcessingSuccess" role="alert">Purchase Successful!</div>
+    <div id="ccError" class="alert alert-warning" ng-show="ccProcessingError" role="alert">The transaction has failed unfortunately, please try again.</div>
 </form>
