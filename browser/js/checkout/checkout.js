@@ -50,6 +50,7 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
         if (user) {
 			$scope.ccProcessingError = false;
 			$scope.ccProcessSuccessful = false;
+			$scope.ccLoading = false;
 
 			$scope.month = 12;
 			$scope.day = 31;
@@ -71,6 +72,8 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 
 			$scope.submitForToken = function () {
 
+				$scope.ccLoading = true;
+
 				Stripe.card.createToken({
 					number: $scope.card.ccNum,
 					exp_month: $scope.card.ccExpMonth,
@@ -87,6 +90,10 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 							token: token,
 							description: $scope.cartInfo._id
 						}).then(function(charge) {
+							
+							$scope.ccLoading = false;
+							$scope.ccProcessSuccessful = true;
+
 							console.log("Stripe Processed on FrontEnd: ", charge);
 							//consider a STATE Redirect here upon success.
 							$scope.cartInfo.products.forEach(function(product, index) {
@@ -94,6 +101,8 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 							});
 
 							delete $scope.cartInfo['_id'];
+
+							console.log("PREP _USER ID", $scope.cartInfo);
 
 							PostOrder.createOrder($scope.cartInfo)
 								.then(function(order) {
@@ -103,7 +112,7 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 										.then(function(cart) {
 											console.log("Cart has been destroyed, control returned to Front End", cart);
 											
-											$scope.ccProcessSuccessful = true;
+											// $scope.ccProcessSuccessful = true;
 											setTimeout(function() {
 												$state.go('products.coffee');
 											}, 4000);
@@ -117,6 +126,9 @@ app.controller('CheckoutController', function ($scope, CartFactory, StripeFactor
 						}).then(null, function(err) {
 							console.log("Stripe POST Failed on FrontEnd: ", err.error.code);
 							$scope.ccProcessingError = true;
+							setTimeout(function() {
+								$state.go('products.coffee');
+							}, 4000);
 						});
 					}
 
